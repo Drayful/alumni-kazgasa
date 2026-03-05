@@ -59,29 +59,25 @@
         @endif
     </div>
 
-    {{-- QR справа по центру вертикально --}}
-    @if ($qrSvg)
-    <div class="absolute top-1/2 -translate-y-1/2 
-                right-1            {{-- мобильный: ближе к правому краю --}}
-                sm:right-3         {{-- планшет и выше: оригинальный отступ --}}
-                w-16 h-16          {{-- мобильный размер --}}
-                sm:w-20 sm:h-20    {{-- планшет и выше --}}
-                flex items-center justify-center opacity-95">
+    {{-- QR справа по центру вертикально, чуть больше, без фона --}}
+@if ($qrSvg)
+    <div class="absolute left-auto right-3 top-1/2 -translate-y-1/2 w-20 h-20 flex items-center justify-center opacity-95">
         {!! 
             preg_replace(
-                '/<rect\b[^>]*\bfill\s*=\s*["\']?\s*(?:#fff(?:fff)?|white|rgb\(255,\s*255,\s*255\))\s*["\']?[^>]*>/i',
-                '',
-                preg_replace(
-                    '/<svg/',
-                    '<svg width="100%" height="100%" style="display:block"',
-                    $qrSvg,
-                    1
-                )
+                [
+                    '/<svg/',                          // 1. Добавляем размеры
+                    '/<rect[^>]+fill=["\']#?(?:fff(?:fff)?|white)["\'][^>]*>/i',  // 2. Удаляем белый фон rect
+                    '/<rect[^>]+width=["\']100%["\'][^>]*>/i',  // 3. Удаляем rect с width="100%"
+                ],
+                [
+                    '<svg width="100%" height="100%" style="display:block; background:transparent"',
+                    '',
+                    '',
+                ],
+                $qrSvg,
             )
         !!}
     </div>
 @endif
-
-
 
 </div>
