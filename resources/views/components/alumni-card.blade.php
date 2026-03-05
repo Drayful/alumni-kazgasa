@@ -13,7 +13,7 @@
         $cardUrl = route('alumni.card.show', ['publicId' => $alumniProfile->public_id]);
         try {
             $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')
-                ->size(140)
+                ->size(72)
                 ->margin(0)
                 ->color(107, 33, 31)
                 ->backgroundColor(255, 255, 255)
@@ -59,10 +59,9 @@
         @endif
     </div>
 
-    {{-- QR на карте справа: по скану открывается цифровая карта с данными и статусом выпускника --}}
+    {{-- QR справа, мелкий, без рамки и фона, не перекрывает текст --}}
     @if ($qrSvg)
-        <div class="absolute right-3 bottom-[22%] w-[22%] max-w-[100px] aspect-square flex items-center justify-center bg-white rounded border border-[#6B1E1D]/30 p-0.5 shadow-sm"
-             style="min-width: 56px;">
+        <div class="absolute right-2 top-1/2 -translate-y-1/2 w-14 h-14 flex items-center justify-center opacity-95">
             {!! preg_replace('/<svg/', '<svg width="100%" height="100%" style="display:block"', $qrSvg, 1) !!}
         </div>
     @endif
