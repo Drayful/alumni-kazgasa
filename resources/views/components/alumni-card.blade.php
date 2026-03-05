@@ -16,7 +16,7 @@
                 ->size(100)
                 ->margin(0)
                 ->color(107, 33, 31)
-                ->backgroundColor(255, 255, 255)
+                ->backgroundColor(0, 0, 0,100)
                 ->generate($cardUrl);
         } catch (\Throwable $e) {
             $qrSvg = null;
@@ -61,22 +61,8 @@
 
     {{-- QR справа по центру вертикально, чуть больше, без фона --}}
     @if ($qrSvg)
-    <div class="absolute left-auto right-3 top-1/2 -translate-y-1/2 w-20 h-20 flex items-center justify-center opacity-95">
-        {!! 
-            preg_replace(
-                [
-                    '/<svg/',                          // 1. Добавляем размеры
-                    '/<rect[^>]+fill=["\']#?(?:fff(?:fff)?|white)["\'][^>]*>/i',  // 2. Удаляем белый фон rect
-                    '/<rect[^>]+width=["\']100%["\'][^>]*>/i',  // 3. Удаляем rect с width="100%"
-                ],
-                [
-                    '<svg width="100%" height="100%" style="display:block; background:transparent"',
-                    '',
-                    '',
-                ],
-                $qrSvg,
-            )
-        !!}
-    </div>
-@endif
+        <div class="absolute left-auto right-3 top-1/2 -translate-y-1/2 w-20 h-20 flex items-center justify-center opacity-95">
+            {!! preg_replace('/<svg/', '<svg width="100%" height="100%" style="display:block"', $qrSvg, 1) !!}
+        </div>
+    @endif
 </div>
