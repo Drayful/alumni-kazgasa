@@ -15,7 +15,7 @@
             $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')
                 ->size(100)
                 ->margin(0)
-                ->color(107, 33, 31)
+                ->color(0, 0, 0)
                 ->backgroundColor(0, 0, 0,100)
                 ->generate($cardUrl);
         } catch (\Throwable $e) {
