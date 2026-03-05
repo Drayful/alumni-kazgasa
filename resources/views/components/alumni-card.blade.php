@@ -6,9 +6,25 @@
     $idDisplay = $alumniProfile?->public_id
         ?? str_pad((string) ($alumniProfile?->id ?? auth()->id()), 6, '0', STR_PAD_LEFT);
     $isDashboard = $variant === 'dashboard';
+
+    $cardUrl = null;
+    $qrSvg = null;
+    if ($alumniProfile?->public_id) {
+        $cardUrl = route('alumni.card.show', ['publicId' => $alumniProfile->public_id]);
+        try {
+            $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')
+                ->size(140)
+                ->margin(0)
+                ->color(107, 33, 31)
+                ->backgroundColor(255, 255, 255)
+                ->generate($cardUrl);
+        } catch (\Throwable $e) {
+            $qrSvg = null;
+        }
+    }
 @endphp
 
-{{-- Фон берём из фоновой картинки, текст и ID рисуем поверх --}}
+{{-- Фон берём из фоновой картинки, текст и ID рисуем поверх, QR справа на карте --}}
 <div class="relative w-full max-w-xl overflow-hidden rounded-xl shadow-xl"
      style="
         aspect-ratio: 1.6;
@@ -21,7 +37,6 @@
     <div class="absolute inset-0 flex items-center"
          style="font-family: 'Times New Roman', 'Georgia', serif;">
         @if ($isDashboard)
-            {{-- Вариант для главной: шрифт адаптируется под ширину окна --}}
             <div class="pl-6 md:pl-12 pr-20 md:pr-40">
                 <div class="font-semibold text-[#6B1E1D] leading-tight"
                      style="font-size: clamp(18px, 2.4vw, 30px);">
@@ -33,7 +48,6 @@
                 </div>
             </div>
         @else
-            {{-- Вариант для профиля: фиксированный, аккуратный размер --}}
             <div class="pl-8 md:pl-12 pr-24 md:pr-40">
                 <div class="font-semibold text-[#6B1E1D] leading-tight text-[20px] sm:text-[22px] md:text-[26px]">
                     {{ $name }}
@@ -44,4 +58,12 @@
             </div>
         @endif
     </div>
+
+    {{-- QR на карте справа: по скану открывается цифровая карта с данными и статусом выпускника --}}
+    @if ($qrSvg)
+        <div class="absolute right-3 bottom-[22%] w-[22%] max-w-[100px] aspect-square flex items-center justify-center bg-white rounded border border-[#6B1E1D]/30 p-0.5 shadow-sm"
+             style="min-width: 56px;">
+            {!! preg_replace('/<svg/', '<svg width="100%" height="100%" style="display:block"', $qrSvg, 1) !!}
+        </div>
+    @endif
 </div>

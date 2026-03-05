@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\AlumniProfile;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AlumniCardController extends Controller
 {
     /**
-     * Публичный экран «карты выпускника» по public_id.
+     * Публичный экран цифровой карты выпускника по public_id.
+     * По этой ссылке открывается страница с картой, данными и статусом «является/не является выпускником».
+     * QR на самой карте ведёт сюда.
      */
     public function show(string $publicId): View|Response
     {
@@ -20,17 +21,8 @@ class AlumniCardController extends Controller
             return response()->view('alumni.card-not-found', [], 404);
         }
 
-        $cardUrl = route('alumni.card.show', ['publicId' => $alumniProfile->public_id]);
-
-        $qrSvg = QrCode::format('svg')
-            ->size(260)
-            ->margin(0)
-            ->generate($cardUrl);
-
         return view('alumni.card-screen', [
             'alumniProfile' => $alumniProfile,
-            'cardUrl' => $cardUrl,
-            'qrSvg' => $qrSvg,
         ]);
     }
 }
