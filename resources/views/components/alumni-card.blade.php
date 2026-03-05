@@ -60,10 +60,12 @@
     </div>
 
     {{-- QR справа по центру вертикально --}}
-@if ($qrSvg)
-    <div class="absolute left-auto right-3 top-1/2 -translate-y-1/2 
-                w-16 h-16         {{-- мобильный: чуть меньше --}}
-                sm:w-20 sm:h-20   {{-- планшет и выше: оригинальный размер --}}
+    @if ($qrSvg)
+    <div class="absolute top-1/2 -translate-y-1/2 
+                right-1            {{-- мобильный: ближе к правому краю --}}
+                sm:right-3         {{-- планшет и выше: оригинальный отступ --}}
+                w-16 h-16          {{-- мобильный размер --}}
+                sm:w-20 sm:h-20    {{-- планшет и выше --}}
                 flex items-center justify-center opacity-95">
         {!! 
             preg_replace(
@@ -79,6 +81,7 @@
         !!}
     </div>
 @endif
+
 
 
 </div>
