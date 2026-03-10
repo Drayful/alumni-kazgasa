@@ -115,11 +115,11 @@
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                 <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">5000+</div>
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30000+</div>
                     <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Выпускников</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30+</div>
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">45+</div>
                     <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Лет истории</div>
                 </div>
                 <div class="text-center">
