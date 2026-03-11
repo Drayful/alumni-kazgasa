@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Services\PortalPhotoService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AlumniProfile extends Model
@@ -16,6 +18,7 @@ class AlumniProfile extends Model
         'last_name',
         'middle_name',
         'photo',
+        'photo_path',
         'school',
         'graduation_year',
         'specialty',
@@ -59,6 +62,22 @@ class AlumniProfile extends Model
     public function getFullNameAttribute(): string
     {
         return trim("{$this->last_name} {$this->first_name} {$this->middle_name}");
+    }
+
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->photo_path && Storage::disk('public')->exists($this->photo_path)) {
+            return Storage::url($this->photo_path);
+        }
+
+        if ($this->iin) {
+            $service = app(PortalPhotoService::class);
+            $photo = $service->getPhotoForAlumni($this->iin);
+
+            return (string) ($photo['value'] ?? asset('images/user.png'));
+        }
+
+        return asset('images/user.png');
     }
 
     public static function generatePublicId(): string

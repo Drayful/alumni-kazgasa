@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumniCardController;
+use App\Http\Controllers\Profile\PhotoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/alumni', [ProfileController::class, 'updateAlumni'])->name('profile.alumni.update');
+    Route::post('/profile/photo', [PhotoController::class, 'update'])->name('profile.photo.update');
+    Route::delete('/profile/photo', [PhotoController::class, 'destroy'])->name('profile.photo.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
