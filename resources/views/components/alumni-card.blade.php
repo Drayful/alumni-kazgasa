@@ -25,7 +25,7 @@
 @endphp
 
 {{-- Фон берём из фоновой картинки, текст и ID рисуем поверх, QR справа на карте --}}
-<div class="relative w-full max-w-xl overflow-hidden rounded-xl shadow-xl"
+<div class="relative w-full max-w-full overflow-hidden rounded-xl shadow-xl"
      style="
         aspect-ratio: 1.6;
         background-image: url('{{ asset('images/alumni-card-fon.png') }}');
@@ -34,25 +34,25 @@
         background-repeat: no-repeat;
      ">
     {{-- Имя и ID в той же области, что на макете (левая часть светлой зоны) --}}
-    <div class="absolute inset-0 flex items-center"
+    <div class="absolute inset-0 flex items-center overflow-hidden"
          style="font-family: 'Times New Roman', 'Georgia', serif;">
         @if ($isDashboard)
-            <div class="pl-6 md:pl-12 pr-20 md:pr-40">
-                <div class="font-semibold text-[#6B1E1D] leading-tight"
-                     style="font-size: clamp(18px, 2.4vw, 30px);">
+            <div class="pl-6 md:pl-12 pr-20 md:pr-40 flex-1 min-w-0 overflow-hidden">
+                <div class="text-[11px] sm:text-[13px] font-bold leading-tight break-words overflow-hidden max-w-full text-[#6B1E1D]"
+                     style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
                     {{ $name }}
                 </div>
-                <div class="mt-1 font-medium text-[#6B1E1D]"
-                     style="font-size: clamp(12px, 1.5vw, 20px);">
+                <div class="mt-1 text-[9px] sm:text-[11px] font-medium break-all text-[#6B1E1D]">
                     ID number: {{ $idDisplay }}
                 </div>
             </div>
         @else
-            <div class="pl-8 md:pl-12 pr-24 md:pr-40">
-                <div class="font-semibold text-[#6B1E1D] leading-tight text-[20px] sm:text-[22px] md:text-[26px]">
+            <div class="pl-8 md:pl-12 pr-24 md:pr-40 flex-1 min-w-0 overflow-hidden">
+                <div class="text-[11px] sm:text-[13px] font-bold leading-tight break-words overflow-hidden max-w-full text-[#6B1E1D]"
+                     style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
                     {{ $name }}
                 </div>
-                <div class="mt-1 font-medium text-[#6B1E1D] text-[14px] sm:text-[15px] md:text-[18px]">
+                <div class="mt-1 text-[9px] sm:text-[11px] font-medium break-all text-[#6B1E1D]">
                     ID number: {{ $idDisplay }}
                 </div>
             </div>
