@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Services\PortalPhotoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,6 +42,11 @@ class PhotoController extends Controller
 
         $profile->update(['photo_path' => $path]);
 
+        $iin = $profile->iin;
+        if ($iin) {
+            app(PortalPhotoService::class)->clearCache($iin);
+        }
+
         return back()->with('photo_success', 'Фотография успешно обновлена!');
     }
 
@@ -48,11 +54,16 @@ class PhotoController extends Controller
     {
         $profile = auth()->user()->alumniProfile;
 
+        $iin = $profile?->iin;
+        if ($iin) {
+            app(PortalPhotoService::class)->clearCache($iin);
+        }
+
         if ($profile && $profile->photo_path) {
             Storage::disk('public')->delete($profile->photo_path);
             $profile->update(['photo_path' => null]);
         }
 
-        return back()->with('photo_success', 'Фотография удалена. Используется фото из системы.');
+        return back()->with('photo_success', 'Фотография удалена.');
     }
 }

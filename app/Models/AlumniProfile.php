@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 class AlumniProfile extends Model
 {
+    private ?string $_cachedAvatarUrl = null;
+
     protected $fillable = [
         'user_id',
         'iin',
@@ -66,18 +68,23 @@ class AlumniProfile extends Model
 
     public function getAvatarUrlAttribute(): string
     {
+        if ($this->_cachedAvatarUrl !== null) {
+            return $this->_cachedAvatarUrl;
+        }
+
         if ($this->photo_path && Storage::disk('public')->exists($this->photo_path)) {
-            return Storage::url($this->photo_path);
+            $this->_cachedAvatarUrl = Storage::url($this->photo_path);
+            return $this->_cachedAvatarUrl;
         }
 
         if ($this->iin) {
-            $service = app(PortalPhotoService::class);
-            $photo = $service->getPhotoForAlumni($this->iin);
-
-            return (string) ($photo['value'] ?? asset('images/user.png'));
+            $photo = app(PortalPhotoService::class)->getPhotoForAlumni($this->iin);
+            $this->_cachedAvatarUrl = (string) ($photo['value'] ?? asset('images/user.png'));
+            return $this->_cachedAvatarUrl;
         }
 
-        return asset('images/user.png');
+        $this->_cachedAvatarUrl = asset('images/user.png');
+        return $this->_cachedAvatarUrl;
     }
 
     public static function generatePublicId(): string
