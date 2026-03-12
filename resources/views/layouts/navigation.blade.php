@@ -14,6 +14,9 @@
                     <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.*')">
                         {{ __('Профиль') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')">
+                        {{ __('Вакансии') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -65,6 +68,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.*')">
                 {{ __('Профиль') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')">
+                {{ __('Вакансии') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-4 pb-3 border-t border-[#D9D9D9]">

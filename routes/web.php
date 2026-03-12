@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumniCardController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\Profile\PhotoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Публичные вакансии
+Route::get('/vacancies', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/vacancies/{id}', [JobController::class, 'show'])
+    ->name('jobs.show')
+    ->where('id', '[0-9]+');
 
 // Публичный экран карты выпускника по public_id
 Route::get('/card/{publicId}', [AlumniCardController::class, 'show'])

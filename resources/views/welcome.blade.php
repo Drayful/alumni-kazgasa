@@ -158,6 +158,76 @@
         </div>
     </section>
 
+    {{-- 5.5. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
+    @php
+        $latestJobs = app(\App\Services\JobService::class)->getActiveJobs(3);
+    @endphp
+    @if($latestJobs->isNotEmpty())
+        <section class="bg-white py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-end justify-between mb-8">
+                    <div>
+                        <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-1">
+                            Карьера
+                        </p>
+                        <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
+                            Вакансии для выпускников
+                        </h2>
+                    </div>
+                    <a href="{{ route('jobs.index') }}"
+                       class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
+                        Все вакансии →
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach($latestJobs as $job)
+                        <div class="border border-[#D9D9D9] rounded-2xl p-5 hover:border-[#8F161C] hover:shadow-md transition-all duration-200 group">
+                            <div class="flex items-center gap-3 mb-3">
+                                @if($job->company_logo_path)
+                                    <img src="{{ $job->company_logo_path }}"
+                                         class="w-10 h-10 rounded-lg object-contain border border-[#D9D9D9] p-1"
+                                         alt="{{ $job->company_name }}">
+                                @else
+                                    <div class="w-10 h-10 rounded-lg bg-[#F6F2EA] flex items-center justify-center border border-[#D9D9D9]">
+                                        <span class="text-[#8F161C] font-bold">
+                                            {{ mb_substr($job->company_name ?? 'K', 0, 1) }}
+                                        </span>
+                                    </div>
+                                @endif
+                                <p class="text-sm font-medium text-[#2B2B2B] truncate">
+                                    {{ $job->company_name }}
+                                </p>
+                            </div>
+
+                            <h3 class="font-bold text-[#2B2B2B] text-sm leading-snug mb-2 line-clamp-2 group-hover:text-[#8F161C] transition-colors">
+                                {{ $job->position_name }}
+                            </h3>
+
+                            @if($job->salary)
+                                <p class="text-[#8F161C] text-xs font-semibold mb-3">
+                                    {{ $job->salary }}
+                                </p>
+                            @endif
+
+                            <a href="{{ route('jobs.show', $job->id) }}"
+                               class="block w-full text-center bg-[#8F161C] text-white py-2 rounded-lg text-xs font-semibold uppercase tracking-wide hover:bg-[#5E0F14] transition-colors mt-3">
+                                Подробнее →
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="sm:hidden text-center mt-6">
+                    <a href="{{ route('jobs.index') }}"
+                       class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
+                        Смотреть все вакансии
+                    </a>
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- 6. FOOTER --}}
     <footer class="mt-auto">
         <div class="py-12 px-4 sm:px-6 lg:px-8" style="background-color: #2B2B2B;">
