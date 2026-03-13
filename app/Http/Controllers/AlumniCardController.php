@@ -18,11 +18,14 @@ class AlumniCardController extends Controller
         $alumniProfile = AlumniProfile::where('public_id', $publicId)->first();
 
         if (! $alumniProfile) {
-            return response()->view('alumni.card-not-found', [], 404);
+            return response()->view('alumni.card-not-found', [
+                'cardNumber' => $publicId,
+            ], 404);
         }
 
         return view('alumni.card-screen', [
             'alumniProfile' => $alumniProfile,
+            'avatarUrl' => $alumniProfile->avatar_url,
         ]);
     }
 }
