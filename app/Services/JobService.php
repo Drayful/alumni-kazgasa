@@ -28,7 +28,10 @@ class JobService
                 $q->whereNull('pmj.end_date')
                     ->orWhereRaw('pmj.end_date > CURRENT_DATE');
             })
-            ->where('empt.is_practice', 0)
+            ->where(function ($q) {
+                $q->where('empt.is_practice', 0)
+                    ->orWhereNull('empt.id');
+            })
             ->where('pmj.user_status', 2)
             ->select([
                 'pmj.*',
