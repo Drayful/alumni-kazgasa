@@ -14,17 +14,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Публичные вакансии
-Route::get('/vacancies', [JobController::class, 'index'])->name('jobs.index');
-Route::get('/vacancies/{id}', [JobController::class, 'show'])
-    ->name('jobs.show')
-    ->where('id', '[0-9]+');
-
 // Публичный экран карты выпускника по public_id
 Route::get('/card/{publicId}', [AlumniCardController::class, 'show'])
     ->name('alumni.card.show');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/vacancies', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('/vacancies/{id}', [JobController::class, 'show'])
+        ->name('jobs.show')
+        ->where('id', '[0-9]+');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/alumni', [ProfileController::class, 'updateAlumni'])->name('profile.alumni.update');

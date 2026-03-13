@@ -173,10 +173,17 @@
                             Вакансии для выпускников
                         </h2>
                     </div>
-                    <a href="{{ route('jobs.index') }}"
-                       class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
-                        Все вакансии →
-                    </a>
+                    @auth
+                        <a href="{{ route('jobs.index') }}"
+                           class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
+                            Все вакансии →
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
+                            Все вакансии →
+                        </a>
+                    @endauth
                 </div>
 
                 @if($latestJobs->isEmpty())
@@ -223,10 +230,17 @@
                     </div>
 
                     <div class="sm:hidden text-center mt-6">
-                        <a href="{{ route('jobs.index') }}"
-                           class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
-                            Смотреть все вакансии
-                        </a>
+                        @auth
+                            <a href="{{ route('jobs.index') }}"
+                               class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
+                                Смотреть все вакансии
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}"
+                               class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
+                                Смотреть все вакансии
+                            </a>
+                        @endauth
                     </div>
                 @endif
             </div>
