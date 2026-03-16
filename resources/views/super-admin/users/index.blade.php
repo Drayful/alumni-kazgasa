@@ -18,6 +18,9 @@
                     <th class="px-4 py-3 text-left font-semibold">ID</th>
                     <th class="px-4 py-3 text-left font-semibold">Имя</th>
                     <th class="px-4 py-3 text-left font-semibold">Email</th>
+                    <th class="px-4 py-3 text-left font-semibold">ИИН</th>
+                    <th class="px-4 py-3 text-left font-semibold">Год выпуска</th>
+                    <th class="px-4 py-3 text-left font-semibold">Школа / факультет</th>
                     <th class="px-4 py-3 text-left font-semibold">Статус</th>
                     <th class="px-4 py-3 text-left font-semibold">Действия</th>
                 </tr>
@@ -28,6 +31,15 @@
                         <td class="px-4 py-3 text-gray-500">{{ $user->id }}</td>
                         <td class="px-4 py-3 font-medium text-[#2B2B2B]">{{ $user->name }}</td>
                         <td class="px-4 py-3 text-gray-600">{{ $user->email }}</td>
+                        <td class="px-4 py-3 text-gray-600">
+                            {{ $user->alumniProfile?->iin ?? '—' }}
+                        </td>
+                        <td class="px-4 py-3 text-gray-600">
+                            {{ $user->alumniProfile?->graduation_year ?? '—' }}
+                        </td>
+                        <td class="px-4 py-3 text-gray-600">
+                            {{ $user->alumniProfile?->school }} {{ $user->alumniProfile?->faculty_name }}
+                        </td>
                         <td class="px-4 py-3">
                             <x-status-badge :status="$user->alumniProfile?->verification_status ?? 'pending'" />
                         </td>
