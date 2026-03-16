@@ -73,7 +73,7 @@
         </div>
 
         <div>
-            <div class="bg-white rounded-2xl shadow-sm p-6 text-center">
+            <!-- <div class="bg-white rounded-2xl shadow-sm p-6 text-center">
                 <h3 class="text-[#5E0F14] font-bold mb-4">Фото</h3>
                 @if($user->alumniProfile)
                     <div class="w-28 h-28 mx-auto rounded-full overflow-hidden ring-4 ring-[#8F161C] ring-offset-2 ring-offset-[#F6F2EA] bg-white">
@@ -86,7 +86,7 @@
                     <div class="w-28 h-28 mx-auto rounded-full overflow-hidden ring-4 ring-[#8F161C] ring-offset-2 ring-offset-[#F6F2EA] bg-white flex items-center justify-center text-[#8F161C]">
                         Нет фото
                     </div>
-                @endif
+                @endif -->
 
                 <a href="{{ route('super-admin.users.index') }}"
                    class="mt-6 inline-block border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition">
