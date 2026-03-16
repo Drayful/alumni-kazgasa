@@ -31,7 +31,7 @@
                         <td class="px-4 py-3">
                             <x-status-badge :status="$user->alumniProfile?->verification_status ?? 'pending'" />
                         </td>
-                        <td class="px-4 py-3">
+                        <td class="px-4 py-3 space-x-2">
                             <form method="POST"
                                   action="{{ route('super-admin.users.status', $user) }}"
                                   class="inline">
@@ -45,6 +45,10 @@
                                         : 'Одобрить вручную' }}
                                 </button>
                             </form>
+                            <a href="{{ route('super-admin.users.show', $user) }}"
+                               class="inline-block bg-[#8F161C] hover:bg-[#5E0F14] text-white px-3 py-1 rounded-lg text-xs font-medium transition">
+                                Профиль
+                            </a>
                         </td>
                     </tr>
                 @empty
