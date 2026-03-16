@@ -31,24 +31,38 @@
                         <td class="px-4 py-3">
                             <x-status-badge :status="$user->alumniProfile?->verification_status ?? 'pending'" />
                         </td>
-                        <td class="px-4 py-3 space-x-2">
+                        <td class="px-4 py-3 space-y-1">
                             <form method="POST"
                                   action="{{ route('super-admin.users.status', $user) }}"
-                                  class="inline">
+                                  class="flex items-center gap-2">
                                 @csrf
                                 @method('PATCH')
-                                <input type="hidden" name="verification_status"
-                                       value="{{ $user->alumniProfile?->verification_status === 'verified' ? 'pending' : 'verified' }}">
+                                <select name="verification_status"
+                                        class="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:border-[#8F161C] focus:ring-1 focus:ring-[#E5C68D]">
+                                    @foreach(['pending','verified','rejected','inactive','expired','suspended'] as $status)
+                                        <option value="{{ $status }}"
+                                            @selected($user->alumniProfile?->verification_status === $status)>
+                                            {{ match($status) {
+                                                'pending'   => 'На рассмотрении',
+                                                'verified'  => 'Подтверждён',
+                                                'rejected'  => 'Отклонён',
+                                                'inactive'  => 'Неактивен',
+                                                'expired'   => 'Истёк',
+                                                'suspended' => 'Заблокирован',
+                                            } }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <button class="border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-3 py-1 rounded-lg text-xs font-medium transition">
-                                    {{ $user->alumniProfile?->verification_status === 'verified'
-                                        ? 'Снять подтверждение'
-                                        : 'Одобрить вручную' }}
+                                    Обновить
                                 </button>
                             </form>
-                            <a href="{{ route('super-admin.users.show', $user) }}"
-                               class="inline-block bg-[#8F161C] hover:bg-[#5E0F14] text-white px-3 py-1 rounded-lg text-xs font-medium transition">
-                                Профиль
-                            </a>
+                            <div>
+                                <a href="{{ route('super-admin.users.show', $user) }}"
+                                   class="inline-block bg-[#8F161C] hover:bg-[#5E0F14] text-white px-3 py-1 rounded-lg text-xs font-medium transition">
+                                    Профиль
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty

@@ -19,7 +19,7 @@
                         <span class="text-xs text-gray-400 uppercase tracking-wide">ID</span>
                         <span class="font-medium text-[#2B2B2B]">{{ $user->id }}</span>
                     </div>
-                    <div class="flex justify-between py-2 border-b border-gray-100">
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100 gap-4">
                         <span class="text-xs text-gray-400 uppercase tracking-wide">Статус карты</span>
                         <span class="font-medium">
                             <x-status-badge :status="$user->alumniProfile?->verification_status ?? 'pending'" />
