@@ -271,8 +271,20 @@
                     </div>
                     <div class="sm:col-span-2">
                         <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">Контакты</h3>
-                        <p class="mt-3 text-sm text-white/80">Казахская национальная академия искусств имени Т. Жургенова</p>
+                        <p class="mt-3 text-sm text-white/80">Международная Образовательная Корпорация</p>
                         <p class="mt-1 text-sm text-white/80">г. Алматы, Казахстан</p>
+                        <div class="mt-4 flex items-center gap-4">
+                            <a href="https://www.instagram.com/kazgasa_alumni?igsh=MWlyc3o5OGN2eHZ4MA==" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
+                                <span class="text-xl">📷</span>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.facebook.com/profile.php?id=61582749477218" target="_blank" rel="noopener"
+                               class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
+                                <span class="text-xl">📘</span>
+                                <span>Facebook</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
