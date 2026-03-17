@@ -238,18 +238,20 @@ class AppleWalletPassService
             throw new \RuntimeException('Не удалось прочитать подпись (S/MIME)');
         }
 
-        // Extract base64 payload after MIME headers and decode to DER.
-        // Формат smimeOut обычно: MIME-заголовки, пустая строка, затем base64.
+        // Попытка 1: S/MIME c base64-полем после заголовков.
+        $der = null;
         $parts = preg_split("/\\R\\R/", $smime, 2);
-        if (! $parts || count($parts) < 2) {
-            throw new \RuntimeException('Не удалось разобрать подпись (S/MIME PKCS7-блок)');
+        if ($parts && count($parts) >= 2) {
+            $b64 = preg_replace('/\\s+/', '', $parts[1] ?? '');
+            $decoded = base64_decode($b64, true);
+            if ($decoded !== false) {
+                $der = $decoded;
+            }
         }
 
-        $b64 = preg_replace('/\\s+/', '', $parts[1] ?? '');
-        $der = base64_decode($b64, true);
-
-        if ($der === false) {
-            throw new \RuntimeException('Не удалось декодировать подпись (base64)');
+        // Попытка 2: если base64 не получилось — считаем, что openssl уже вернул бинарный PKCS7
+        if ($der === null) {
+            $der = $smime;
         }
 
         file_put_contents($signaturePath, $der);
