@@ -8,6 +8,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\ApplicationController;
 use App\Http\Controllers\SuperAdmin\StatsController;
+use App\Http\Controllers\Wallet\AppleWalletController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -63,6 +64,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/photo', [PhotoController::class, 'update'])->name('profile.photo.update');
     Route::delete('/profile/photo', [PhotoController::class, 'destroy'])->name('profile.photo.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Apple Wallet (.pkpass) — download alumni card
+    Route::get('/wallet/apple', [AppleWalletController::class, 'download'])->name('wallet.apple');
 });
 
 require __DIR__.'/auth.php';
