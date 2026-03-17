@@ -68,9 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/photo', [PhotoController::class, 'update'])->name('profile.photo.update');
     Route::delete('/profile/photo', [PhotoController::class, 'destroy'])->name('profile.photo.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Apple Wallet (.pkpass) — download alumni card для текущего пользователя
-    Route::get('/wallet/apple', [AppleWalletController::class, 'download'])->name('wallet.apple');
 });
 
 require __DIR__.'/auth.php';
