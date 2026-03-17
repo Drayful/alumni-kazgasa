@@ -26,7 +26,7 @@ class AppleWalletController extends Controller
 
         $result = $service->createPkPassForAlumni($profile);
 
-        return Response::download($result['path'], $result['filename'], [
+        return response()->file($result['path'], [
             'Content-Type' => 'application/vnd.apple.pkpass',
             'Content-Disposition' => 'attachment; filename="'.$result['filename'].'"',
         ]);
@@ -44,7 +44,7 @@ class AppleWalletController extends Controller
 
         return response()->file($result['path'], [
             'Content-Type' => 'application/vnd.apple.pkpass',
-            'Content-Disposition' => 'inline; filename="'.$result['filename'].'"',
+            'Content-Disposition' => 'attachment; filename="'.$result['filename'].'"',
         ]);
     }
 }
