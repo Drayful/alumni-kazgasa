@@ -230,17 +230,17 @@
 
             <div class="space-y-3" id="program-timeline">
                 @foreach($slots as $index => $slot)
-                    <div class="flex items-start gap-3 sm:gap-4 rounded-2xl border px-3 sm:px-4 py-3 sm:py-3.5 bg-[#FDFBF7]"
+                    <div class="grid grid-cols-[92px_10px_1fr_auto] sm:grid-cols-[110px_10px_1fr_auto] items-start gap-3 sm:gap-4 rounded-2xl border px-3 sm:px-4 py-3 sm:py-3.5 bg-[#FDFBF7]"
                          data-slot
                          data-slot-start="{{ $eventDate }}T{{ $slot['start'] }}:00+06:00"
                          data-slot-end="{{ $eventDate }}T{{ $slot['end'] }}:00+06:00"
                          style="border-color: #D9D9D9;">
-                        <div class="pt-1">
-                            <span class="text-xs sm:text-sm font-semibold tracking-wide text-[#2B2B2B]">
+                        <div class="pt-1 text-right pr-1">
+                            <span class="text-xs sm:text-sm font-semibold tracking-wide text-[#2B2B2B] whitespace-nowrap">
                                 {{ $slot['time'] }}
                             </span>
                         </div>
-                        <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0 bg-[#D9D9D9]" data-slot-dot></div>
+                        <div class="w-2 h-2 rounded-full mt-2 bg-[#D9D9D9]" data-slot-dot></div>
                         <div class="flex-1">
                             <p class="text-sm sm:text-base font-semibold" style="color: #2B2B2B;">
                                 {{ $slot['title'] }}
@@ -249,7 +249,7 @@
                                 {!! nl2br(e($slot['details'])) !!}
                             </p>
                         </div>
-                        <span class="hidden text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded-full"
+                        <span class="hidden mt-0.5 text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded-full whitespace-nowrap"
                               data-slot-badge
                               style="background-color: #E5C68D33; color: #8F161C;">
                             Сейчас
