@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КазГАСА Alumni 2026 — Мокап</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B3E;
+    --navy-mid: #162550;
+    --gold: #C8973A;
+    --gold-light: #E8B55A;
+    --gold-pale: #F5E6C8;
+    --white: #FFFFFF;
+    --off-white: #F7F5F0;
+    --text: #1A1A2E;
+    --text-muted: #6B6B80;
+    --border: #E2DDD5;
+    --teal: #1A7A6E;
+    --teal-light: #E6F4F2;
+    --red-accent: #C0392B;
+  }
+
+  body {
+    font-family: 'Golos Text', sans-serif;
+    background: #EBEBEB;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px 48px;
+    min-height: 100vh;
+  }
+
+  /* Phone frame */
+  .phone-wrap {
+    width: 390px;
+    position: relative;
+  }
+  .phone-label {
+    text-align: center;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .phone {
+    width: 390px;
+    border-radius: 44px;
+    background: var(--white);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 3px solid #2a2a2a;
+  }
+
+  /* Status bar */
+  .status-bar {
+    background: var(--navy);
+    padding: 12px 24px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .status-bar span { color: #fff; font-size: 12px; font-weight: 600; }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+  .status-icons svg { width: 14px; height: 14px; fill: #fff; }
+
+  /* ─── SECTION: HERO ─── */
+  .hero {
+    background: var(--navy);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(200,151,58,0.04) 0px, rgba(200,151,58,0.04) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(-45deg, rgba(200,151,58,0.04) 0px, rgba(200,151,58,0.04) 1px, transparent 1px, transparent 40px);
+  }
+  .hero-top {
+    padding: 16px 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .logo-block { display: flex; align-items: center; gap: 10px; }
+  .logo-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    text-align: center;
+  }
+  .logo-text-block { }
+  .logo-main { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.05em; }
+  .logo-sub { font-size: 10px; color: var(--gold-light); letter-spacing: 0.08em; }
+  .hero-badge {
+    background: rgba(200,151,58,0.15);
+    border: 1px solid rgba(200,151,58,0.4);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--gold-light);
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+  }
+  .hero-main {
+    padding: 24px 20px 0;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+
+  /* Video story widget */
+  .story-widget {
+    margin: 0 20px 20px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #1e2f5c 0%, #0d1b3e 100%);
+    border: 1px solid rgba(200,151,58,0.2);
+    position: relative;
+  }
+  .story-inner {
+    padding: 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .story-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #8a6020);
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    color: var(--navy);
+    font-weight: 700;
+    font-family: 'Unbounded', sans-serif;
+  }
+  .story-play {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .story-play svg { width: 14px; height: 14px; fill: var(--navy); margin-left: 2px; }
+  .story-text { }
+  .story-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .story-role { font-size: 11px; color: var(--gold-light); margin-bottom: 8px; }
+  .story-quote { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  /* Countdown */
+  .hero-countdown {
+    margin: 0 20px 24px;
+    display: flex;
+    gap: 8px;
+  }
+  .countdown-item {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .countdown-num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .countdown-label { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ─── NAV TABS ─── */
+  .nav-tabs {
+    background: var(--navy-mid);
+    padding: 0 12px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 10px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .nav-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+
+  /* ─── SECTION BASE ─── */
+  .section { padding: 28px 20px; }
+  .section-light { background: var(--white); }
+  .section-off { background: var(--off-white); }
+  .section-navy { background: var(--navy); }
+  .section-teal { background: var(--teal-light); }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .section-label.dark { color: var(--gold-light); }
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .section-title.white { color: #fff; }
+
+  /* ─── TIMELINE ─── */
+  .timeline { display: flex; flex-direction: column; gap: 2px; }
+  .tl-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    align-items: flex-start;
+    transition: background 0.2s;
+  }
+  .tl-item.current {
+    background: linear-gradient(135deg, rgba(200,151,58,0.12), rgba(200,151,58,0.05));
+    border: 1px solid rgba(200,151,58,0.25);
+  }
+  .tl-item.past { opacity: 0.45; }
+  .tl-time {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 44px;
+    padding-top: 1px;
+  }
+  .tl-item.current .tl-time { color: var(--gold); }
+  .tl-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .tl-item.current .tl-dot { background: var(--gold); box-shadow: 0 0 0 3px rgba(200,151,58,0.2); }
+  .tl-info { flex: 1; }
+  .tl-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .tl-place { font-size: 11px; color: var(--text-muted); }
+  .live-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .offline-btns { display: flex; gap: 10px; margin-top: 16px; }
+  .btn-outline {
+    flex: 1;
+    padding: 11px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'Golos Text', sans-serif;
+  }
+  .btn-outline svg { width: 16px; height: 16px; }
+
+  /* ─── ALUMNI CARD ─── */
+  .alumni-card-visual {
+    background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .alumni-card-visual::before {
+    content: '';
+    position: absolute;
+    right: -20px; top: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(200,151,58,0.12);
+  }
+  .alumni-card-visual::after {
+    content: '';
+    position: absolute;
+    right: 20px; bottom: -30px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(200,151,58,0.08);
+  }
+  .card-chip {
+    width: 32px; height: 24px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .card-holder { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 2px; }
+  .card-name { font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .card-meta { font-size: 11px; color: var(--gold-light); }
+  .card-logo-mini {
+    position: absolute; right: 20px; top: 18px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: right;
+    line-height: 1.3;
+  }
+
+  .wallet-btns { display: flex; gap: 8px; margin-bottom: 16px; }
+  .btn-wallet {
+    flex: 1;
+    padding: 11px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    font-family: 'Golos Text', sans-serif;
+  }
+  .btn-apple { background: #000; color: #fff; }
+  .btn-google { background: #fff; color: #333; border: 1.5px solid #ddd; }
+
+  .partners-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .partner-card {
+    background: var(--off-white);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .partner-logo {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--gold-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .partner-info { flex: 1; }
+  .partner-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .partner-offer { font-size: 11px; color: var(--text-muted); }
+  .partner-discount {
+    background: rgba(200,151,58,0.1);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 20px;
+    border: 1px solid rgba(200,151,58,0.25);
+    flex-shrink: 0;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    margin-top: 4px;
+  }
+
+  /* ─── FACES ─── */
+  .faces-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .face-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .face-photo {
+    height: 100px;
+    background: linear-gradient(135deg, #1e3a6e, #0d1b3e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    color: rgba(200,151,58,0.6);
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+  }
+  .face-info { padding: 10px; }
+  .face-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .face-role { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+  .face-year { font-size: 10px; color: var(--gold); font-weight: 600; margin-top: 4px; }
+
+  /* ─── GIFTS ─── */
+  .gift-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .gift-photo {
+    height: 130px;
+    background: linear-gradient(135deg, #162550, #1e3a6e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+  }
+  .gift-body { padding: 14px; }
+  .gift-donor { font-size: 11px; color: var(--gold); font-weight: 600; margin-bottom: 4px; }
+  .gift-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .gift-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  .stats-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .stat-box {
+    flex: 1;
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 10px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+
+  /* ─── VACANCIES ─── */
+  .vacancy-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .vacancy-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .vacancy-info { flex: 1; }
+  .vacancy-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .vacancy-company { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .vacancy-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .vac-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .vac-tag.highlight {
+    background: var(--teal-light);
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  /* ─── SCIENCE ─── */
+  .pdf-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--white);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+  }
+  .pdf-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(192,57,43,0.08);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+  .pdf-title { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .pdf-author { font-size: 11px; color: var(--text-muted); }
+  .pdf-arrow { color: var(--text-muted); font-size: 16px; }
+
+  /* ─── ARCHIVE ─── */
+  .decade-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+  .decade-tabs::-webkit-scrollbar { display: none; }
+  .dtab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+  }
+  .dtab.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .photo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+  .photo-cell {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ccc, #aaa);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .photo-cell:nth-child(1) { background: linear-gradient(135deg, #9BA4B5, #6d7a90); }
+  .photo-cell:nth-child(2) { background: linear-gradient(135deg, #8B9467, #6b7a4a); }
+  .photo-cell:nth-child(3) { background: linear-gradient(135deg, #A08060, #7a6045); }
+  .photo-cell:nth-child(4) { background: linear-gradient(135deg, #7a8095, #5a6070); }
+  .photo-cell:nth-child(5) { background: linear-gradient(135deg, #9a8070, #7a6055); }
+  .photo-cell:nth-child(6) { background: linear-gradient(135deg, #8a9490, #6a7470); }
+  .btn-upload {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: transparent;
+    border: 2px dashed var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-top: 12px;
+    font-family: 'Golos Text', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer { background: var(--navy); padding: 28px 20px 36px; }
+  .footer-insta {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .insta-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .insta-text .insta-title { font-size: 14px; font-weight: 600; color: #fff; }
+  .insta-text .insta-sub { font-size: 11px; color: rgba(255,255,255,0.75); }
+
+  .footer-form-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    font-family: 'Unbounded', sans-serif;
+  }
+  .footer-form-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
+
+  .form-field {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    width: 100%;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'Golos Text', sans-serif;
+    margin-bottom: 8px;
+    outline: none;
+    resize: none;
+  }
+  .form-field::placeholder { color: rgba(255,255,255,0.35); }
+
+  .btn-gold {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    margin-top: 4px;
+    margin-bottom: 24px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 20px;
+  }
+  .footer-link { font-size: 12px; color: rgba(255,255,255,0.4); cursor: pointer; }
+
+  .footer-qr {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .qr-box {
+    width: 56px; height: 56px;
+    background: #fff;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .qr-text .qr-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .qr-text .qr-sub { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  .footer-copy {
+    text-align: center;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Section divider */
+  .divider { height: 6px; background: var(--off-white); }
+
+  /* scroll-snap for phone illusion */
+  .phone-inner { overflow-y: auto; max-height: 812px; scroll-snap-type: y proximity; }
+  .scroll-section { scroll-snap-align: start; }
+</style>
+</head>
+<body>
+
+<div class="phone-wrap">
+  <div class="phone-label">КазГАСА Alumni — мобильный мокап</div>
+  <div class="phone">
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-icons">
+        <svg viewBox="0 0 24 24"><path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="11" rx="2" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M22 11v3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><rect x="4" y="9" width="10" height="7" rx="1" fill="#fff"/></svg>
+      </div>
+    </div>
+
+    <div class="phone-inner">
+
+      <!-- ══ HERO ══ -->
+      <div class="hero scroll-section">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-top">
+          <div class="logo-block">
+            <div class="logo-circle">КАЗ<br>ГАС</div>
+            <div class="logo-text-block">
+              <div class="logo-main">КазГАСА</div>
+              <div class="logo-sub">ALUMNI · 45 ЛЕТ</div>
+            </div>
+          </div>
+          <div class="hero-badge">2026</div>
+        </div>
+        <div class="hero-main">
+          <div class="hero-eyebrow">13 апреля · Алматы</div>
+          <div class="hero-title">Слёт<br>выпускников<br><span>КазГАСА</span></div>
+          <div class="hero-subtitle">45 лет архитектурному образованию Казахстана</div>
+        </div>
+        <div class="story-widget">
+          <div class="story-inner">
+            <div class="story-avatar">АС</div>
+            <div class="story-text">
+              <div class="story-name">Айбек Сейткали</div>
+              <div class="story-role">Председатель Ассоциации выпускников</div>
+              <div class="story-quote">«45 лет — это не просто юбилей. Это тысячи зданий, которые мы построили вместе. Добро пожаловать домой.»</div>
+            </div>
+            <div class="story-play">
+              <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="hero-countdown">
+          <div class="countdown-item"><span class="countdown-num">00</span><span class="countdown-label">дней</span></div>
+          <div class="countdown-item"><span class="countdown-num">03</span><span class="countdown-label">часов</span></div>
+          <div class="countdown-item"><span class="countdown-num">42</span><span class="countdown-label">минут</span></div>
+          <div class="countdown-item"><span class="countdown-num">17</span><span class="countdown-label">секунд</span></div>
+        </div>
+      </div>
+
+      <!-- NAV TABS -->
+      <div class="nav-tabs">
+        <div class="nav-tab active">Программа</div>
+        <div class="nav-tab">Карта</div>
+        <div class="nav-tab">Лица</div>
+        <div class="nav-tab">Подарки</div>
+        <div class="nav-tab">Вакансии</div>
+        <div class="nav-tab">Наука</div>
+        <div class="nav-tab">Архив</div>
+      </div>
+
+      <!-- ══ ПРОГРАММА ══ -->
+      <div class="section section-light scroll-section">
+        <div class="section-label">13 апреля 2026</div>
+        <div class="section-title">Программа слёта</div>
+        <div class="timeline">
+          <div class="tl-item past">
+            <div class="tl-time">09:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Регистрация участников</div>
+              <div class="tl-place">Главный вход КазГАСА</div>
+            </div>
+          </div>
+          <div class="tl-item past">
+            <div class="tl-time">10:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Торжественное открытие</div>
+              <div class="tl-place">Большой актовый зал</div>
+            </div>
+          </div>
+          <div class="tl-item current">
+            <div class="tl-time">12:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Декада науки. Доклады</div>
+              <div class="tl-place">Конференц-зал А, 3 этаж</div>
+            </div>
+            <div class="live-badge">Сейчас</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-time">14:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Открытие аудиторий выпускников</div>
+              <div class="tl-place">Корпус 2, 2 этаж</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-time">16:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Фотовыставка. Архив КазГАСА</div>
+              <div class="tl-place">Атриум главного корпуса</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-time">19:00</div>
+            <div class="tl-dot"></div>
+            <div class="tl-info">
+              <div class="tl-name">Торжественный банкет</div>
+              <div class="tl-place">Ресторан «Арка», ул. Тимирязева</div>
+            </div>
+          </div>
+        </div>
+        <div class="offline-btns">
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/></svg>
+            Программа PDF
+          </button>
+          <button class="btn-outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zM12 8v4l3 3"/></svg>
+            Карта кампуса
+          </button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ КАРТА ВЫПУСКНИКА ══ -->
+      <div class="section section-light scroll-section">
+        <div class="section-label">Скидки и привилегии</div>
+        <div class="section-title">Карта выпускника</div>
+        <div class="alumni-card-visual">
+          <div class="card-logo-mini">КазГАСА<br>ALUMNI</div>
+          <div class="card-chip"></div>
+          <div class="card-holder">Выпускник</div>
+          <div class="card-name">Иванов Иван Иванович</div>
+          <div class="card-meta">Факультет архитектуры · Выпуск 2005</div>
+        </div>
+        <div class="wallet-btns">
+          <button class="btn-wallet btn-apple">🍎 Apple Wallet</button>
+          <button class="btn-wallet btn-google">🟢 Google Pay</button>
+        </div>
+        <div class="partners-title">Партнёры · 12 компаний</div>
+        <div class="partner-card">
+          <div class="partner-logo">🏗️</div>
+          <div class="partner-info">
+            <div class="partner-name">ArchiPro KZ</div>
+            <div class="partner-offer">Строительные материалы</div>
+          </div>
+          <div class="partner-discount">−15%</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-logo">📚</div>
+          <div class="partner-info">
+            <div class="partner-name">BookDesign</div>
+            <div class="partner-offer">Архитектурные книги и журналы</div>
+          </div>
+          <div class="partner-discount">−10%</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-logo">☕</div>
+          <div class="partner-info">
+            <div class="partner-name">Café Blueprint</div>
+            <div class="partner-offer">Кофе и коворкинг</div>
+          </div>
+          <div class="partner-discount">−20%</div>
+        </div>
+        <button class="btn-primary">+ Стать партнёром</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ ЛИЦА КАЗГАСА ══ -->
+      <div class="section section-off scroll-section">
+        <div class="section-label">Гордость университета</div>
+        <div class="section-title">Лица КазГАСА</div>
+        <div class="faces-grid">
+          <div class="face-card">
+            <div class="face-photo">АД</div>
+            <div class="face-info">
+              <div class="face-name">Асель Досымова</div>
+              <div class="face-role">Главный архитектор Алматы</div>
+              <div class="face-year">Выпуск 1998</div>
+            </div>
+          </div>
+          <div class="face-card">
+            <div class="face-photo">КМ</div>
+            <div class="face-info">
+              <div class="face-name">Кайрат Мухамеджанов</div>
+              <div class="face-role">CEO Строй-Холдинг KZ</div>
+              <div class="face-year">Выпуск 2001</div>
+            </div>
+          </div>
+          <div class="face-card">
+            <div class="face-photo">НС</div>
+            <div class="face-info">
+              <div class="face-name">Нуржан Сейткали</div>
+              <div class="face-role">Лауреат Aga Khan Award</div>
+              <div class="face-year">Выпуск 1995</div>
+            </div>
+          </div>
+          <div class="face-card">
+            <div class="face-photo">ДА</div>
+            <div class="face-info">
+              <div class="face-name">Диана Ахметова</div>
+              <div class="face-role">Профессор, ректор КазГАСА</div>
+              <div class="face-year">Выпуск 1987</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ ЧТО СДЕЛАЛИ ВЫПУСКНИКИ ══ -->
+      <div class="section section-navy scroll-section">
+        <div class="section-label dark">Вклад выпускников</div>
+        <div class="section-title white">Что мы дали<br>университету</div>
+        <div class="stats-row">
+          <div class="stat-box"><span class="stat-num">12</span><div class="stat-label">аудиторий открыто</div></div>
+          <div class="stat-box"><span class="stat-num">₸84M</span><div class="stat-label">пожертвований</div></div>
+          <div class="stat-box"><span class="stat-num">6</span><div class="stat-label">лабораторий</div></div>
+        </div>
+        <div class="gift-card">
+          <div class="gift-photo">🏛️</div>
+          <div class="gift-body">
+            <div class="gift-donor">Выпуск 1995 · Архитектурный факультет</div>
+            <div class="gift-name">Аудитория 301 «Архитектурное наследие»</div>
+            <div class="gift-desc">Полностью оборудованная студия с проекторами, планшетами и библиотекой из 500+ книг по архитектуре.</div>
+          </div>
+        </div>
+        <div class="gift-card">
+          <div class="gift-photo">💻</div>
+          <div class="gift-body">
+            <div class="gift-donor">Выпуск 2003 · Строительный факультет</div>
+            <div class="gift-name">Компьютерная лаборатория BIM</div>
+            <div class="gift-desc">30 рабочих мест с лицензиями Autodesk Revit и 3ds Max для студентов.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ ВАКАНСИИ ══ -->
+      <div class="section section-light scroll-section">
+        <div class="section-label">Нетворкинг</div>
+        <div class="section-title">Вакансии от выпускников</div>
+        <div class="vacancy-card">
+          <div class="vacancy-logo">АБ<br>КЗ</div>
+          <div class="vacancy-info">
+            <div class="vacancy-title">Главный архитектор проекта</div>
+            <div class="vacancy-company">Archburo KZ · Алматы</div>
+            <div class="vacancy-tags">
+              <span class="vac-tag highlight">Полная занятость</span>
+              <span class="vac-tag">от ₸600 000</span>
+              <span class="vac-tag">BIM</span>
+            </div>
+          </div>
+        </div>
+        <div class="vacancy-card">
+          <div class="vacancy-logo">Ур<br>бан</div>
+          <div class="vacancy-info">
+            <div class="vacancy-title">Урбанист / планировщик</div>
+            <div class="vacancy-company">Urban Lab Astana · Астана</div>
+            <div class="vacancy-tags">
+              <span class="vac-tag highlight">Гибрид</span>
+              <span class="vac-tag">от ₸450 000</span>
+            </div>
+          </div>
+        </div>
+        <div class="vacancy-card">
+          <div class="vacancy-logo">СМ<br>РЗ</div>
+          <div class="vacancy-info">
+            <div class="vacancy-title">Инженер-конструктор</div>
+            <div class="vacancy-company">СМ-Развитие · Алматы</div>
+            <div class="vacancy-tags">
+              <span class="vac-tag highlight">Полная занятость</span>
+              <span class="vac-tag">от ₸380 000</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-outline" style="width:100%; justify-content:center;">Разместить вакансию</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ ДЕКАДА НАУКИ ══ -->
+      <div class="section section-teal scroll-section">
+        <div class="section-label">13 апреля 2026</div>
+        <div class="section-title">Декада науки</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:16px;">Научно-практическая конференция выпускников КазГАСА. Доклады по актуальным вопросам архитектуры, урбанистики и строительства.</p>
+        <div class="pdf-item">
+          <div class="pdf-icon">📄</div>
+          <div style="flex:1">
+            <div class="pdf-title">Устойчивая архитектура в аридном климате</div>
+            <div class="pdf-author">Досымова А.К. · 2026</div>
+          </div>
+          <div class="pdf-arrow">›</div>
+        </div>
+        <div class="pdf-item">
+          <div class="pdf-icon">📄</div>
+          <div style="flex:1">
+            <div class="pdf-title">BIM-технологии в реновации исторической застройки</div>
+            <div class="pdf-author">Мухамеджанов К.Р. · 2026</div>
+          </div>
+          <div class="pdf-arrow">›</div>
+        </div>
+        <div class="pdf-item">
+          <div class="pdf-icon">📄</div>
+          <div style="flex:1">
+            <div class="pdf-title">Алматы 2050: концепция устойчивого города</div>
+            <div class="pdf-author">Сейткали Н.О. · 2026</div>
+          </div>
+          <div class="pdf-arrow">›</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ АРХИВ ══ -->
+      <div class="section section-light scroll-section">
+        <div class="section-label">История в фотографиях</div>
+        <div class="section-title">Интерактивный архив</div>
+        <div class="decade-tabs">
+          <button class="dtab">80-е</button>
+          <button class="dtab active">90-е</button>
+          <button class="dtab">00-е</button>
+          <button class="dtab">10-е</button>
+          <button class="dtab">20-е</button>
+        </div>
+        <div class="photo-grid">
+          <div class="photo-cell">🏛️</div>
+          <div class="photo-cell">🎓</div>
+          <div class="photo-cell">📐</div>
+          <div class="photo-cell">🏗️</div>
+          <div class="photo-cell">🎨</div>
+          <div class="photo-cell">🏙️</div>
+        </div>
+        <button class="btn-upload">📷 Загрузить своё фото</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ══ FOOTER ══ -->
+      <div class="footer scroll-section">
+        <div class="footer-insta">
+          <div class="insta-icon">📸</div>
+          <div class="insta-text">
+            <div class="insta-title">@kazgasa_alumni</div>
+            <div class="insta-sub">Instagram Ассоциации выпускников</div>
+          </div>
+          <div style="color:rgba(255,255,255,0.7); font-size:18px; margin-left:auto;">›</div>
+        </div>
+
+        <div class="footer-form-title">Чем я могу помочь?</div>
+        <div class="footer-form-sub">Напишите — мы свяжемся с вами</div>
+        <textarea class="form-field" rows="3" placeholder="Хочу помочь с..."></textarea>
+        <input type="text" class="form-field" placeholder="Ваш контакт (телефон или e-mail)">
+        <button class="btn-gold">Отправить</button>
+
+        <div class="footer-qr">
+          <div class="qr-box">◼</div>
+          <div class="qr-text">
+            <div class="qr-title">Поделиться сайтом</div>
+            <div class="qr-sub">Отсканируйте или отправьте ссылку выпускнику</div>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <span class="footer-link">Программа</span>
+          <span class="footer-link">Карта выпускника</span>
+          <span class="footer-link">Вакансии</span>
+          <span class="footer-link">Контакты</span>
+          <span class="footer-link">Стать партнёром</span>
+        </div>
+
+        <div class="footer-copy">© 2026 КазГАСА Alumni · Все права защищены</div>
+      </div>
+
+    </div><!-- /phone-inner -->
+  </div><!-- /phone -->
+</div>
+
+<script>
+  // Countdown timer
+  const eventDate = new Date('2026-04-13T09:00:00');
+  function updateCountdown() {
+    const now = new Date();
+    const diff = eventDate - now;
+    if (diff <= 0) return;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs = Math.floor((diff % (1000*60)) / 1000);
+    const nums = document.querySelectorAll('.countdown-num');
+    if(nums[0]) nums[0].textContent = String(days).padStart(2,'0');
+    if(nums[1]) nums[1].textContent = String(hours).padStart(2,'0');
+    if(nums[2]) nums[2].textContent = String(mins).padStart(2,'0');
+    if(nums[3]) nums[3].textContent = String(secs).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Decade tabs
+  document.querySelectorAll('.dtab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Nav tabs
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

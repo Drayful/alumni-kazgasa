@@ -68,101 +68,396 @@
         </nav>
     </header>
 
-    {{-- 3. HERO --}}
-    <section id="hero" class="relative min-h-[90vh] flex items-end lg:items-center">
+    {{-- 3. HERO — СЛЁТ ВЫПУСКНИКОВ --}}
+    <section id="hero" class="relative min-h-[85vh] flex items-end lg:items-center">
         <div class="absolute inset-0">
             @if(file_exists(public_path('images/hero-bg.jpg')))
                 <img src="{{ asset('images/hero-bg.jpg') }}" alt="" class="w-full h-full object-cover" />
             @else
-                <div class="w-full h-full" style="background: linear-gradient(135deg, #1F2A44 0%, #2B2B2B 50%, #5E0F14 100%);"></div>
+                <div class="w-full h-full" style="background: radial-gradient(circle at 0 0, #E5C68D20, transparent 55%), linear-gradient(135deg, #1F2A44 0%, #2B2B2B 45%, #5E0F14 100%);"></div>
             @endif
-            <div class="absolute inset-0 bg-black/50"></div>
+            <div class="absolute inset-0 bg-black/60"></div>
+            <div class="absolute inset-0 opacity-20"
+                 style="background-image: repeating-linear-gradient(45deg, rgba(229,198,141,0.3) 0, rgba(229,198,141,0.3) 1px, transparent 1px, transparent 24px);">
+            </div>
         </div>
 
-        <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 lg:pb-12 flex flex-col lg:flex-row lg:items-end gap-8">
-            <div class="hidden lg:block lg:w-[35%] lg:flex-shrink-0 lg:self-end">
-                @if(file_exists(public_path('images/hero-photo.jpg')))
-                    <img src="{{ asset('images/hero-photo.jpg') }}" alt="" class="w-full max-w-sm object-cover object-bottom rounded-t-lg shadow-2xl" style="max-height: 70vh;" />
-                @else
-                    <div class="w-full max-w-sm h-96 rounded-t-lg shadow-2xl flex items-center justify-center text-white/60 bg-[#2B2B2B]/80">
-                        <span>Портрет</span>
-                    </div>
-                @endif
-            </div>
-
-            <div class="flex-1 flex flex-col justify-center lg:pl-12">
-                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/80 text-sm font-medium mb-4" style="color: #8F161C;">Приветствие</div>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-2xl">
-                    Дорогие выпускники КазГАСА / ААСИ / КазПТИ
+        <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 lg:pb-14 flex flex-col lg:flex-row lg:items-end gap-8">
+            <div class="lg:w-[40%] lg:flex-shrink-0 lg:self-end">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/90 text-xs font-semibold tracking-[0.18em] uppercase mb-4"
+                     style="color: #8F161C;">
+                    13 апреля · Алматы
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[44px] font-bold text-white leading-tight">
+                    Слёт выпускников
+                    <span class="block text-[0.9em]" style="color: #E5C68D;">KazGASA Alumni 2026</span>
                 </h1>
-                <p class="mt-4 text-base sm:text-lg text-white/95 max-w-lg">
-                    Сообщество выпускников Казахской национальной академии искусств имени Т. Жургенова — это связь поколений, профессиональная поддержка и общие ценности. Присоединяйтесь к нам.
+                <p class="mt-4 text-sm sm:text-base text-white/90 max-w-md">
+                    45 лет архитектурному образованию Казахстана. Встреча выпускников КазГАСА / ААСИ / КазПТИ,
+                    научная программа, открытия аудиторий и нетворкинг.
                 </p>
-                <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="https://kazgasa.kz" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white rounded transition-colors hover:opacity-90" style="background-color: #8F161C;">
-                        Сайт КазГАСА
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ route('register') }}"
+                       class="inline-flex items-center justify-center px-6 py-3 text-sm sm:text-base font-semibold rounded-lg transition-colors hover:opacity-95"
+                       style="background-color: #8F161C; color: #FFFFFF; border: 1px solid #E5C68D;">
+                        Зарегистрироваться как выпускник
                     </a>
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded transition-colors hover:opacity-90" style="background-color: #E5C68D; color: #2B2B2B;">
-                        Присоединиться к сообществу
+                    <a href="#program"
+                       class="inline-flex items-center justify-center px-5 py-3 text-sm font-semibold rounded-lg border transition-colors"
+                       style="border-color: #E5C68D; color: #F6F2EA; background-color: transparent;">
+                        Смотреть программу дня
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
 
-    {{-- 4. STATS --}}
-    <section class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30000+</div>
-                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Выпускников</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">45+</div>
-                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Лет истории</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">50+</div>
-                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Партнёров</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">100+</div>
-                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Мероприятий</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- 5. КАРТА ВЫПУСКНИКА --}}
-    <section id="card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold" style="color: #8F161C;">Цифровая карта выпускника</h2>
-                    <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
-                        Получите персональную цифровую карту выпускника КазГАСА — подтверждение вашего статуса и связь с альма-матер. Карта с QR-кодом доступна после регистрации в личном кабинете.
+            <div class="flex-1 flex flex-col md:flex-row lg:flex-col gap-4 lg:gap-6 lg:pl-10">
+                <div class="flex-1 bg-white/95 rounded-2xl shadow-lg p-4 sm:p-5 backdrop-blur">
+                    <p class="text-[11px] tracking-[0.2em] uppercase font-semibold mb-2" style="color: #8F161C;">
+                        До начала слёта
                     </p>
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center mt-6 px-6 py-3 text-base font-medium text-white rounded transition-colors hover:opacity-90" style="background-color: #8F161C;">
-                        Получить карту
-                    </a>
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3">
+                        @php
+                            $eventDate = \Carbon\Carbon::create(2026, 4, 13, 9, 0, 0, 'Asia/Almaty');
+                            $now = now('Asia/Almaty');
+                            $diff = $eventDate->isFuture() ? $eventDate->diff($now) : null;
+                        @endphp
+                        @foreach([
+                            ['label' => 'дней', 'value' => $diff?->d + ($diff?->m ?? 0)*30 + ($diff?->y ?? 0)*365],
+                            ['label' => 'часов', 'value' => $diff?->h],
+                            ['label' => 'минут', 'value' => $diff?->i],
+                            ['label' => 'секунд', 'value' => $diff?->s],
+                        ] as $item)
+                            <div class="flex flex-col items-center justify-center rounded-xl border text-center px-1.5 py-2 sm:py-3"
+                                 style="border-color: #E5C68D33; background-color: #F6F2EA;">
+                                <span class="font-bold text-lg sm:text-2xl"
+                                      style="color: #8F161C;">
+                                    {{ str_pad(max(0, (int) ($item['value'] ?? 0)), 2, '0', STR_PAD_LEFT) }}
+                                </span>
+                                <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">
+                                    {{ $item['label'] }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="mt-3 text-[11px] text-[#2B2B2B]/70">
+                        По данным программы «15 апреля». Время указано по Алматы.
+                    </p>
                 </div>
+
+                <div class="flex-1 bg-[#F6F2EA]/95 rounded-2xl shadow-lg p-4 sm:p-5 flex gap-3">
+                    <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-center text-xs font-bold"
+                         style="background: radial-gradient(circle at 30% 20%, #E5C68D, #8F161C); color: #FFFFFF;">
+                        Kaz<br>GASA
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em]" style="color: #8F161C;">
+                            Приветствие выпускникам
+                        </p>
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            «45 лет — это не просто юбилей. Это тысячи зданий и проектов, которые мы создали вместе.
+                            Добро пожаловать домой в КазГАСА Alumni!»
+                        </p>
+                        <p class="text-xs text-[#2B2B2B]/70">
+                            Руководство Ассоциации выпускников
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 4. НАВИГАЦИЯ ПО РАЗДЕЛАМ ДНЯ --}}
+    <section class="border-y" style="border-color: #D9D9D9; background-color: #FFFFFF;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 overflow-x-auto">
+            <div class="flex gap-3 sm:gap-4 text-xs sm:text-sm whitespace-nowrap">
+                <a href="#program" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border"
+                   style="border-color: #8F161C; color: #8F161C; background-color: #F6F2EA;">
+                    Программа
+                </a>
+                <a href="#card" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Карта выпускника
+                </a>
+                <a href="#faces" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Лица КазГАСА
+                </a>
+                <a href="#gifts" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Вклад выпускников
+                </a>
+                <a href="#jobs" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Вакансии
+                </a>
+                <a href="#science" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Декада науки
+                </a>
+                <a href="#archive" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
+                   style="border-color: #D9D9D9;">
+                    Архив
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- 5. ПРОГРАММА ДНЯ --}}
+    <section id="program" class="py-14 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+        <div class="max-w-5xl mx-auto">
+            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                13 апреля 2026 · Алматы
+            </p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
+                Программа слёта выпускников
+            </h2>
+
+            <div class="space-y-3">
+                @php
+                    $programItems = [
+                        ['time' => '09:00', 'title' => 'Регистрация участников', 'place' => 'Главный вход КазГАСА', 'state' => 'past'],
+                        ['time' => '10:00', 'title' => 'Торжественное открытие', 'place' => 'Большой актовый зал', 'state' => 'past'],
+                        ['time' => '12:00', 'title' => 'Декада науки. Доклады выпускников', 'place' => 'Конференц‑зал, 3 этаж', 'state' => 'current'],
+                        ['time' => '14:00', 'title' => 'Открытие аудиторий выпускников', 'place' => 'Корпус 2, 2 этаж', 'state' => 'future'],
+                        ['time' => '16:00', 'title' => 'Фотовыставка «Архив КазГАСА»', 'place' => 'Атриум главного корпуса', 'state' => 'future'],
+                        ['time' => '19:00', 'title' => 'Торжественный банкет', 'place' => 'Ресторан «Арка»', 'state' => 'future'],
+                    ];
+                @endphp
+
+                @foreach($programItems as $item)
+                    @php
+                        $isCurrent = $item['state'] === 'current';
+                        $isPast = $item['state'] === 'past';
+                    @endphp
+                    <div class="flex items-start gap-3 sm:gap-4 rounded-xl px-3 sm:px-4 py-3 sm:py-3.5 border transition"
+                         @class([
+                            'opacity-60' => $isPast,
+                         ])
+                         style="
+                            border-color: {{ $isCurrent ? '#E5C68D' : '#D9D9D9' }};
+                            background-color: {{ $isCurrent ? '#FFFFFF' : '#FFFFFFCC' }};
+                         ">
+                        <div class="pt-1">
+                            <span class="text-xs font-semibold tracking-wide"
+                                  style="color: {{ $isCurrent ? '#8F161C' : '#2B2B2B' }};">
+                                {{ $item['time'] }}
+                            </span>
+                        </div>
+                        <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                             style="background-color: {{ $isCurrent ? '#E5C68D' : '#D9D9D9' }};"></div>
+                        <div class="flex-1">
+                            <p class="text-sm sm:text-base font-semibold" style="color: #2B2B2B;">
+                                {{ $item['title'] }}
+                            </p>
+                            <p class="text-xs sm:text-sm mt-0.5" style="color: #2B2B2B99;">
+                                {{ $item['place'] }}
+                            </p>
+                        </div>
+                        @if($isCurrent)
+                            <span class="mt-1 inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide"
+                                  style="background-color: #E5C68D33; color: #8F161C;">
+                                Сейчас
+                            </span>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <a href="{{ asset('mockups/program.pdf') }}" target="_blank"
+                   class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-semibold gap-2"
+                   style="border-color: #D9D9D9; color: #2B2B2B; background-color: #FFFFFF;">
+                    <span>📄</span>
+                    <span>Программа в PDF</span>
+                </a>
+                <a href="#archive"
+                   class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-semibold gap-2"
+                   style="border-color: #D9D9D9; color: #2B2B2B; background-color: #FFFFFF;">
+                    <span>🗺️</span>
+                    <span>Карта кампуса и архив</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- 6. ЦИФРОВАЯ КАРТА ВЫПУСКНИКА --}}
+    <section id="card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            <div>
+                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                    Скидки и привилегии
+                </p>
+                <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">
+                    Цифровая карта выпускника
+                </h2>
+                <p class="mt-4 text-sm sm:text-base leading-relaxed" style="color: #2B2B2B;">
+                    Персональная карта выпускника KazGASA Alumni с QR‑кодом — подтверждение вашего статуса и доступ
+                    к партнёрским льготам. Карта формируется автоматически после регистрации и верификации профиля.
+                </p>
+                <ul class="mt-4 space-y-2 text-sm" style="color: #2B2B2B;">
+                    <li class="flex gap-2"><span>•</span><span>Привязана к вашему профилю выпускника и IIN.</span></li>
+                    <li class="flex gap-2"><span>•</span><span>Показывайте на экране телефона — партнёры сканируют QR.</span></li>
+                    <li class="flex gap-2"><span>•</span><span>Статусы Connect / Start / Core / Elite в зависимости от участия.</span></li>
+                </ul>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="{{ route('register') }}"
+                       class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors hover:opacity-95"
+                       style="background-color: #8F161C; color: #FFFFFF;">
+                        Получить карту выпускника
+                    </a>
+                    @auth
+                        <a href="{{ route('profile.edit') }}"
+                           class="inline-flex items-center justify-center px-5 py-3 text-sm font-semibold rounded-lg border transition-colors"
+                           style="border-color: #D9D9D9; color: #2B2B2B;">
+                            Открыть мой профиль
+                        </a>
+                    @endauth
+                </div>
+            </div>
+
+            <div class="space-y-4">
                 <div class="flex justify-center lg:justify-end">
                     @if(file_exists(public_path('images/alumni-card-fon.png')))
-                        <div class="w-full max-w-sm rounded-xl shadow-xl overflow-hidden aspect-[1.6]" style="background-image: url('{{ asset('images/alumni-card-fon.png') }}'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
+                        <div class="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden aspect-[1.6]"
+                             style="background-image: url('{{ asset('images/alumni-card-fon.png') }}'); background-size: 100% 100%; background-repeat: no-repeat;">
+                        </div>
                     @else
-                        <div class="w-full max-w-sm rounded-xl shadow-xl aspect-[1.6] flex items-center justify-center text-[#8F161C] font-semibold" style="background-color: #F6F2EA;">Карта выпускника</div>
+                        <div class="w-full max-w-sm rounded-2xl shadow-2xl aspect-[1.6] flex items-center justify-center text-[#8F161C] font-semibold"
+                             style="background-color: #F6F2EA;">
+                            Цифровая карта выпускника
+                        </div>
                     @endif
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 text-xs">
+                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
+                        <p class="font-semibold" style="color: #8F161C;">12</p>
+                        <p class="text-[11px]" style="color: #2B2B2B;">аудиторий от выпускников</p>
+                    </div>
+                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
+                        <p class="font-semibold" style="color: #8F161C;">₸84M</p>
+                        <p class="text-[11px]" style="color: #2B2B2B;">пожертвований</p>
+                    </div>
+                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
+                        <p class="font-semibold" style="color: #8F161C;">50+</p>
+                        <p class="text-[11px]" style="color: #2B2B2B;">партнёров</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- 5.5. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
+    {{-- 7. ЛИЦА КАЗГАСА --}}
+    <section id="faces" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                Гордость университета
+            </p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
+                Лица KazGASA Alumni
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                @foreach([
+                    ['initials' => 'АД', 'name' => 'Асель Досымова', 'role' => 'Главный архитектор Алматы', 'year' => 'Выпуск 1998'],
+                    ['initials' => 'КМ', 'name' => 'Кайрат Мухамеджанов', 'role' => 'CEO строительного холдинга', 'year' => 'Выпуск 2001'],
+                    ['initials' => 'НС', 'name' => 'Нуржан Сейткали', 'role' => 'Лауреат международных премий', 'year' => 'Выпуск 1995'],
+                    ['initials' => 'ДА', 'name' => 'Диана Ахметова', 'role' => 'Профессор, ректор МОК', 'year' => 'Выпуск 1987'],
+                ] as $alum)
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden border" style="border-color: #D9D9D9;">
+                        <div class="h-24 sm:h-28 flex items-center justify-center text-2xl sm:text-3xl font-bold"
+                             style="background: radial-gradient(circle at 0 0, #E5C68D33, transparent 55%), linear-gradient(135deg, #1F2A44, #5E0F14); color: #E5C68D;">
+                            {{ $alum['initials'] }}
+                        </div>
+                        <div class="px-3 sm:px-4 py-3">
+                            <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                                {{ $alum['name'] }}
+                            </p>
+                            <p class="mt-0.5 text-xs" style="color: #2B2B2B99;">
+                                {{ $alum['role'] }}
+                            </p>
+                            <p class="mt-1 text-[11px] font-semibold" style="color: #8F161C;">
+                                {{ $alum['year'] }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- 8. ВКЛАД ВЫПУСКНИКОВ / ПОДАРКИ --}}
+    <section id="gifts" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #FFFFFF;">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+            <div>
+                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                    Вклад выпускников
+                </p>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
+                    Что мы дали университету
+                </h2>
+                <div class="grid grid-cols-3 gap-3 mb-6 text-center">
+                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
+                        <p class="text-2xl font-bold" style="color: #8F161C;">12</p>
+                        <p class="mt-1 text-xs" style="color: #2B2B2B;">аудиторий открыто</p>
+                    </div>
+                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
+                        <p class="text-2xl font-bold" style="color: #8F161C;">₸84M</p>
+                        <p class="mt-1 text-xs" style="color: #2B2B2B;">пожертвований</p>
+                    </div>
+                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
+                        <p class="text-2xl font-bold" style="color: #8F161C;">6</p>
+                        <p class="mt-1 text-xs" style="color: #2B2B2B;">лабораторий</p>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed" style="color: #2B2B2B;">
+                    Слёт выпускников — это не только встреча друзей, но и возможность поддержать новые поколения
+                    студентов. Оборудованные аудитории, современные лаборатории, стипендии и научные фонды —
+                    всё это результат совместной работы выпускников KazGASA Alumni.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-[#F6F2EA] rounded-2xl border shadow-sm overflow-hidden" style="border-color: #D9D9D9;">
+                    <div class="h-28 sm:h-32 flex items-center justify-center text-3xl sm:text-4xl">
+                        🏛️
+                    </div>
+                    <div class="px-4 sm:px-5 py-4">
+                        <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #8F161C;">
+                            Выпуск 1995 · Архитектурный факультет
+                        </p>
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            Аудитория «Архитектурное наследие»
+                        </p>
+                        <p class="mt-1 text-sm" style="color: #2B2B2B99;">
+                            Полностью обновлённое пространство с мультимедиа‑оборудованием, библиотекой и зонами для проектной работы.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-[#F6F2EA] rounded-2xl border shadow-sm overflow-hidden" style="border-color: #D9D9D9;">
+                    <div class="h-28 sm:h-32 flex items-center justify-center text-3xl sm:text-4xl">
+                        💻
+                    </div>
+                    <div class="px-4 sm:px-5 py-4">
+                        <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #8F161C;">
+                            Выпуск 2003 · Строительный факультет
+                        </p>
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            Компьютерная лаборатория BIM
+                        </p>
+                        <p class="mt-1 text-sm" style="color: #2B2B2B99;">
+                            30 рабочих мест с современным программным обеспечением для архитектурного и инженерного моделирования.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 9. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
     @php
         $latestJobs = app(\App\Services\JobService::class)->getActiveJobs(3);
     @endphp
-    <section class="bg-white py-16">
+    <section id="jobs" class="bg-white py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-end justify-between mb-8">
                     <div>
