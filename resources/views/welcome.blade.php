@@ -68,396 +68,227 @@
         </nav>
     </header>
 
-    {{-- 3. HERO — СЛЁТ ВЫПУСКНИКОВ --}}
-    <section id="hero" class="relative min-h-[85vh] flex items-end lg:items-center">
+    {{-- 3. HERO + ОБРАТНЫЙ ОТСЧЁТ --}}
+    <section id="hero" class="relative min-h-[90vh] flex items-end lg:items-center">
         <div class="absolute inset-0">
             @if(file_exists(public_path('images/hero-bg.jpg')))
                 <img src="{{ asset('images/hero-bg.jpg') }}" alt="" class="w-full h-full object-cover" />
             @else
-                <div class="w-full h-full" style="background: radial-gradient(circle at 0 0, #E5C68D20, transparent 55%), linear-gradient(135deg, #1F2A44 0%, #2B2B2B 45%, #5E0F14 100%);"></div>
+                <div class="w-full h-full" style="background: linear-gradient(135deg, #1F2A44 0%, #2B2B2B 50%, #5E0F14 100%);"></div>
             @endif
-            <div class="absolute inset-0 bg-black/60"></div>
-            <div class="absolute inset-0 opacity-20"
-                 style="background-image: repeating-linear-gradient(45deg, rgba(229,198,141,0.3) 0, rgba(229,198,141,0.3) 1px, transparent 1px, transparent 24px);">
-            </div>
+            <div class="absolute inset-0 bg-black/50"></div>
         </div>
 
-        <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 lg:pb-14 flex flex-col lg:flex-row lg:items-end gap-8">
-            <div class="lg:w-[40%] lg:flex-shrink-0 lg:self-end">
-                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/90 text-xs font-semibold tracking-[0.18em] uppercase mb-4"
-                     style="color: #8F161C;">
-                    13 апреля · Алматы
-                </div>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[44px] font-bold text-white leading-tight">
-                    Слёт выпускников
-                    <span class="block text-[0.9em]" style="color: #E5C68D;">KazGASA Alumni 2026</span>
-                </h1>
-                <p class="mt-4 text-sm sm:text-base text-white/90 max-w-md">
-                    45 лет архитектурному образованию Казахстана. Встреча выпускников КазГАСА / ААСИ / КазПТИ,
-                    научная программа, открытия аудиторий и нетворкинг.
-                </p>
-                <div class="mt-6 flex flex-wrap gap-3">
-                    <a href="{{ route('register') }}"
-                       class="inline-flex items-center justify-center px-6 py-3 text-sm sm:text-base font-semibold rounded-lg transition-colors hover:opacity-95"
-                       style="background-color: #8F161C; color: #FFFFFF; border: 1px solid #E5C68D;">
-                        Зарегистрироваться как выпускник
-                    </a>
-                    <a href="#program"
-                       class="inline-flex items-center justify-center px-5 py-3 text-sm font-semibold rounded-lg border transition-colors"
-                       style="border-color: #E5C68D; color: #F6F2EA; background-color: transparent;">
-                        Смотреть программу дня
-                    </a>
-                </div>
+        <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 lg:pb-12 flex flex-col lg:flex-row lg:items-end gap-8">
+            <div class="hidden lg:block lg:w-[35%] lg:flex-shrink-0 lg:self-end">
+                @if(file_exists(public_path('images/hero-photo.jpg')))
+                    <img src="{{ asset('images/hero-photo.jpg') }}" alt="" class="w-full max-w-sm object-cover object-bottom rounded-t-lg shadow-2xl" style="max-height: 70vh;" />
+                @else
+                    <div class="w-full max-w-sm h-96 rounded-t-lg shadow-2xl flex items-center justify-center text-white/60 bg-[#2B2B2B]/80">
+                        <span>Портрет</span>
+                    </div>
+                @endif
             </div>
 
-            <div class="flex-1 flex flex-col md:flex-row lg:flex-col gap-4 lg:gap-6 lg:pl-10">
-                <div class="flex-1 bg-white/95 rounded-2xl shadow-lg p-4 sm:p-5 backdrop-blur">
-                    <p class="text-[11px] tracking-[0.2em] uppercase font-semibold mb-2" style="color: #8F161C;">
+            <div class="flex-1 flex flex-col justify-center lg:pl-12 space-y-6">
+                <div>
+                    <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/80 text-xs sm:text-sm font-medium mb-3" style="color: #8F161C;">
+                        15 апреля · Слёт выпускников KazGASA Alumni
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-2xl">
+                        Дорогие выпускники КазГАСА / ААСИ / КазПТИ
+                    </h1>
+                    <p class="mt-3 text-base sm:text-lg text-white/95 max-w-lg">
+                        45‑летие архитектурного образования Казахстана: встреча поколений, авторские экскурсии,
+                        концертная программа и праздничный салют на кампусе КазГАСА.
+                    </p>
+                </div>
+
+                {{-- Обратный отсчёт до 15 апреля 2026 --}}
+                <div class="inline-block bg-white/90 rounded-2xl px-4 py-3 sm:px-5 sm:py-4 shadow-lg">
+                    <p class="text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
                         До начала слёта
                     </p>
-                    <div class="grid grid-cols-4 gap-2 sm:gap-3">
-                        @php
-                            $eventDate = \Carbon\Carbon::create(2026, 4, 13, 9, 0, 0, 'Asia/Almaty');
-                            $now = now('Asia/Almaty');
-                            $diff = $eventDate->isFuture() ? $eventDate->diff($now) : null;
-                        @endphp
-                        @foreach([
-                            ['label' => 'дней', 'value' => $diff?->d + ($diff?->m ?? 0)*30 + ($diff?->y ?? 0)*365],
-                            ['label' => 'часов', 'value' => $diff?->h],
-                            ['label' => 'минут', 'value' => $diff?->i],
-                            ['label' => 'секунд', 'value' => $diff?->s],
-                        ] as $item)
-                            <div class="flex flex-col items-center justify-center rounded-xl border text-center px-1.5 py-2 sm:py-3"
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>
+                        @foreach(['дней','часов','минут','секунд'] as $label)
+                            <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"
                                  style="border-color: #E5C68D33; background-color: #F6F2EA;">
-                                <span class="font-bold text-lg sm:text-2xl"
-                                      style="color: #8F161C;">
-                                    {{ str_pad(max(0, (int) ($item['value'] ?? 0)), 2, '0', STR_PAD_LEFT) }}
-                                </span>
+                                <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>
                                 <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">
-                                    {{ $item['label'] }}
+                                    {{ $label }}
                                 </span>
                             </div>
                         @endforeach
                     </div>
-                    <p class="mt-3 text-[11px] text-[#2B2B2B]/70">
-                        По данным программы «15 апреля». Время указано по Алматы.
+                    <p class="mt-2 text-[11px] text-[#F97316]">
+                        Событие состоится 15 апреля 2026 года на кампусе КазГАСА.
                     </p>
                 </div>
 
-                <div class="flex-1 bg-[#F6F2EA]/95 rounded-2xl shadow-lg p-4 sm:p-5 flex gap-3">
-                    <div class="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-center text-xs font-bold"
-                         style="background: radial-gradient(circle at 30% 20%, #E5C68D, #8F161C); color: #FFFFFF;">
-                        Kaz<br>GASA
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-xs font-semibold uppercase tracking-[0.16em]" style="color: #8F161C;">
-                            Приветствие выпускникам
-                        </p>
-                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                            «45 лет — это не просто юбилей. Это тысячи зданий и проектов, которые мы создали вместе.
-                            Добро пожаловать домой в КазГАСА Alumni!»
-                        </p>
-                        <p class="text-xs text-[#2B2B2B]/70">
-                            Руководство Ассоциации выпускников
-                        </p>
-                    </div>
+                <div class="mt-2 flex flex-wrap gap-4">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg transition-colors hover:opacity-90"
+                       style="background-color: #8F161C; color: #FFFFFF; border: 1px solid #E5C68D;">
+                        Зарегистрироваться как выпускник
+                    </a>
+                    <a href="#program" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg border transition-colors hover:bg-white/10"
+                       style="border-color: #E5C68D; color: #F6F2EA;">
+                        Смотреть программу дня
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- 4. НАВИГАЦИЯ ПО РАЗДЕЛАМ ДНЯ --}}
-    <section class="border-y" style="border-color: #D9D9D9; background-color: #FFFFFF;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 overflow-x-auto">
-            <div class="flex gap-3 sm:gap-4 text-xs sm:text-sm whitespace-nowrap">
-                <a href="#program" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border"
-                   style="border-color: #8F161C; color: #8F161C; background-color: #F6F2EA;">
-                    Программа
-                </a>
-                <a href="#card" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Карта выпускника
-                </a>
-                <a href="#faces" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Лица КазГАСА
-                </a>
-                <a href="#gifts" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Вклад выпускников
-                </a>
-                <a href="#jobs" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Вакансии
-                </a>
-                <a href="#science" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Декада науки
-                </a>
-                <a href="#archive" class="px-3 sm:px-4 py-1.5 rounded-full font-medium border text-[#2B2B2B] hover:bg-[#F6F2EA]/60 transition"
-                   style="border-color: #D9D9D9;">
-                    Архив
-                </a>
+    {{-- 4. STATS --}}
+    <section class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <div class="text-center">
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30000+</div>
+                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Выпускников</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">45+</div>
+                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Лет истории</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">50+</div>
+                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Партнёров</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">100+</div>
+                    <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Мероприятий</div>
+                </div>
             </div>
         </div>
     </section>
 
-    {{-- 5. ПРОГРАММА ДНЯ --}}
-    <section id="program" class="py-14 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+    {{-- 5. ПРОГРАММА 15 АПРЕЛЯ — СЛЁТ ВЫПУСКНИКОВ --}}
+    <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div class="max-w-5xl mx-auto">
             <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                13 апреля 2026 · Алматы
+                15 апреля 2026 · Слёт выпускников
             </p>
             <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
-                Программа слёта выпускников
+                Программа вечера
             </h2>
 
-            <div class="space-y-3">
-                @php
-                    $programItems = [
-                        ['time' => '09:00', 'title' => 'Регистрация участников', 'place' => 'Главный вход КазГАСА', 'state' => 'past'],
-                        ['time' => '10:00', 'title' => 'Торжественное открытие', 'place' => 'Большой актовый зал', 'state' => 'past'],
-                        ['time' => '12:00', 'title' => 'Декада науки. Доклады выпускников', 'place' => 'Конференц‑зал, 3 этаж', 'state' => 'current'],
-                        ['time' => '14:00', 'title' => 'Открытие аудиторий выпускников', 'place' => 'Корпус 2, 2 этаж', 'state' => 'future'],
-                        ['time' => '16:00', 'title' => 'Фотовыставка «Архив КазГАСА»', 'place' => 'Атриум главного корпуса', 'state' => 'future'],
-                        ['time' => '19:00', 'title' => 'Торжественный банкет', 'place' => 'Ресторан «Арка»', 'state' => 'future'],
-                    ];
-                @endphp
+            @php
+                $eventDate = '2026-04-15';
+                $slots = [
+                    [
+                        'time' => '15:00 – 15:30',
+                        'start' => '15:00',
+                        'end' => '15:30',
+                        'title' => 'Регистрация участников',
+                        'details' => 'Встреча и регистрация выпускников у входа на территорию КазГАСА.',
+                    ],
+                    [
+                        'time' => '15:30 – 16:30',
+                        'start' => '15:30',
+                        'end' => '16:30',
+                        'title' => 'Торжественное открытие мероприятия',
+                        'details' => "Показ фильма «КазГАСА: 45 лет в кадре», приветственные слова руководства,\nпрезентация цифровой Платформы выпускников, выступления и подарки от выпускников.",
+                    ],
+                    [
+                        'time' => '16:30 – 17:20',
+                        'start' => '16:30',
+                        'end' => '17:20',
+                        'title' => 'Авторские экскурсии по школам',
+                        'details' => 'Экскурсии по факультетам и обновлённым пространствам КазГАСА от преподавателей и выпускников.',
+                    ],
+                    [
+                        'time' => '17:20 – 18:00',
+                        'start' => '17:20',
+                        'end' => '18:00',
+                        'title' => 'Фуршет и концертная программа',
+                        'details' => 'Фуршет и живая музыка в праздничном шатре на территории кампуса.',
+                    ],
+                    [
+                        'time' => '18:00 – 18:30',
+                        'start' => '18:00',
+                        'end' => '18:30',
+                        'title' => 'Финальный блок: общее караоке',
+                        'details' => 'Совместное исполнение любимых песен выпускников и студентов.',
+                    ],
+                    [
+                        'time' => '18:30',
+                        'start' => '18:30',
+                        'end' => '18:35',
+                        'title' => 'Праздничный салют',
+                        'details' => 'Салют в честь 45‑летия архитектурного образования Казахстана.',
+                    ],
+                    [
+                        'time' => '18:40 – 19:00',
+                        'start' => '18:40',
+                        'end' => '19:00',
+                        'title' => 'Завершение вечера',
+                        'details' => 'Прощание, обмен контактами и планы на новые встречи KazGASA Alumni.',
+                    ],
+                ];
+            @endphp
 
-                @foreach($programItems as $item)
-                    @php
-                        $isCurrent = $item['state'] === 'current';
-                        $isPast = $item['state'] === 'past';
-                    @endphp
-                    <div class="flex items-start gap-3 sm:gap-4 rounded-xl px-3 sm:px-4 py-3 sm:py-3.5 border transition"
-                         @class([
-                            'opacity-60' => $isPast,
-                         ])
-                         style="
-                            border-color: {{ $isCurrent ? '#E5C68D' : '#D9D9D9' }};
-                            background-color: {{ $isCurrent ? '#FFFFFF' : '#FFFFFFCC' }};
-                         ">
+            <div class="space-y-3" id="program-timeline">
+                @foreach($slots as $index => $slot)
+                    <div class="flex items-start gap-3 sm:gap-4 rounded-2xl border px-3 sm:px-4 py-3 sm:py-3.5 bg-[#FDFBF7]"
+                         data-slot
+                         data-slot-start="{{ $eventDate }}T{{ $slot['start'] }}:00+06:00"
+                         data-slot-end="{{ $eventDate }}T{{ $slot['end'] }}:00+06:00"
+                         style="border-color: #D9D9D9;">
                         <div class="pt-1">
-                            <span class="text-xs font-semibold tracking-wide"
-                                  style="color: {{ $isCurrent ? '#8F161C' : '#2B2B2B' }};">
-                                {{ $item['time'] }}
+                            <span class="text-xs sm:text-sm font-semibold tracking-wide text-[#2B2B2B]">
+                                {{ $slot['time'] }}
                             </span>
                         </div>
-                        <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                             style="background-color: {{ $isCurrent ? '#E5C68D' : '#D9D9D9' }};"></div>
+                        <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0 bg-[#D9D9D9]" data-slot-dot></div>
                         <div class="flex-1">
                             <p class="text-sm sm:text-base font-semibold" style="color: #2B2B2B;">
-                                {{ $item['title'] }}
+                                {{ $slot['title'] }}
                             </p>
-                            <p class="text-xs sm:text-sm mt-0.5" style="color: #2B2B2B99;">
-                                {{ $item['place'] }}
+                            <p class="mt-1 text-xs sm:text-sm whitespace-pre-line" style="color: #2B2B2B99;">
+                                {!! nl2br(e($slot['details'])) !!}
                             </p>
                         </div>
-                        @if($isCurrent)
-                            <span class="mt-1 inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide"
-                                  style="background-color: #E5C68D33; color: #8F161C;">
-                                Сейчас
-                            </span>
-                        @endif
+                        <span class="hidden text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded-full"
+                              data-slot-badge
+                              style="background-color: #E5C68D33; color: #8F161C;">
+                            Сейчас
+                        </span>
                     </div>
                 @endforeach
-            </div>
-
-            <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                <a href="{{ asset('mockups/program.pdf') }}" target="_blank"
-                   class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-semibold gap-2"
-                   style="border-color: #D9D9D9; color: #2B2B2B; background-color: #FFFFFF;">
-                    <span>📄</span>
-                    <span>Программа в PDF</span>
-                </a>
-                <a href="#archive"
-                   class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-semibold gap-2"
-                   style="border-color: #D9D9D9; color: #2B2B2B; background-color: #FFFFFF;">
-                    <span>🗺️</span>
-                    <span>Карта кампуса и архив</span>
-                </a>
             </div>
         </div>
     </section>
 
-    {{-- 6. ЦИФРОВАЯ КАРТА ВЫПУСКНИКА --}}
+    {{-- 6. КАРТА ВЫПУСКНИКА --}}
     <section id="card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-            <div>
-                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    Скидки и привилегии
-                </p>
-                <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">
-                    Цифровая карта выпускника
-                </h2>
-                <p class="mt-4 text-sm sm:text-base leading-relaxed" style="color: #2B2B2B;">
-                    Персональная карта выпускника KazGASA Alumni с QR‑кодом — подтверждение вашего статуса и доступ
-                    к партнёрским льготам. Карта формируется автоматически после регистрации и верификации профиля.
-                </p>
-                <ul class="mt-4 space-y-2 text-sm" style="color: #2B2B2B;">
-                    <li class="flex gap-2"><span>•</span><span>Привязана к вашему профилю выпускника и IIN.</span></li>
-                    <li class="flex gap-2"><span>•</span><span>Показывайте на экране телефона — партнёры сканируют QR.</span></li>
-                    <li class="flex gap-2"><span>•</span><span>Статусы Connect / Start / Core / Elite в зависимости от участия.</span></li>
-                </ul>
-                <div class="mt-6 flex flex-wrap gap-3">
-                    <a href="{{ route('register') }}"
-                       class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-lg transition-colors hover:opacity-95"
-                       style="background-color: #8F161C; color: #FFFFFF;">
-                        Получить карту выпускника
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold" style="color: #8F161C;">Цифровая карта выпускника</h2>
+                    <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
+                        Получите персональную цифровую карту выпускника КазГАСА — подтверждение вашего статуса и связь с альма-матер. Карта с QR-кодом доступна после регистрации в личном кабинете.
+                    </p>
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center mt-6 px-6 py-3 text-base font-medium text-white rounded transition-colors hover:opacity-90" style="background-color: #8F161C;">
+                        Получить карту
                     </a>
-                    @auth
-                        <a href="{{ route('profile.edit') }}"
-                           class="inline-flex items-center justify-center px-5 py-3 text-sm font-semibold rounded-lg border transition-colors"
-                           style="border-color: #D9D9D9; color: #2B2B2B;">
-                            Открыть мой профиль
-                        </a>
-                    @endauth
                 </div>
-            </div>
-
-            <div class="space-y-4">
                 <div class="flex justify-center lg:justify-end">
                     @if(file_exists(public_path('images/alumni-card-fon.png')))
-                        <div class="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden aspect-[1.6]"
-                             style="background-image: url('{{ asset('images/alumni-card-fon.png') }}'); background-size: 100% 100%; background-repeat: no-repeat;">
-                        </div>
+                        <div class="w-full max-w-sm rounded-xl shadow-xl overflow-hidden aspect-[1.6]" style="background-image: url('{{ asset('images/alumni-card-fon.png') }}'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
                     @else
-                        <div class="w-full max-w-sm rounded-2xl shadow-2xl aspect-[1.6] flex items-center justify-center text-[#8F161C] font-semibold"
-                             style="background-color: #F6F2EA;">
-                            Цифровая карта выпускника
-                        </div>
+                        <div class="w-full max-w-sm rounded-xl shadow-xl aspect-[1.6] flex items-center justify-center text-[#8F161C] font-semibold" style="background-color: #F6F2EA;">Карта выпускника</div>
                     @endif
                 </div>
-
-                <div class="grid grid-cols-3 gap-3 text-xs">
-                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
-                        <p class="font-semibold" style="color: #8F161C;">12</p>
-                        <p class="text-[11px]" style="color: #2B2B2B;">аудиторий от выпускников</p>
-                    </div>
-                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
-                        <p class="font-semibold" style="color: #8F161C;">₸84M</p>
-                        <p class="text-[11px]" style="color: #2B2B2B;">пожертвований</p>
-                    </div>
-                    <div class="rounded-xl px-3 py-2.5 border" style="border-color: #D9D9D9; background-color: #F6F2EA;">
-                        <p class="font-semibold" style="color: #8F161C;">50+</p>
-                        <p class="text-[11px]" style="color: #2B2B2B;">партнёров</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    {{-- 7. ЛИЦА КАЗГАСА --}}
-    <section id="faces" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
-        <div class="max-w-7xl mx-auto">
-            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                Гордость университета
-            </p>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
-                Лица KazGASA Alumni
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                @foreach([
-                    ['initials' => 'АД', 'name' => 'Асель Досымова', 'role' => 'Главный архитектор Алматы', 'year' => 'Выпуск 1998'],
-                    ['initials' => 'КМ', 'name' => 'Кайрат Мухамеджанов', 'role' => 'CEO строительного холдинга', 'year' => 'Выпуск 2001'],
-                    ['initials' => 'НС', 'name' => 'Нуржан Сейткали', 'role' => 'Лауреат международных премий', 'year' => 'Выпуск 1995'],
-                    ['initials' => 'ДА', 'name' => 'Диана Ахметова', 'role' => 'Профессор, ректор МОК', 'year' => 'Выпуск 1987'],
-                ] as $alum)
-                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden border" style="border-color: #D9D9D9;">
-                        <div class="h-24 sm:h-28 flex items-center justify-center text-2xl sm:text-3xl font-bold"
-                             style="background: radial-gradient(circle at 0 0, #E5C68D33, transparent 55%), linear-gradient(135deg, #1F2A44, #5E0F14); color: #E5C68D;">
-                            {{ $alum['initials'] }}
-                        </div>
-                        <div class="px-3 sm:px-4 py-3">
-                            <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                                {{ $alum['name'] }}
-                            </p>
-                            <p class="mt-0.5 text-xs" style="color: #2B2B2B99;">
-                                {{ $alum['role'] }}
-                            </p>
-                            <p class="mt-1 text-[11px] font-semibold" style="color: #8F161C;">
-                                {{ $alum['year'] }}
-                            </p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- 8. ВКЛАД ВЫПУСКНИКОВ / ПОДАРКИ --}}
-    <section id="gifts" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #FFFFFF;">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-            <div>
-                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    Вклад выпускников
-                </p>
-                <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
-                    Что мы дали университету
-                </h2>
-                <div class="grid grid-cols-3 gap-3 mb-6 text-center">
-                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
-                        <p class="text-2xl font-bold" style="color: #8F161C;">12</p>
-                        <p class="mt-1 text-xs" style="color: #2B2B2B;">аудиторий открыто</p>
-                    </div>
-                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
-                        <p class="text-2xl font-bold" style="color: #8F161C;">₸84M</p>
-                        <p class="mt-1 text-xs" style="color: #2B2B2B;">пожертвований</p>
-                    </div>
-                    <div class="rounded-2xl px-3 py-4" style="background-color: #F6F2EA;">
-                        <p class="text-2xl font-bold" style="color: #8F161C;">6</p>
-                        <p class="mt-1 text-xs" style="color: #2B2B2B;">лабораторий</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed" style="color: #2B2B2B;">
-                    Слёт выпускников — это не только встреча друзей, но и возможность поддержать новые поколения
-                    студентов. Оборудованные аудитории, современные лаборатории, стипендии и научные фонды —
-                    всё это результат совместной работы выпускников KazGASA Alumni.
-                </p>
-            </div>
-
-            <div class="space-y-4">
-                <div class="bg-[#F6F2EA] rounded-2xl border shadow-sm overflow-hidden" style="border-color: #D9D9D9;">
-                    <div class="h-28 sm:h-32 flex items-center justify-center text-3xl sm:text-4xl">
-                        🏛️
-                    </div>
-                    <div class="px-4 sm:px-5 py-4">
-                        <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #8F161C;">
-                            Выпуск 1995 · Архитектурный факультет
-                        </p>
-                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                            Аудитория «Архитектурное наследие»
-                        </p>
-                        <p class="mt-1 text-sm" style="color: #2B2B2B99;">
-                            Полностью обновлённое пространство с мультимедиа‑оборудованием, библиотекой и зонами для проектной работы.
-                        </p>
-                    </div>
-                </div>
-                <div class="bg-[#F6F2EA] rounded-2xl border shadow-sm overflow-hidden" style="border-color: #D9D9D9;">
-                    <div class="h-28 sm:h-32 flex items-center justify-center text-3xl sm:text-4xl">
-                        💻
-                    </div>
-                    <div class="px-4 sm:px-5 py-4">
-                        <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #8F161C;">
-                            Выпуск 2003 · Строительный факультет
-                        </p>
-                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                            Компьютерная лаборатория BIM
-                        </p>
-                        <p class="mt-1 text-sm" style="color: #2B2B2B99;">
-                            30 рабочих мест с современным программным обеспечением для архитектурного и инженерного моделирования.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- 9. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
+    {{-- 5.5. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
     @php
         $latestJobs = app(\App\Services\JobService::class)->getActiveJobs(3);
     @endphp
-    <section id="jobs" class="bg-white py-16">
+    <section class="bg-white py-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-end justify-between mb-8">
                     <div>
@@ -541,6 +372,134 @@
             </div>
         </section>
 
+    {{-- 6. ДЕКАДА НАУКИ --}}
+    <section id="science" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+        <div class="max-w-5xl mx-auto">
+            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                13 апреля 2026
+            </p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4" style="color: #2B2B2B;">
+                Декада науки
+            </h2>
+            <p class="text-sm sm:text-base leading-relaxed mb-6" style="color: #2B2B2B;">
+                Научно‑практическая программа с участием выпускников и преподавателей КазГАСА: актуальные
+                исследования в области архитектуры, урбанистики и строительства.
+            </p>
+
+            <div class="space-y-3">
+                <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
+                     style="border-color: #D9D9D9;">
+                    <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                         style="background-color: #F6F2EA; color: #8F161C;">
+                        📄
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            Устойчивая архитектура в аридном климате
+                        </p>
+                        <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
+                            Доклад выпускников кафедры архитектуры · 2026
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
+                     style="border-color: #D9D9D9;">
+                    <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                         style="background-color: #F6F2EA; color: #8F161C;">
+                        📄
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            BIM‑технологии в реконструкции исторической застройки
+                        </p>
+                        <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
+                            Исследование выпускников строительного факультета
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
+                     style="border-color: #D9D9D9;">
+                    <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                         style="background-color: #F6F2EA; color: #8F161C;">
+                        📄
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold" style="color: #2B2B2B;">
+                            Алматы 2050: сценарии устойчивого развития города
+                        </p>
+                        <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
+                            Совместный проект выпускников и студентов
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 7. АРХИВ KAZGASA --}}
+    <section id="archive" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
+                История в фотографиях
+            </p>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4" style="color: #2B2B2B;">
+                Архив KazGASA Alumni
+            </h2>
+            <p class="text-sm sm:text-base leading-relaxed mb-5" style="color: #2B2B2B;">
+                Фотографии кампуса, выпусков и знаковых событий разных десятилетий. Вы можете прислать свои
+                снимки и пополнить архив.
+            </p>
+
+            <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-2">
+                @foreach(['80‑е', '90‑е', '00‑е', '10‑е', '20‑е'] as $idx => $label)
+                    <button type="button"
+                            class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border whitespace-nowrap
+                                   {{ $idx === 1 ? 'bg-[#8F161C] text-white border-[#8F161C]' : 'bg-white text-[#2B2B2B] border-[#D9D9D9]' }}">
+                        {{ $label }}
+                    </button>
+                @endforeach
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #1F2A44, #5E0F14);">
+                    🏛️
+                </div>
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #8F161C, #E5C68D);">
+                    🎓
+                </div>
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #2B2B2B, #8F161C);">
+                    📐
+                </div>
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #E5C68D, #5E0F14);">
+                    🏗️
+                </div>
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #1F2A44, #E5C68D);">
+                    🎨
+                </div>
+                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                     style="background: linear-gradient(135deg, #5E0F14, #2B2B2B);">
+                    🏙️
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <button type="button"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 text-sm font-semibold"
+                        style="border-color: #D9D9D9; color: #2B2B2B; background-color: #F6F2EA;">
+                    <span>📷</span>
+                    <span>Загрузить своё фото в архив</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
     {{-- 6. FOOTER --}}
     <footer class="mt-auto">
         <div class="py-12 px-4 sm:px-6 lg:px-8" style="background-color: #2B2B2B;">
@@ -569,15 +528,15 @@
                         <p class="mt-3 text-sm text-white/80">Международная Образовательная Корпорация</p>
                         <p class="mt-1 text-sm text-white/80">г. Алматы, Казахстан</p>
                         <div class="mt-4 flex items-center gap-4">
-                            <a href="https://www.instagram.com/kazgasa_alumni?igsh=MWlyc3o5OGN2eHZ4MA==" target="_blank" rel="noopener"
+                            <a href="https://www.instagram.com/kazgasa_alumni?igsh=MWlyc3o5OGN2eHZ4MA=="
+                               target="_blank" rel="noopener"
                                class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
-                                <span class="text-xl">📷</span>
-                                <span>Instagram</span>
+                                <img src="{{ asset('images/instagram.png') }}" class="w-8 h-8">
                             </a>
+
                             <a href="https://www.facebook.com/profile.php?id=61582749477218" target="_blank" rel="noopener"
                                class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
-                                <span class="text-xl">📘</span>
-                                <span>Facebook</span>
+                                <img src="{{ asset('images/facebook.png') }}" class="w-8 h-8">
                             </a>
                         </div>
                     </div>
@@ -590,3 +549,79 @@
     </footer>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        (function () {
+            // Обратный отсчёт до 15 апреля 2026 (Алматы, GMT+6)
+            const target = new Date('2026-04-15T00:00:00+06:00').getTime();
+            const root = document.querySelector('[data-countdown-root]');
+            const values = root ? root.querySelectorAll('[data-countdown-value]') : null;
+
+            function updateCountdown() {
+                if (!values || values.length !== 4) return;
+                const now = Date.now();
+                let diff = target - now;
+                if (diff <= 0) {
+                    ['00', '00', '00', '00'].forEach((val, i) => values[i].textContent = val);
+                    return;
+                }
+                const day = 1000 * 60 * 60 * 24;
+                const hour = 1000 * 60 * 60;
+                const minute = 1000 * 60;
+
+                const days = Math.floor(diff / day);
+                diff -= days * day;
+                const hours = Math.floor(diff / hour);
+                diff -= hours * hour;
+                const minutes = Math.floor(diff / minute);
+                diff -= minutes * minute;
+                const seconds = Math.floor(diff / 1000);
+
+                const nums = [days, hours, minutes, seconds].map(n => String(n).padStart(2, '0'));
+                nums.forEach((val, i) => values[i].textContent = val);
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // Подсветка текущего слота программы 15 апреля 2026
+            const slotNodes = document.querySelectorAll('#program-timeline [data-slot]');
+            function updateCurrentSlot() {
+                const now = new Date();
+                slotNodes.forEach(node => {
+                    node.classList.remove('ring-2', 'ring-offset-2');
+                    node.style.borderColor = '#D9D9D9';
+                    const dot = node.querySelector('[data-slot-dot]');
+                    const badge = node.querySelector('[data-slot-badge]');
+                    if (dot) dot.style.backgroundColor = '#D9D9D9';
+                    if (badge) badge.style.display = 'none';
+                });
+
+                const today = new Date('2026-04-15T00:00:00+06:00');
+                if (now.toDateString() !== today.toDateString()) {
+                    return;
+                }
+
+                slotNodes.forEach(node => {
+                    const startStr = node.getAttribute('data-slot-start');
+                    const endStr = node.getAttribute('data-slot-end');
+                    if (!startStr || !endStr) return;
+                    const start = new Date(startStr);
+                    const end = new Date(endStr);
+                    if (now >= start && now <= end) {
+                        node.classList.add('ring-2', 'ring-offset-2');
+                        node.style.borderColor = '#E5C68D';
+                        const dot = node.querySelector('[data-slot-dot]');
+                        const badge = node.querySelector('[data-slot-badge]');
+                        if (dot) dot.style.backgroundColor = '#E5C68D';
+                        if (badge) badge.style.display = 'inline-flex';
+                    }
+                });
+            }
+
+            updateCurrentSlot();
+            setInterval(updateCurrentSlot, 60 * 1000);
+        })();
+    </script>
+@endpush
