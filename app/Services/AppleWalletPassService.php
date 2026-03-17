@@ -238,12 +238,14 @@ class AppleWalletPassService
             throw new \RuntimeException('Не удалось прочитать подпись (S/MIME)');
         }
 
-        // Извлекаем блок между BEGIN/END PKCS7 и декодируем в DER
-        if (! preg_match('/-----BEGIN PKCS7-----(.+?)-----END PKCS7-----/s', $smime, $matches)) {
+        // Extract base64 payload after MIME headers and decode to DER.
+        // Формат smimeOut обычно: MIME-заголовки, пустая строка, затем base64.
+        $parts = preg_split("/\\R\\R/", $smime, 2);
+        if (! $parts || count($parts) < 2) {
             throw new \RuntimeException('Не удалось разобрать подпись (S/MIME PKCS7-блок)');
         }
 
-        $b64 = preg_replace('/\\s+/', '', $matches[1]);
+        $b64 = preg_replace('/\\s+/', '', $parts[1] ?? '');
         $der = base64_decode($b64, true);
 
         if ($der === false) {
