@@ -132,7 +132,7 @@
                             <p class="mt-4 text-sm text-gray-500 italic">Покажите эту карту на экране телефона — она привязана к вашему профилю выпускника.</p>
 
                             <div class="mt-4">
-                                <a href="{{ route('wallet.apple') }}"
+                                <a href="{{ route('wallet.apple.public', $alumniProfile->public_id ?? '') }}"
                                    class="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg text-sm font-semibold border-2 transition-colors hover:bg-[#8F161C] hover:text-white"
                                    style="border-color:#8F161C;color:#8F161C;">
                                     Добавить в Apple Wallet

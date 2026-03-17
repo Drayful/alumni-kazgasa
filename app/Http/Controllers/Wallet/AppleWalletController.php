@@ -31,5 +31,21 @@ class AppleWalletController extends Controller
             'Content-Disposition' => 'attachment; filename="'.$result['filename'].'"',
         ]);
     }
+
+    public function downloadPublic(string $publicId, AppleWalletPassService $service)
+    {
+        $profile = AlumniProfile::where('public_id', $publicId)->first();
+
+        if (! $profile) {
+            abort(404, 'Профиль выпускника не найден');
+        }
+
+        $result = $service->createPkPassForAlumni($profile);
+
+        return response()->file($result['path'], [
+            'Content-Type' => 'application/vnd.apple.pkpass',
+            'Content-Disposition' => 'inline; filename="'.$result['filename'].'"',
+        ]);
+    }
 }
 

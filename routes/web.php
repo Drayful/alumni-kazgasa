@@ -23,6 +23,10 @@ Route::get('/dashboard', function () {
 Route::get('/card/{publicId}', [AlumniCardController::class, 'show'])
     ->name('alumni.card.show');
 
+// Публичная выдача Apple Wallet (.pkpass) по public_id профиля
+Route::get('/wallet/apple/{publicId}', [AppleWalletController::class, 'downloadPublic'])
+    ->name('wallet.apple.public');
+
 // Кабинет супер-админа
 Route::prefix('super-admin')
     ->middleware(['auth', 'super.admin'])
@@ -65,7 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/photo', [PhotoController::class, 'destroy'])->name('profile.photo.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Apple Wallet (.pkpass) — download alumni card
+    // Apple Wallet (.pkpass) — download alumni card для текущего пользователя
     Route::get('/wallet/apple', [AppleWalletController::class, 'download'])->name('wallet.apple');
 });
 
