@@ -26,7 +26,7 @@ class AppleWalletPassService
         file_put_contents($passJsonPath, json_encode($passJson, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // 2) images
-        $this->putImages($tmpRoot);
+        $this->putImages($tmpRoot, $profile);
 
         // 3) manifest.json
         $manifest = $this->buildManifest($tmpRoot);
@@ -161,7 +161,7 @@ class AppleWalletPassService
         ];
     }
 
-    private function putImages(string $dir): void
+    private function putImages(string $dir, AlumniProfile $profile): void
     {
         $iconPath = (string) config('apple-wallet.icon_path');
         $logoPath = (string) config('apple-wallet.logo_path');
@@ -173,9 +173,39 @@ class AppleWalletPassService
             throw new \RuntimeException("Не найден файл логотипа для Wallet: {$logoPath}");
         }
 
-        // Reuse existing PNG assets. Apple requires icon.png and icon@2x.png.
+        // Reuse existing PNG assets. Apple требует icon.png/icon@2x.png.
         $icon = file_get_contents($iconPath);
+
+        // Попробовать использовать фото выпускника как «полосу» / логотип на карте.
         $logo = file_get_contents($logoPath);
+        $avatarUrl = $profile->avatar_url ?? null;
+        if (is_string($avatarUrl) && $avatarUrl !== '') {
+            $localAvatarPath = null;
+
+            // Если это /storage/..., пробуем найти файл на диске public
+            $parsed = parse_url($avatarUrl);
+            if (! empty($parsed['path']) && str_starts_with($parsed['path'], '/storage/')) {
+                $relative = substr($parsed['path'], strlen('/storage/')); // alumni-photos/...
+                $candidate = storage_path('app/public/' . $relative);
+                if (is_file($candidate)) {
+                    $localAvatarPath = $candidate;
+                }
+            } elseif (str_starts_with($avatarUrl, 'http') === false) {
+                // относительный/абсолютный путь внутри public
+                $candidate = public_path(ltrim($avatarUrl, '/'));
+                if (is_file($candidate)) {
+                    $localAvatarPath = $candidate;
+                }
+            }
+
+            if ($localAvatarPath && is_readable($localAvatarPath)) {
+                $avatarBinary = @file_get_contents($localAvatarPath);
+                if ($avatarBinary !== false && strlen($avatarBinary) > 100) {
+                    // Используем фото выпускника как logo/strip (Apple сам впишет в макет pass’а)
+                    $logo = $avatarBinary;
+                }
+            }
+        }
 
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon.png', $icon);
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon@2x.png', $icon);
