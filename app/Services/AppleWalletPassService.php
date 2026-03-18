@@ -201,61 +201,62 @@ class AppleWalletPassService
 
     private function signManifest(string $manifestPath, string $signaturePath): void
     {
-        $cert = 'file://' . (string) config('apple-wallet.cert_signer_path');
-        $key = 'file://' . (string) config('apple-wallet.key_signer_path');
+        $cert        = 'file://' . (string) config('apple-wallet.cert_signer_path');
+        $key         = 'file://' . (string) config('apple-wallet.key_signer_path');
         $keyPassword = (string) config('apple-wallet.key_signer_password');
-        $wwdr = (string) config('apple-wallet.cert_wwdr_path');
-
+        $wwdr        = (string) config('apple-wallet.cert_wwdr_path');
+    
         foreach ([$cert, $key, $wwdr] as $path) {
             $fsPath = str_starts_with($path, 'file://') ? substr($path, 7) : $path;
             if (! is_file($fsPath)) {
                 throw new \RuntimeException("Не найден сертификат/ключ Wallet: {$fsPath}");
             }
         }
-
+    
         $smimeOut = $signaturePath . '.smime';
-        $headers = [];
-        $flags = PKCS7_BINARY | PKCS7_DETACHED;
-
+    
         $ok = openssl_pkcs7_sign(
             $manifestPath,
             $smimeOut,
             $cert,
             [$key, $keyPassword],
-            $headers,
-            $flags,
+            [],
+            PKCS7_BINARY | PKCS7_DETACHED,
             $wwdr
         );
-
+    
         if (! $ok) {
-            throw new \RuntimeException('Не удалось подписать manifest.json (OpenSSL)');
+            $error = openssl_error_string();
+            throw new \RuntimeException("Не удалось подписать manifest.json: {$error}");
         }
-
+    
+        // Извлекаем DER из S/MIME — ищем маркер filename="smime.p7s"
         $smime = file_get_contents($smimeOut);
         @unlink($smimeOut);
-
-        if ($smime === false) {
-            throw new \RuntimeException('Не удалось прочитать подпись (S/MIME)');
+    
+        $begin = 'filename="smime.p7s"';
+        $end   = '------';
+    
+        $posBegin = strpos($smime, $begin);
+        if ($posBegin === false) {
+            throw new \RuntimeException('Не удалось найти начало подписи в S/MIME');
         }
-
-        // Попытка 1: S/MIME c base64-полем после заголовков.
-        $der = null;
-        $parts = preg_split("/\\R\\R/", $smime, 2);
-        if ($parts && count($parts) >= 2) {
-            $b64 = preg_replace('/\\s+/', '', $parts[1] ?? '');
-            $decoded = base64_decode($b64, true);
-            if ($decoded !== false) {
-                $der = $decoded;
-            }
+    
+        $body = substr($smime, $posBegin + strlen($begin));
+    
+        $posEnd = strpos($body, $end);
+        if ($posEnd !== false) {
+            $body = substr($body, 0, $posEnd);
         }
-
-        // Попытка 2: если base64 не получилось — считаем, что openssl уже вернул бинарный PKCS7
-        if ($der === null) {
-            $der = $smime;
+    
+        $der = base64_decode(trim($body));
+        if ($der === false || strlen($der) === 0) {
+            throw new \RuntimeException('Не удалось декодировать подпись из base64');
         }
-
+    
         file_put_contents($signaturePath, $der);
     }
+    
 
     private function assertConfigured(): void
     {
