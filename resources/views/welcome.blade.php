@@ -90,7 +90,7 @@
                 @endif
             </div>
 
-            <div class="flex-1 flex flex-col justify-center lg:pl-12 space-y-6">
+            <div class="flex-1 flex flex-col justify-center lg:pl-12 space-y-6 w-full">
 
                 {{-- HERO TEXT --}}
                 <div>
@@ -131,20 +131,25 @@
                     </div>
                 </div>
 
-                {{-- ЦИТАТА ПРЕДСЕДАТЕЛЯ (убрали круг с фото) --}}
-                <div class="bg-[#5E0F14] rounded-2xl p-8">
-                    <div class="flex-1">
-                        <div class="text-[#E5C68D] text-6xl font-serif leading-none">“</div>
-                        <p class="text-white text-lg italic leading-relaxed mt-2">
-                            КазГАСА — это не просто университет. Это место, где рождается
-                            архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
-                            тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
-                        </p>
-                        <p class="text-[#E5C68D] font-bold mt-4">Кусаинов Айгазы Амирланович</p>
-                        <p class="text-white/70 text-sm mt-1">
-                            Председатель Наблюдательного совета IEC, Председатель Правления
-                            Международной образовательной корпорации, владелец группы компаний Verum
-                        </p>
+                {{-- ЦИТАТА + БОЛЬШАЯ ФОТО (отдельным блоком снизу) --}}
+                <div class="bg-[#5E0F14] rounded-2xl p-6 sm:p-8 w-full">
+                    <div class="flex items-start gap-4">
+                        <img src="{{ asset('images/kusainov.jpg') }}"
+                             onerror="this.src='{{ asset('images/user.png') }}'"
+                             class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover ring-2 ring-[#E5C68D] ring-offset-2 ring-offset-[#5E0F14]">
+                        <div class="flex-1">
+                            <div class="text-[#E5C68D] text-6xl font-serif leading-none">“</div>
+                            <p class="text-white text-lg italic leading-relaxed mt-2">
+                                КазГАСА — это не просто университет. Это место, где рождается
+                                архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
+                                тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
+                            </p>
+                            <p class="text-[#E5C68D] font-bold mt-4">Кусаинов Айгазы Амирланович</p>
+                            <p class="text-white/70 text-sm mt-1">
+                                Председатель Наблюдательного совета IEC, Председатель Правления
+                                Международной образовательной корпорации, владелец группы компаний Verum
+                            </p>
+                        </div>
                     </div>
                 </div>
 
