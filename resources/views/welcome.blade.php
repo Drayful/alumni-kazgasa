@@ -91,19 +91,6 @@
             </div>
 
             <div class="flex-1 flex flex-col justify-center lg:pl-12 space-y-6">
-                {{-- ШАПКА --}}
-                <div class="flex items-center gap-4">
-                    <img src="{{ asset('images/AV-logotip-2.svg') }}"
-                         alt="KazGASA Alumni"
-                         class="h-10 w-10"
-                         onerror="this.src='{{ asset('images/hero-photo.jpg') }}'">
-                    <div>
-                        <div class="font-bold text-lg sm:text-xl" style="color: #8F161C;">КазГАСА Alumni</div>
-                        <div class="text-xs sm:text-sm text-[#E5C68D] mt-1" style="letter-spacing: 0.03em;">
-                            45 лет архитектурному образованию Казахстана · since 1980
-                        </div>
-                    </div>
-                </div>
 
                 {{-- HERO TEXT --}}
                 <div>
@@ -119,41 +106,45 @@
                     </p>
                 </div>
 
-                {{-- ДАТА / НАЧАЛО / КОНЕЦ --}}
+                {{-- ДАТА + ТАЙМЕР (обратный отсчёт до 15 апреля) --}}
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
                         <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">📅 Дата</p>
                         <p class="text-[#2B2B2B] font-bold text-sm mt-1">15 апреля 2026 года</p>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
-                        <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">🕒 Начало</p>
-                        <p class="text-[#2B2B2B] font-bold text-sm mt-1">15:00</p>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
-                        <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">🕔 Конец</p>
-                        <p class="text-[#2B2B2B] font-bold text-sm mt-1">19:00</p>
+
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C] sm:col-span-2">
+                        <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color: #8F161C;">
+                            До слёта
+                        </p>
+                        <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>
+                            @foreach(['дней','часов','минут','секунд'] as $label)
+                                <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"
+                                     style="border-color: #E5C68D33; background-color: #F6F2EA;">
+                                    <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>
+                                    <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">
+                                        {{ $label }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
-                {{-- ЦИТАТА ПРЕДСЕДАТЕЛЯ --}}
+                {{-- ЦИТАТА ПРЕДСЕДАТЕЛЯ (убрали круг с фото) --}}
                 <div class="bg-[#5E0F14] rounded-2xl p-8">
-                    <div class="flex items-start gap-4">
-                        <img src="{{ asset('images/kusainov.jpg') }}"
-                             onerror="this.src='{{ asset('images/user.png') }}'"
-                             class="w-16 h-16 rounded-full object-cover ring-2 ring-[#E5C68D]">
-                        <div class="flex-1">
-                            <div class="text-[#E5C68D] text-6xl font-serif leading-none">“</div>
-                            <p class="text-white text-lg italic leading-relaxed mt-2">
-                                КазГАСА — это не просто университет. Это место, где рождается
-                                архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
-                                тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
-                            </p>
-                            <p class="text-[#E5C68D] font-bold mt-4">Кусаинов Айгазы Амирланович</p>
-                            <p class="text-white/70 text-sm mt-1">
-                                Председатель Наблюдательного совета IEC, Председатель Правления
-                                Международной образовательной корпорации, владелец группы компаний Verum
-                            </p>
-                        </div>
+                    <div class="flex-1">
+                        <div class="text-[#E5C68D] text-6xl font-serif leading-none">“</div>
+                        <p class="text-white text-lg italic leading-relaxed mt-2">
+                            КазГАСА — это не просто университет. Это место, где рождается
+                            архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
+                            тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
+                        </p>
+                        <p class="text-[#E5C68D] font-bold mt-4">Кусаинов Айгазы Амирланович</p>
+                        <p class="text-white/70 text-sm mt-1">
+                            Председатель Наблюдательного совета IEC, Председатель Правления
+                            Международной образовательной корпорации, владелец группы компаний Verum
+                        </p>
                     </div>
                 </div>
 
