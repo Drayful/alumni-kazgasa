@@ -10,6 +10,8 @@ class GoogleWalletPassService
 {
     public function createSaveUrlForAlumni(AlumniProfile $profile): string
     {
+
+
         $this->assertConfigured();
 
         $issuerId = Config::get('google-wallet.issuer_id');
@@ -20,67 +22,100 @@ class GoogleWalletPassService
         $objectId = "{$issuerId}.{$classSuffix}_{$objectSuffix}";
 
         $serviceAccount = $this->loadServiceAccount();
+        $this->ensureClassExists($classId, $issuerId, $serviceAccount);
+        $publicUrl = url(route('alumni.card.show', ['publicId' => $profile->public_id], false));
+        $status = (string) ($profile->status ?: 'Connect');
+
+// Secondary fields (школа + год выпуска)
+        $textModules = array_values(array_filter([
+            $profile->school ? [
+                'id'     => 'school',
+                'header' => 'Школа/Факультет',
+                'body'   => $profile->school,
+            ] : null,
+            $profile->graduation_year ? [
+                'id'     => 'year',
+                'header' => 'Год выпуска',
+                'body'   => (string) $profile->graduation_year,
+            ] : null,
+            $profile->membership_type ? [
+                'id'     => 'type',
+                'header' => 'Тип',
+                'body'   => $profile->membership_type === 'paid' ? 'Платный' : 'Бесплатный',
+            ] : null,
+            [
+                'id'     => 'status',
+                'header' => 'Статус',
+                'body'   => $status,
+            ],
+        ]));
+
+// Back fields (ИИН, срок, ссылка проверки)
+        $linksModule = [];
+        $linksModule['uris'][] = [
+            'uri'         => $publicUrl,
+            'description' => 'Проверка карты',
+            'id'          => 'verify',
+        ];
+
+        $infoModule = array_values(array_filter([
+            $profile->iin ? [
+                'id'     => 'iin',
+                'header' => 'ИИН',
+                'body'   => (string) $profile->iin,
+            ] : null,
+            $profile->membership_expiry_date ? [
+                'id'     => 'expiry',
+                'header' => 'Действительна до',
+                'body'   => $profile->membership_expiry_date->format('d.m.Y'),
+            ] : null,
+        ]));
 
         $genericObject = [
-            'id' => $objectId,
+            'id'      => $objectId,
             'classId' => $classId,
-            'state' => 'ACTIVE',
-            'heroImage' => [
-                'sourceUri' => [
-                    'uri' => $this->avatarUrlAbsolute($profile),
-                ],
-                'contentDescription' => [
-                    'defaultValue' => [
-                        'language' => 'ru-RU',
-                        'value' => 'Фотография выпускника',
-                    ],
-                ],
-            ],
-            'logo' => [
-                'sourceUri' => [
-                    'uri' => url('/images/AV-logotip-2.svg'),
-                ],
-                'contentDescription' => [
-                    'defaultValue' => [
-                        'language' => 'ru-RU',
-                        'value' => 'KazGASA Alumni',
-                    ],
-                ],
-            ],
+            'state'   => 'ACTIVE',
+
+            // Основное — аналог primaryFields
             'cardTitle' => [
-                'defaultValue' => [
-                    'language' => 'ru-RU',
-                    'value' => 'Карта выпускника',
-                ],
-            ],
-            'subheader' => [
-                'defaultValue' => [
-                    'language' => 'ru-RU',
-                    'value' => $profile->school ?: 'KazGASA Alumni',
-                ],
+                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Карта выпускника'],
             ],
             'header' => [
-                'defaultValue' => [
-                    'language' => 'ru-RU',
-                    'value' => trim($profile->full_name),
-                ],
+                'defaultValue' => ['language' => 'ru-RU', 'value' => trim($profile->full_name) ?: 'Alumni'],
             ],
-            'hexBackgroundColor' => Config::get('google-wallet.hex_background_color', '#8F161C'),
-            'textModulesData' => array_values(array_filter([
-                [
-                    'header' => 'Год выпуска',
-                    'body' => $profile->graduation_year ? (string) $profile->graduation_year : '—',
-                ],
-                $profile->specialty ? [
-                    'header' => 'Специальность',
-                    'body' => $profile->specialty,
-                ] : null,
-                [
-                    'header' => 'Проверка карты',
-                    'body' => route('alumni.card.show', ['publicId' => $profile->public_id]),
-                ],
-            ])),
+            'subheader' => [
+                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Выпускник'],
+            ],
+
+            // Secondary + auxiliary — аналог secondaryFields/auxiliaryFields
+            'textModulesData' => $textModules,
+
+            // Back fields — ИИН, срок действия
+            'infoModuleData' => [
+                'labelValueRows' => array_map(fn($f) => [
+                    'columns' => [[
+                        'label' => $f['header'],
+                        'value' => ['defaultValue' => ['language' => 'ru-RU', 'value' => $f['body']]],
+                    ]],
+                ], $infoModule),
+                'showLastUpdateTime' => false,
+            ],
+
+            // Ссылка проверки карты
+            'linksModuleData' => $linksModule,
+
+            // QR-код — аналог barcodes
+            'barcode' => [
+                'type'          => 'QR_CODE',
+                'value'         => $publicUrl,
+                'alternateText' => $profile->public_id,
+            ],
+
+            // Цвета — аналог foreground/background/labelColor
+            'hexBackgroundColor' => '#8F161C',
         ];
+
+
 
         $jwtPayload = [
             'iss' => $serviceAccount['client_email'],
@@ -140,6 +175,45 @@ class GoogleWalletPassService
 
         return implode('.', $segments);
     }
+
+
+    private function ensureClassExists(string $classId, string $issuerId, array $serviceAccount): void
+    {
+        $jwt = $this->encodeJwtRs256([
+            'iss' => $serviceAccount['client_email'],
+            'scope' => 'https://www.googleapis.com/auth/wallet_object.issuer',
+            'aud' => 'https://oauth2.googleapis.com/token',
+            'iat' => time(),
+            'exp' => time() + 3600,
+        ], $serviceAccount['private_key']);
+
+        $tokenResponse = \Http::post('https://oauth2.googleapis.com/token', [
+            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            'assertion' => $jwt,
+        ]);
+
+        \Log::info('Google token response', $tokenResponse->json()); // ← лог
+
+        $accessToken = $tokenResponse->json('access_token');
+
+        $check = \Http::withToken($accessToken)
+            ->get("https://walletobjects.googleapis.com/walletobjects/v1/genericClass/{$classId}");
+
+        \Log::info('Google class check', ['status' => $check->status(), 'body' => $check->json()]); // ← лог
+
+        if ($check->status() === 404) {
+            $create = \Http::withToken($accessToken)
+                ->post('https://walletobjects.googleapis.com/walletobjects/v1/genericClass', [
+                    'id' => $classId,
+                    'issuerName' => 'KazGASA Alumni',
+                    'reviewStatus' => 'UNDER_REVIEW',
+                ]);
+
+            \Log::info('Google class create', ['status' => $create->status(), 'body' => $create->json()]); // ← лог
+        }
+    }
+
+
 
     private function base64UrlEncode(string $data): string
     {
