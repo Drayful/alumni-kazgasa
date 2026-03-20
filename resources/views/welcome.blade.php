@@ -37,7 +37,7 @@
 
                 <div class="hidden lg:flex items-center gap-8">
                     <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Главная</a>
-                    <a href="{{ url('/') }}#card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Карта выпускника</a>
+                    <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Карта выпускника</a>
                     <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Встреча</a>
                     <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Архив KazGASA</a>
                     @auth
@@ -57,7 +57,7 @@
             <div x-show="mobileMenuOpen" x-transition class="lg:hidden border-t border-[#D9D9D9]">
                 <div class="py-4 flex flex-col gap-2">
                     <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Главная</a>
-                    <a href="{{ url('/') }}#card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Карта выпускника</a>
+                    <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Карта выпускника</a>
                     <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Встреча</a>
                     <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Архив KazGASA</a>
                     @auth
@@ -91,48 +91,81 @@
             </div>
 
             <div class="flex-1 flex flex-col justify-center lg:pl-12 space-y-6">
-                <div>
-                    <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/80 text-xs sm:text-sm font-medium mb-3" style="color: #8F161C;">
-                        15 апреля · Слёт выпускников KazGASA Alumni
+                {{-- ШАПКА --}}
+                <div class="flex items-center gap-4">
+                    <img src="{{ asset('images/AV-logotip-2.svg') }}"
+                         alt="KazGASA Alumni"
+                         class="h-10 w-10"
+                         onerror="this.src='{{ asset('images/hero-photo.jpg') }}'">
+                    <div>
+                        <div class="font-bold text-lg sm:text-xl" style="color: #8F161C;">КазГАСА Alumni</div>
+                        <div class="text-xs sm:text-sm text-[#E5C68D] mt-1" style="letter-spacing: 0.03em;">
+                            45 лет архитектурному образованию Казахстана · since 1980
+                        </div>
                     </div>
+                </div>
+
+                {{-- HERO TEXT --}}
+                <div>
                     <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-2xl">
-                        Дорогие выпускники КазГАСА / ААСИ / КазПТИ
+                        Слёт выпускников КазГАСА
                     </h1>
                     <p class="mt-3 text-base sm:text-lg text-white/95 max-w-lg">
-                        45‑летие архитектурного образования Казахстана: встреча поколений, авторские экскурсии,
-                        концертная программа.
+                        45 лет архитектурному образованию Казахстана — встреча всех поколений.
+                    </p>
+                    <p class="mt-4 text-base sm:text-lg text-white/95 max-w-lg">
+                        Один день — тысячи историй. Приходи встретить своих однокурсников,
+                        увидеть изменения в родных стенах и стать частью истории КазГАСА.
                     </p>
                 </div>
 
-                {{-- Обратный отсчёт до 15 апреля 2026 --}}
-                <div class="inline-block bg-white/90 rounded-2xl px-4 py-3 sm:px-5 sm:py-4 shadow-lg">
-                    <p class="text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                        До начала слёта
-                    </p>
-                    <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>
-                        @foreach(['дней','часов','минут','секунд'] as $label)
-                            <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"
-                                 style="border-color: #E5C68D33; background-color: #F6F2EA;">
-                                <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>
-                                <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">
-                                    {{ $label }}
-                                </span>
-                            </div>
-                        @endforeach
+                {{-- ДАТА / НАЧАЛО / КОНЕЦ --}}
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
+                        <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">📅 Дата</p>
+                        <p class="text-[#2B2B2B] font-bold text-sm mt-1">15 апреля 2026 года</p>
                     </div>
-                    <p class="mt-2 text-[11px] text-[#F97316]">
-                        Событие состоится 15 апреля 2026 года.
-                    </p>
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
+                        <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">🕒 Начало</p>
+                        <p class="text-[#2B2B2B] font-bold text-sm mt-1">15:00</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
+                        <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">🕔 Конец</p>
+                        <p class="text-[#2B2B2B] font-bold text-sm mt-1">19:00</p>
+                    </div>
                 </div>
 
-                <div class="mt-2 flex flex-wrap gap-4">
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg transition-colors hover:opacity-90"
-                       style="background-color: #8F161C; color: #FFFFFF; border: 1px solid #E5C68D;">
-                        Зарегистрироваться как выпускник
+                {{-- ЦИТАТА ПРЕДСЕДАТЕЛЯ --}}
+                <div class="bg-[#5E0F14] rounded-2xl p-8">
+                    <div class="flex items-start gap-4">
+                        <img src="{{ asset('images/kusainov.jpg') }}"
+                             onerror="this.src='{{ asset('images/user.png') }}'"
+                             class="w-16 h-16 rounded-full object-cover ring-2 ring-[#E5C68D]">
+                        <div class="flex-1">
+                            <div class="text-[#E5C68D] text-6xl font-serif leading-none">“</div>
+                            <p class="text-white text-lg italic leading-relaxed mt-2">
+                                КазГАСА — это не просто университет. Это место, где рождается
+                                архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
+                                тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
+                            </p>
+                            <p class="text-[#E5C68D] font-bold mt-4">Кусаинов Айгазы Амирланович</p>
+                            <p class="text-white/70 text-sm mt-1">
+                                Председатель Наблюдательного совета IEC, Председатель Правления
+                                Международной образовательной корпорации, владелец группы компаний Verum
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- CTA --}}
+                <div class="flex flex-wrap gap-4">
+                    <a href="#program"
+                       class="bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition text-sm sm:text-base">
+                        Программа слёта
                     </a>
-                    <a href="#program" class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg border transition-colors hover:bg-white/10"
-                       style="border-color: #E5C68D; color: #F6F2EA;">
-                        Смотреть программу дня
+                    <a href="#alumni-card"
+                       class="border-2 border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-8 py-3 rounded-xl font-semibold transition text-sm sm:text-base">
+                        Карта выпускника
                     </a>
                 </div>
             </div>
@@ -165,121 +198,401 @@
 
     {{-- 5. ПРОГРАММА 15 АПРЕЛЯ — СЛЁТ ВЫПУСКНИКОВ --}}
     <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        @php
+            $schedule = [
+                ['time' => '15:00', 'start' => '15:00', 'end' => '15:30', 'title' => 'Регистрация участников', 'place' => 'Главный вход КазГАСА'],
+                ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Торжественное открытие', 'place' => 'Территория КазГАСА'],
+                ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Приветственные слова руководства', 'place' => 'Территория КазГАСА'],
+                ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Презентация цифровой платформы', 'place' => 'Территория КазГАСА'],
+                ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Выступления и подарки от выпускников', 'place' => 'Территория КазГАСА'],
+                ['time' => '16:30', 'start' => '16:30', 'end' => '18:00', 'title' => 'Экскурсии по факультетам', 'place' => 'Корпуса КазГАСА'],
+                ['time' => '18:00', 'start' => '18:00', 'end' => '19:00', 'title' => 'Фуршет и концертная программа', 'place' => 'Территория КазГАСА'],
+                ['time' => '19:00', 'start' => '19:00', 'end' => '19:30', 'title' => 'Завершение вечера', 'place' => 'Территория КазГАСА'],
+            ];
+        @endphp
+
         <div class="max-w-5xl mx-auto">
             <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                15 апреля 2026 · Слёт выпускников
+                15 апреля 2026
             </p>
-            <h2 class="text-2xl sm:text-3xl font-bold mb-6" style="color: #2B2B2B;">
-                Программа вечера
+            <h2 class="text-2xl sm:text-3xl font-bold mb-2" style="color: #2B2B2B;">
+                Программа встречи выпускников
             </h2>
+            <p class="text-sm text-gray-500 mb-8">
+                Текущее событие подсвечивается автоматически по времени
+            </p>
 
-            @php
-                $eventDate = '2026-04-15';
-                $slots = [
-                    [
-                        'time' => '15:00 – 15:30',
-                        'start' => '15:00',
-                        'end' => '15:30',
-                        'title' => 'Регистрация участников',
-                        'details' => 'Встреча и регистрация выпускников у входа на территорию КазГАСА.',
-                    ],
-                    [
-                        'time' => '15:30 – 16:30',
-                        'start' => '15:30',
-                        'end' => '16:30',
-                        'title' => 'Торжественное открытие мероприятия',
-                        'details' => "Показ фильма «КазГАСА: 45 лет в кадре», приветственные слова руководства,\nпрезентация цифровой Платформы выпускников, выступления и подарки от выпускников.",
-                    ],
-                    [
-                        'time' => '16:30 – 17:20',
-                        'start' => '16:30',
-                        'end' => '17:20',
-                        'title' => 'Авторские экскурсии по школам',
-                        'details' => 'Экскурсии по факультетам и обновлённым пространствам КазГАСА от преподавателей и выпускников.',
-                    ],
-                    [
-                        'time' => '17:20 – 18:00',
-                        'start' => '17:20',
-                        'end' => '18:00',
-                        'title' => 'Фуршет и концертная программа',
-                        'details' => 'Фуршет и живая музыка в праздничном шатре на территории кампуса.',
-                    ],
-                    [
-                        'time' => '18:00 – 18:30',
-                        'start' => '18:00',
-                        'end' => '18:30',
-                        'title' => 'Финальный блок: общее караоке',
-                        'details' => 'Совместное исполнение любимых песен выпускников и студентов.',
-                    ],
-                    [
-                        'time' => '18:30',
-                        'start' => '18:30',
-                        'end' => '18:35',
-                        'title' => 'Праздничный салют',
-                        'details' => 'Салют в честь 45‑летия архитектурного образования Казахстана.',
-                    ],
-                    [
-                        'time' => '18:40 – 19:00',
-                        'start' => '18:40',
-                        'end' => '19:00',
-                        'title' => 'Завершение вечера',
-                        'details' => 'Прощание, обмен контактами и планы на новые встречи KazGASA Alumni.',
-                    ],
-                ];
-            @endphp
+            <div x-data="{
+                    now: new Date(),
+                    isActive(start, end) {
+                        const today = this.now.toISOString().slice(0, 10);
+                        const eventDate = '2026-04-15';
+                        if (today !== eventDate) return false;
+                        const cur = this.now.getHours() * 60 + this.now.getMinutes();
+                        const [sh, sm] = start.split(':').map(Number);
+                        const [eh, em] = end.split(':').map(Number);
+                        return cur >= (sh * 60 + sm) && cur < (eh * 60 + em);
+                    }
+                }"
+                 x-init="setInterval(() => { now = new Date() }, 30000)"
+                 class="relative border-l-2 border-[#E5C68D] ml-2 sm:ml-6">
 
-            <div class="space-y-3" id="program-timeline">
-                @foreach($slots as $index => $slot)
-                    <div class="grid grid-cols-[92px_10px_1fr_auto] sm:grid-cols-[110px_10px_1fr_auto] items-start gap-3 sm:gap-4 rounded-2xl border px-3 sm:px-4 py-3 sm:py-3.5 bg-[#FDFBF7]"
-                         data-slot
-                         data-slot-start="{{ $eventDate }}T{{ $slot['start'] }}:00+06:00"
-                         data-slot-end="{{ $eventDate }}T{{ $slot['end'] }}:00+06:00"
-                         style="border-color: #D9D9D9;">
-                        <div class="pt-1 text-right pr-1">
-                            <span class="text-xs sm:text-sm font-semibold tracking-wide text-[#2B2B2B] whitespace-nowrap">
-                                {{ $slot['time'] }}
+                <div id="program-timeline">
+                    @foreach($schedule as $item)
+                        <div class="relative pl-8 pb-8">
+                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full
+                                         bg-[#8F161C] border-2 border-[#E5C68D]"
+                                  :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'ring-4 ring-[#8F161C]/30' : ''">
                             </span>
+
+                            <div class="mt-0"
+                                 :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ?
+                                    'bg-[#8F161C] text-white rounded-xl p-4 shadow-lg' :
+                                    'bg-white rounded-xl p-4 shadow-sm'">
+                                <div class="flex items-baseline justify-between gap-4">
+                                    <span class="text-[#E5C68D] font-bold text-sm"
+                                          :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/80' : 'text-[#E5C68D]'">
+                                        {{ $item['time'] }}
+                                    </span>
+                                </div>
+                                <div class="font-semibold"
+                                     :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white' : 'text-[#2B2B2B]'">
+                                    {{ $item['title'] }}
+                                </div>
+                                <div class="text-sm"
+                                     :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/70' : 'text-gray-500'">
+                                    {{ $item['place'] }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-2 h-2 rounded-full mt-2 bg-[#D9D9D9]" data-slot-dot></div>
-                        <div class="flex-1">
-                            <p class="text-sm sm:text-base font-semibold" style="color: #2B2B2B;">
-                                {{ $slot['title'] }}
-                            </p>
-                            <p class="mt-1 text-xs sm:text-sm whitespace-pre-line" style="color: #2B2B2B99;">
-                                {!! nl2br(e($slot['details'])) !!}
-                            </p>
-                        </div>
-                        <span class="hidden mt-0.5 text-[10px] font-semibold uppercase tracking-wide px-2 py-1 rounded-full whitespace-nowrap"
-                              data-slot-badge
-                              style="background-color: #E5C68D33; color: #8F161C;">
-                            Сейчас
-                        </span>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="{{ asset('files/program.pdf') }}"
+                   download
+                   class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
+                    📄 Скачать программу (PDF)
+                </a>
+                <a href="#"
+                   class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
+                    🗺 Карта кампуса
+                </a>
             </div>
         </div>
     </section>
 
     {{-- 6. КАРТА ВЫПУСКНИКА --}}
-    <section id="card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        @php
+            $alumniProfile = auth()->check() ? auth()->user()->alumniProfile : null;
+            $publicId = $alumniProfile?->public_id;
+        @endphp
+
         <div class="max-w-7xl mx-auto">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
+                {{-- Визуальная карточка (слева) --}}
+                <div class="flex justify-center lg:justify-start">
+                    <div class="w-full max-w-sm">
+                        <x-alumni-card :alumni-profile="$alumniProfile" />
+                    </div>
+                </div>
+
+                {{-- Текст + кнопки --}}
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold" style="color: #8F161C;">Цифровая карта выпускника</h2>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-3">Скидки и привилегии</p>
+                    <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">Карта выпускника КазГАСА</h2>
                     <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
-                        Получите персональную цифровую карту выпускника КазГАСА — подтверждение вашего статуса и связь с альма-матер. Карта с QR-кодом доступна после регистрации в личном кабинете.
+                        Предъявите карту у партнёров — и получите скидку.
+                        Сохраняется в Apple Wallet и Google Pay.
                     </p>
-                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center mt-6 px-6 py-3 text-base font-medium text-white rounded transition-colors hover:opacity-90" style="background-color: #8F161C;">
-                        Получить карту
-                    </a>
+
+                    <div class="mt-6">
+                        @auth
+                            @if($publicId)
+                                <div class="grid sm:grid-cols-2 gap-3">
+                                    <a href="{{ route('wallet.apple', $publicId) }}"
+                                       class="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-900 transition">
+                                        🍎 Добавить в Apple Wallet
+                                    </a>
+                                    <a href="{{ route('wallet.google', $publicId) }}"
+                                       class="flex items-center justify-center gap-2 bg-[#4285F4] text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-600 transition">
+                                        G Добавить в Google Pay
+                                    </a>
+                                </div>
+                            @else
+                                <a href="{{ route('profile.edit') }}"
+                                   class="bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition inline-flex items-center justify-center w-full">
+                                    Заполните профиль, чтобы добавить карту
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}"
+                               class="bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition inline-flex items-center justify-center w-full">
+                                Войти чтобы получить карту
+                            </a>
+                        @endauth
+                    </div>
                 </div>
-                <div class="flex justify-center lg:justify-end">
-                    @if(file_exists(public_path('images/alumni-card-fon.png')))
-                        <div class="w-full max-w-sm rounded-xl shadow-xl overflow-hidden aspect-[1.6]" style="background-image: url('{{ asset('images/alumni-card-fon.png') }}'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
-                    @else
-                        <div class="w-full max-w-sm rounded-xl shadow-xl aspect-[1.6] flex items-center justify-center text-[#8F161C] font-semibold" style="background-color: #F6F2EA;">Карта выпускника</div>
-                    @endif
+            </div>
+        </div>
+    </section>
+
+    {{-- 6. ПАРТНЁРЫ Alumni --}}
+    <section id="partners" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Партнёры Alumni</p>
+            <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
+                Партнёры, где работает карта выпускника
+            </h2>
+
+            @php
+                $partners = [
+                    [
+                        'name' => 'Школа КазГАСА',
+                        'discount' => 'X%',
+                        'desc' => 'Скидка распространяется на детей и внуков выпускников КазГАСА.',
+                        'logo' => 'К',
+                        'popup' => 'Покажите карту выпускника администратору школы при подаче заявления на поступление. Скидка распространяется на детей и внуков выпускников КазГАСА.',
+                        'note' => 'Нужен скан диплома, подтверждающий ваш статус выпускника.',
+                    ],
+                    [
+                        'name' => 'Школа КАУ',
+                        'discount' => 'X%',
+                        'desc' => 'Скидка применяется к стоимости обучения за первый учебный год.',
+                        'logo' => 'К',
+                        'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
+                        'note' => 'Нужен скан диплома.',
+                    ],
+                    [
+                        'name' => 'Digital колледж КазГАСА',
+                        'discount' => 'X%',
+                        'desc' => 'Скидка действует при оформлении договора на первый год.',
+                        'logo' => 'D',
+                        'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
+                        'note' => 'Нужен скан диплома.',
+                    ],
+                    [
+                        'name' => 'Колледж КАУ',
+                        'discount' => 'X%',
+                        'desc' => 'Подача договора — и скидка активируется по карте выпускника.',
+                        'logo' => 'К',
+                        'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
+                        'note' => 'Нужен скан диплома.',
+                    ],
+                    [
+                        'name' => 'Магистратура КазГАСА',
+                        'discount' => 'X%',
+                        'desc' => 'Скидка на поступление и обучение для выпускников и семьи.',
+                        'logo' => 'М',
+                        'popup' => 'Покажите карту при подаче заявления. Скидка на детей и внуков выпускников КазГАСА.',
+                        'note' => 'Нужен скан диплома.',
+                    ],
+                    [
+                        'name' => 'Докторантура КазГАСА',
+                        'discount' => 'X%',
+                        'desc' => 'Поддержка выпускников на этапе докторантуры.',
+                        'logo' => 'Д',
+                        'popup' => 'Покажите карту при подаче заявления. Скидка применяется по программе для детей и внуков выпускников КазГАСА.',
+                        'note' => 'Нужен скан диплома.',
+                    ],
+                    [
+                        'name' => 'FabLab',
+                        'discount' => 'X%',
+                        'desc' => 'Современное пространство для воплощения архитектурных идей в модели.',
+                        'logo' => 'F',
+                        'popup' => 'Покажите карту выпускника менеджеру. Мы подберём подходящий формат участия и доступ к ресурсам FabLab.',
+                        'note' => '',
+                    ],
+                    [
+                        'name' => 'Лаборатория Дронов',
+                        'discount' => 'X%',
+                        'desc' => 'Аэрофото, тепловизия, 3D-моделирование и пилотирование.',
+                        'logo' => 'U',
+                        'popup' => 'Покажите карту выпускника менеджеру и получите условия участия по программе партнёрства Alumni.',
+                        'note' => '',
+                    ],
+                    [
+                        'name' => 'Gaudi Paint',
+                        'discount' => '5%',
+                        'desc' => 'Скидка на ассортимент водно-дисперсионных акриловых красок и декоративных покрытий.',
+                        'logo' => 'G',
+                        'popup' => 'Покажите карту выпускника КазГАСА продавцу-консультанту в магазине. Скидка применяется ко всему ассортименту.',
+                        'note' => '',
+                    ],
+                    [
+                        'name' => 'Автошкола Sapar',
+                        'discount' => '20%',
+                        'desc' => 'Права с нуля Алматы: теория + практика + экзамен.',
+                        'logo' => 'S',
+                        'popup' => 'Покажите карту выпускника при записи на курс или назовите, что вы выпускник КазГАСА. Скидка действует на полный курс обучения любой категории.',
+                        'note' => '',
+                    ],
+                ];
+            @endphp
+
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                @foreach($partners as $p)
+                    <div x-data="{ open: false }"
+                         class="bg-white rounded-2xl shadow-sm p-5 cursor-pointer
+                                border border-transparent hover:border-[#8F161C] transition">
+                        <div @click="open = true">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-[#F6F2EA] border border-[#D9D9D9]
+                                            flex items-center justify-center text-[#8F161C] font-bold">
+                                    {{ $p['logo'] }}
+                                </div>
+                                <span class="bg-[#8F161C] text-white text-sm px-2 py-0.5 rounded-full">
+                                    {{ $p['discount'] }}
+                                </span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="font-bold text-[#2B2B2B] text-sm">{{ $p['name'] }}</p>
+                                <p class="text-sm text-gray-500 mt-2">{{ $p['desc'] }}</p>
+                            </div>
+                        </div>
+
+                        {{-- Pop-up --}}
+                        <div x-show="open" x-cloak @click.away="open = false"
+                             class="fixed inset-0 bg-black/50 flex items-center
+                                    justify-center z-50 px-4">
+                            <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <p class="text-[#8F161C] font-bold text-xl">
+                                            {{ $p['name'] }}
+                                        </p>
+                                        <p class="mt-1 text-sm text-gray-500">
+                                            Скидка: <span class="font-semibold text-[#8F161C]">{{ $p['discount'] }}</span>
+                                        </p>
+                                    </div>
+                                    <button @click="open = false"
+                                            class="text-gray-400 hover:text-gray-600 text-xl">
+                                        ✕
+                                    </button>
+                                </div>
+
+                                <p class="text-sm text-[#2B2B2B] mt-4 whitespace-pre-line">
+                                    {{ $p['popup'] }}
+                                </p>
+                                @if(!empty($p['note']))
+                                    <p class="text-xs text-gray-400 mt-3">
+                                        {{ $p['note'] }}
+                                    </p>
+                                @endif
+
+                                <div class="mt-6">
+                                    <button @click="open = false"
+                                            class="w-full bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
+                                        Понятно
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- + Стать партнёром --}}
+            <div class="mt-10 flex justify-center">
+                <div x-data="{ open: false, sent: false }" class="relative w-full max-w-xl">
+                    <button @click="open = true"
+                            class="w-full border-2 border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white
+                                   px-6 py-2.5 rounded-xl font-medium transition">
+                        + Стать партнёром
+                    </button>
+
+                    <div x-show="open" x-cloak
+                         class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+                        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-xl relative">
+                            <button @click="open = false"
+                                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">✕</button>
+
+                            <div x-show="!sent">
+                                <h3 class="text-[#5E0F14] font-bold text-xl mb-1">Предложите партнёрство</h3>
+                                <p class="text-sm text-gray-500 mb-4">
+                                    Мы рассмотрим заявку и свяжемся с вами в течение 2 рабочих дней.
+                                </p>
+                                <form method="POST"
+                                      action="{{ route('partner.apply') }}"
+                                      @submit.prevent="sent = true; $el.submit()">
+                                    @csrf
+                                    <input name="name" placeholder="Ваше имя"
+                                           class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-3"
+                                           required>
+                                    <input name="company" placeholder="Название компании"
+                                           class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-3"
+                                           required>
+                                    <input name="contact" placeholder="Телефон или e-mail"
+                                           class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-4"
+                                           required>
+                                    <button class="w-full bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
+                                        Отправить заявку
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div x-show="sent" class="text-center py-6">
+                                <span class="text-4xl">✅</span>
+                                <p class="text-[#5E0F14] font-bold text-lg mt-3">Спасибо!</p>
+                                <p class="text-gray-500 text-sm mt-1">
+                                    Мы рассмотрим заявку и свяжемся с вами в течение 2 рабочих дней.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- 7. ЛИЦА КазГАСА --}}
+    <section id="faces" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Гордость университета</p>
+            <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
+                Лица КазГАСА
+            </h2>
+            <p class="text-sm text-gray-500 mt-2 max-w-3xl">
+                Министры, депутаты, предприниматели, архитекторы — они начинали здесь, в этих стенах.
+            </p>
+
+            @php
+                $faces = [
+                    ['name' => 'Кушербаев Крымбек Елеуович', 'role' => 'Бывший Министр науки и высшего образования РК', 'img' => 'kusherbaev.jpg'],
+                    ['name' => 'Касымбек Женис Махмудович', 'role' => 'Аким города Астаны', 'img' => 'kassymbekov.jpg'],
+                    ['name' => 'Ким Владимир Сергеевич', 'role' => 'Президент и акционер KAZ Minerals Ltd', 'img' => 'kim.jpg'],
+                    ['name' => 'Баталов Раимбек Анварович', 'role' => 'Основатель и председатель совета директоров холдинга Raimbek Group', 'img' => 'batalov.jpg'],
+                    ['name' => 'Ермекбаев Нурлан Байузакович', 'role' => 'Генеральный секретарь Шанхайской организации сотрудничества', 'img' => 'ermekbaev.jpg'],
+                    ['name' => 'Белович Александр Якубович', 'role' => 'Председатель Совета директоров ХК BAZIS', 'img' => 'belovich.jpg'],
+                    ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Заслуженный деятель Казахстана, почётный строитель РК', 'img' => 'abdullin.jpg'],
+                    ['name' => 'Дюсембинов Султан Мырзабекович', 'role' => '—', 'img' => 'dyusembinov.jpg'],
+                    ['name' => '—', 'role' => '—', 'img' => null],
+                    ['name' => '—', 'role' => '—', 'img' => null],
+                    ['name' => '—', 'role' => '—', 'img' => null],
+                    ['name' => '—', 'role' => '—', 'img' => null],
+                ];
+            @endphp
+
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                @foreach($faces as $f)
+                    <div class="bg-white rounded-2xl shadow-sm p-5 text-center
+                                hover:shadow-md transition border border-transparent hover:border-[#E5C68D]">
+                        <div class="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3 ring-2 ring-[#8F161C]">
+                            <img
+                                src="{{ $f['img'] ? asset('images/faces/'.$f['img']) : asset('images/hero-photo.jpg') }}"
+                                onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <p class="font-bold text-[#2B2B2B] text-sm leading-tight">
+                            {{ $f['name'] }}
+                        </p>
+                        <p class="text-[#8F161C] text-xs mt-1">
+                            {{ $f['role'] }}
+                        </p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -518,7 +831,7 @@
                         <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">Навигация</h3>
                         <ul class="mt-3 space-y-2">
                             <li><a href="{{ url('/') }}#hero" class="text-sm text-white/80 hover:text-white">Главная</a></li>
-                            <li><a href="{{ url('/') }}#card" class="text-sm text-white/80 hover:text-white">Карта выпускника</a></li>
+                            <li><a href="{{ url('/') }}#alumni-card" class="text-sm text-white/80 hover:text-white">Карта выпускника</a></li>
                             <li><a href="{{ route('login') }}" class="text-sm text-white/80 hover:text-white">Вход</a></li>
                             <li><a href="{{ route('register') }}" class="text-sm text-white/80 hover:text-white">Регистрация</a></li>
                         </ul>

@@ -2,9 +2,12 @@
 
 @php
     /** @var \App\Models\AlumniProfile|null $alumniProfile */
-    $name = $alumniProfile?->full_name ?? auth()->user()->name;
-    $idDisplay = $alumniProfile?->public_id
-        ?? str_pad((string) ($alumniProfile?->id ?? auth()->id()), 6, '0', STR_PAD_LEFT);
+    $authUser = auth()->check() ? auth()->user() : null;
+
+    // Для неавторизованных используем брендовый текст, чтобы компонент не падал.
+    $name = $alumniProfile?->full_name ?? ($authUser?->name ?? 'KazGASA Alumni');
+
+    $idDisplay = $alumniProfile?->public_id ?? ($alumniProfile?->id ? (string) $alumniProfile->id : '—');
     $isDashboard = $variant === 'dashboard';
 
     $cardUrl = null;

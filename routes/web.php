@@ -10,6 +10,7 @@ use App\Http\Controllers\SuperAdmin\ApplicationController;
 use App\Http\Controllers\SuperAdmin\StatsController;
 use App\Http\Controllers\Wallet\AppleWalletController;
 use App\Http\Controllers\Wallet\GoogleWalletController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,11 +27,15 @@ Route::get('/card/{publicId}', [AlumniCardController::class, 'show'])
 
 // Публичная выдача Apple Wallet (.pkpass) по public_id профиля
 Route::get('/wallet/apple/{publicId}', [AppleWalletController::class, 'downloadPublic'])
-    ->name('wallet.apple.public');
+    ->name('wallet.apple');
 
 // Публичная ссылка "Save to Google Wallet" по public_id профиля
 Route::get('/wallet/google/{publicId}', [GoogleWalletController::class, 'redirectPublic'])
-    ->name('wallet.google.public');
+    ->name('wallet.google');
+
+// Подача заявки на партнёрство (для формы на главной)
+Route::post('/partner/apply', [PartnerController::class, 'apply'])
+    ->name('partner.apply');
 
 // Кабинет супер-админа
 Route::prefix('super-admin')
