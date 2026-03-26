@@ -3,7 +3,7 @@
 @section('title', 'Заявки')
 
 @section('content')
-    <div class="bg-white rounded-2xl shadow-sm p-6 border border-[#D9D9D9]">
+    <div class="bg-white rounded-2xl shadow-sm p-6 border border-[#D9D9D9] w-full">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <p class="text-sm text-gray-500">Заявки на “стать партнёром”</p>
@@ -31,22 +31,30 @@
             </div>
         </div>
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="min-w-full text-sm">
+        <div class="mt-6 -mx-6 overflow-x-auto">
+            <table class="w-full min-w-[1100px] text-sm table-fixed">
+                <colgroup>
+                    <col class="w-[160px]" />
+                    <col class="w-[220px]" />
+                    <col class="w-[260px]" />
+                    <col class="w-[260px]" />
+                    <col class="w-[150px]" />
+                    <col class="w-[250px]" />
+                </colgroup>
                 <thead>
                 <tr class="text-left text-gray-500 border-b">
-                    <th class="py-3 pr-4">Дата</th>
+                    <th class="py-3 px-6">Дата</th>
                     <th class="py-3 pr-4">Имя</th>
                     <th class="py-3 pr-4">Компания</th>
                     <th class="py-3 pr-4">Контакт</th>
                     <th class="py-3 pr-4">Статус</th>
-                    <th class="py-3 pr-4">Действия</th>
+                    <th class="py-3 pr-6">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($applications as $a)
                     <tr class="border-b last:border-b-0">
-                        <td class="py-3 pr-4 text-gray-500 whitespace-nowrap">
+                        <td class="py-3 px-6 text-gray-500 whitespace-nowrap">
                             {{ $a->created_at?->format('d.m.Y H:i') }}
                         </td>
                         <td class="py-3 pr-4 font-medium text-[#2B2B2B]">
@@ -54,11 +62,15 @@
                                 {{ $a->name }}
                             </a>
                         </td>
-                        <td class="py-3 pr-4 text-[#2B2B2B]">
-                            {{ $a->company }}
+                        <td class="py-3 pr-4 text-[#2B2B2B] break-words">
+                            <span class="block leading-snug">
+                                {{ $a->company }}
+                            </span>
                         </td>
-                        <td class="py-3 pr-4 text-[#2B2B2B]">
-                            {{ $a->contact }}
+                        <td class="py-3 pr-4 text-[#2B2B2B] break-words">
+                            <span class="block leading-snug">
+                                {{ $a->contact }}
+                            </span>
                         </td>
                         <td class="py-3 pr-4">
                             @php
@@ -79,8 +91,8 @@
                                 {{ $label }}
                             </span>
                         </td>
-                        <td class="py-3 pr-4">
-                            <div class="flex flex-wrap gap-2">
+                        <td class="py-3 pr-6">
+                            <div class="flex flex-wrap gap-2 justify-end">
                                 <form method="POST" action="{{ route('super-admin.applications.approve', $a) }}">
                                     @csrf
                                     @method('PATCH')
