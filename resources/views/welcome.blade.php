@@ -571,18 +571,16 @@
 
                 @php
                     $faces = [
-                        ['name' => 'Кушербаев Крымбек Елеуович', 'role' => 'Бывший Министр науки и высшего образования РК', 'img' => 'kusherbaev.jpg'],
-                        ['name' => 'Касымбек Женис Махмудович', 'role' => 'Аким города Астаны', 'img' => 'kassymbekov.jpg'],
-                        ['name' => 'Ким Владимир Сергеевич', 'role' => 'Президент и акционер KAZ Minerals Ltd', 'img' => 'kim.jpg'],
-                        ['name' => 'Баталов Раимбек Анварович', 'role' => 'Основатель и председатель совета директоров холдинга Raimbek Group', 'img' => 'batalov.jpg'],
-                        ['name' => 'Ермекбаев Нурлан Байузакович', 'role' => 'Генеральный секретарь Шанхайской организации сотрудничества', 'img' => 'ermekbaev.jpg'],
-                        ['name' => 'Белович Александр Якубович', 'role' => 'Председатель Совета директоров ХК BAZIS', 'img' => 'belovich.jpg'],
-                        ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Заслуженный деятель Казахстана, почётный строитель РК', 'img' => 'abdullin.jpg'],
-                        ['name' => 'Дюсембинов Султан Мырзабекович', 'role' => '—', 'img' => 'dyusembinov.jpg'],
-                        ['name' => '—', 'role' => '—', 'img' => null],
-                        ['name' => '—', 'role' => '—', 'img' => null],
-                        ['name' => '—', 'role' => '—', 'img' => null],
-                        ['name' => '—', 'role' => '—', 'img' => null],
+                        ['name' => 'Белович Александр Якубович', 'role' => 'Председатель Совета директоров ТОО «Холдинговая компания BAZIS»', 'img' => 'belovich.jpg'],
+                        ['name' => 'Ким Владимир Сергеевич', 'role' => 'Президент, неисполнительный директор и акционер KAZ Minerals Ltd', 'img' => 'kim.jpg'],
+                        ['name' => 'Баталов Раимбек Анварович', 'role' => 'Казахстанский предприниматель, общественный деятель, основатель и председатель совета директоров холдинга Raimbek Group', 'img' => 'batalov.jpg'],
+                        ['name' => 'Татыгулов Айдар Абдысагитович', 'role' => 'Член совета · Президент «KAZGOR»', 'img' => null],
+                        ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Казахстанский эстрадный певец, телеведущий, бизнесмен. Заслуженный деятель Казахстана. Почётный строитель Республики Казахстан', 'img' => 'abdullin.jpg'],
+//                        ['name' => 'Дюсембинов Султан Мырзабекович', 'role' => '—', 'img' => 'dyusembinov.jpg'],
+//                        ['name' => '—', 'role' => '—', 'img' => null],
+//                        ['name' => '—', 'role' => '—', 'img' => null],
+//                        ['name' => '—', 'role' => '—', 'img' => null],
+//                        ['name' => '—', 'role' => '—', 'img' => null],
                     ];
                 @endphp
 
@@ -604,6 +602,14 @@
                             </p>
                         </div>
                     @endforeach
+                </div>
+
+                <div class="mt-8 flex justify-center">
+                    <a href="{{ route('faces.index') }}"
+                       class="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-sm transition shadow-sm"
+                       style="background-color: #8F161C; color: #FFFFFF;">
+                        Подробнее
+                    </a>
                 </div>
             </div>
         </section>
