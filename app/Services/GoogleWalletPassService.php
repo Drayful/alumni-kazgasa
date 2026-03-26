@@ -113,7 +113,25 @@ class GoogleWalletPassService
 
             // Цвета — аналог foreground/background/labelColor
             'hexBackgroundColor' => '#8F161C',
+            'hexForegroundColor' => '#FFFFFF',
+            'hexLabelColor' => '#E5C68D',
         ];
+
+        // Фото выпускника (если есть) — как hero/image module.
+        $avatar = $this->avatarUrlAbsolute($profile);
+        if (is_string($avatar) && $avatar !== '') {
+            $genericObject['heroImage'] = [
+                'sourceUri' => [
+                    'uri' => $avatar,
+                ],
+                'contentDescription' => [
+                    'defaultValue' => [
+                        'language' => 'ru-RU',
+                        'value' => trim($profile->full_name) ?: 'Фото выпускника',
+                    ],
+                ],
+            ];
+        }
 
 
 
