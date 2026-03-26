@@ -571,19 +571,15 @@
 
                 @php
                     $faces = [
-                        ['name' => 'Белович Александр Якубович', 'role' => 'Председатель Совета директоров ТОО «Холдинговая компания BAZIS»', 'img' => 'belovich.jpg'],
-                        ['name' => 'Ким Владимир Сергеевич', 'role' => 'Президент, неисполнительный директор и акционер KAZ Minerals Ltd', 'img' => 'kim.jpg'],
-                        ['name' => 'Баталов Раимбек Анварович', 'role' => 'Казахстанский предприниматель, общественный деятель, основатель и председатель совета директоров холдинга Raimbek Group', 'img' => 'batalov.jpg'],
-                        ['name' => 'Татыгулов Айдар Абдысагитович', 'role' => 'Член совета · Президент «KAZGOR»', 'img' => null],
-                        ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Казахстанский эстрадный певец, телеведущий, бизнесмен. Заслуженный деятель Казахстана. Почётный строитель Республики Казахстан', 'img' => 'abdullin.jpg'],
-                        ['name' => 'Рустембеков Акмурза Исаевич', 'role' => 'Казахстанский архитектор, Президент Союза архитекторов Республики Казахстан. Автор монумента Астана-Байтерек', 'img' => 'rustembekov.jpg', 'bw' => true],
-//                        ['name' => 'Дюсембинов Султан Мырзабекович', 'role' => '—', 'img' => 'dyusembinov.jpg'],
-//                        ['name' => '—', 'role' => '—', 'img' => null],
-//                        ['name' => '—', 'role' => '—', 'img' => null],
-//                        ['name' => '—', 'role' => '—', 'img' => null],
-//                        ['name' => '—', 'role' => '—', 'img' => null],
+                        ['name' => 'Белович Александр Якубович', 'role' => 'Председатель Совета директоров ТОО «Холдинговая компания BAZIS»', 'img' => 'belovich.jpg', 'pos' => 'top'],
+                        ['name' => 'Ким Владимир Сергеевич', 'role' => 'Президент, неисполнительный директор и акционер KAZ Minerals Ltd', 'img' => 'kimv.jpg', 'pos' => 'top'],
+                        ['name' => 'Баталов Раимбек Анварович', 'role' => 'Казахстанский предприниматель, основатель холдинга Raimbek Group', 'img' => 'batalov.jpg', 'pos' => 'top'],
+                        ['name' => 'Татыгулов Айдар Абдысагитович', 'role' => 'Член совета · Президент «KAZGOR»', 'img' => 'tat.jpg', 'pos' => 'top'],
+                        ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Заслуженный деятель Казахстана. Почётный строитель РК', 'img' => 'abdullin.jpg', 'pos' => 'top'],
+                        ['name' => 'Рустембеков Акмурза Исаевич', 'role' => 'Автор монумента Астана-Байтерек', 'img' => 'rustembekov.jpg', 'pos' => 'top', 'bw' => true],
                     ];
                 @endphp
+
 
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     @foreach($faces as $f)
@@ -593,7 +589,8 @@
                                 <img
                                         src="{{ $f['img'] ? asset('images/faces/'.$f['img']) : asset('images/hero-photo.jpg') }}"
                                         onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
-                                        class="w-full h-full object-cover {{ !empty($f['bw']) ? 'grayscale' : '' }}">
+                                        class="w-full h-full object-cover {{ !empty($f['bw']) ? 'grayscale' : '' }}"
+                                        style="object-position: {{ $f['pos'] ?? '50% 20%' }}">
                             </div>
                             <p class="font-bold text-[#2B2B2B] text-sm leading-tight">
                                 {{ $f['name'] }}
@@ -856,6 +853,9 @@
                         </div>
                         <div class="sm:col-span-2">
                             <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">Контакты</h3>
+                            <p class="mt-3 text-sm text-white/80">E-mail: l.lau@kazgasa.kz</p>
+                            <p class="mt-3 text-sm text-white/80">Телефон: +7(778)403 1983</p>
+                            <p class="mt-3 text-sm text-white/80">Адрес: Ул. Рыскулбекова, 28. Каб 301</p>
                             <p class="mt-3 text-sm text-white/80">Международная Образовательная Корпорация</p>
                             <p class="mt-1 text-sm text-white/80">г. Алматы, Казахстан</p>
                             <div class="mt-4 flex items-center gap-4">

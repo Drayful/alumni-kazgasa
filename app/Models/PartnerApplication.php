@@ -10,6 +10,12 @@ class PartnerApplication extends Model
         'name',
         'company',
         'contact',
+        'status',
+        'processed_at',
+    ];
+
+    protected $casts = [
+        'processed_at' => 'datetime',
     ];
 }
 

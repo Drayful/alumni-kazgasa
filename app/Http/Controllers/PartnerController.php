@@ -21,6 +21,7 @@ class PartnerController extends Controller
             'name' => $validated['name'],
             'company' => $validated['company'],
             'contact' => $validated['contact'],
+            'status' => 'new',
             // ip можно добавить, если хотите
         ]);
 
