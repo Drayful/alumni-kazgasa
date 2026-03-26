@@ -576,6 +576,7 @@
                         ['name' => 'Баталов Раимбек Анварович', 'role' => 'Казахстанский предприниматель, общественный деятель, основатель и председатель совета директоров холдинга Raimbek Group', 'img' => 'batalov.jpg'],
                         ['name' => 'Татыгулов Айдар Абдысагитович', 'role' => 'Член совета · Президент «KAZGOR»', 'img' => null],
                         ['name' => 'Абдуллин Нурлан Муханович', 'role' => 'Казахстанский эстрадный певец, телеведущий, бизнесмен. Заслуженный деятель Казахстана. Почётный строитель Республики Казахстан', 'img' => 'abdullin.jpg'],
+                        ['name' => 'Рустембеков Акмурза Исаевич', 'role' => 'Казахстанский архитектор, Президент Союза архитекторов Республики Казахстан. Автор монумента Астана-Байтерек', 'img' => 'rustembekov.jpg', 'bw' => true],
 //                        ['name' => 'Дюсембинов Султан Мырзабекович', 'role' => '—', 'img' => 'dyusembinov.jpg'],
 //                        ['name' => '—', 'role' => '—', 'img' => null],
 //                        ['name' => '—', 'role' => '—', 'img' => null],
@@ -584,15 +585,15 @@
                     ];
                 @endphp
 
-                <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     @foreach($faces as $f)
                         <div class="bg-white rounded-2xl shadow-sm p-5 text-center
                                 hover:shadow-md transition border border-transparent hover:border-[#E5C68D]">
-                            <div class="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3 ring-2 ring-[#8F161C]">
+                            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mx-auto mb-4 ring-2 ring-[#8F161C]">
                                 <img
                                         src="{{ $f['img'] ? asset('images/faces/'.$f['img']) : asset('images/hero-photo.jpg') }}"
                                         onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
-                                        class="w-full h-full object-cover">
+                                        class="w-full h-full object-cover {{ !empty($f['bw']) ? 'grayscale' : '' }}">
                             </div>
                             <p class="font-bold text-[#2B2B2B] text-sm leading-tight">
                                 {{ $f['name'] }}
