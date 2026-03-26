@@ -10,51 +10,55 @@ class GoogleWalletPassService
 {
     public function createSaveUrlForAlumni(AlumniProfile $profile): string
     {
-
-
         $this->assertConfigured();
 
-        $issuerId = Config::get('google-wallet.issuer_id');
+        $issuerId    = Config::get('google-wallet.issuer_id');
         $classSuffix = Config::get('google-wallet.class_suffix', 'alumni_card');
-        $classId = "{$issuerId}.{$classSuffix}";
+        $classId     = "{$issuerId}.{$classSuffix}";
 
         $objectSuffix = $profile->public_id ?: Str::uuid()->toString();
-        $objectId = "{$issuerId}.{$classSuffix}_{$objectSuffix}";
+        $objectId     = "{$issuerId}.{$classSuffix}_{$objectSuffix}";
 
         $serviceAccount = $this->loadServiceAccount();
-        $this->ensureClassExists($classId, $issuerId, $serviceAccount);
-        $publicUrl = url(route('alumni.card.show', ['publicId' => $profile->public_id], false));
-        $status = (string) ($profile->status ?: 'Connect');
+        $accessToken    = $this->getAccessToken($serviceAccount);
+        $this->ensureClassExists($classId, $accessToken);
 
-// Secondary fields (школа + год выпуска)
+        // QR ведёт на страницу проверки карты выпускника
+        $publicUrl = url('/card/' . $profile->public_id);
+        $status    = (string) ($profile->status ?: 'Connect');
+
         $textModules = array_values(array_filter([
             $profile->school ? [
                 'id'     => 'school',
-                'header' => 'Школа/Факультет',
+                'header' => 'ШКОЛА / ФАКУЛЬТЕТ',
                 'body'   => $profile->school,
             ] : null,
             $profile->graduation_year ? [
                 'id'     => 'year',
-                'header' => 'Год выпуска',
+                'header' => 'ГОД ВЫПУСКА',
                 'body'   => (string) $profile->graduation_year,
             ] : null,
             $profile->membership_type ? [
                 'id'     => 'type',
-                'header' => 'Тип',
+                'header' => 'ТИП ЧЛЕНСТВА',
                 'body'   => $profile->membership_type === 'paid' ? 'Платный' : 'Бесплатный',
             ] : null,
             [
                 'id'     => 'status',
-                'header' => 'Статус',
+                'header' => 'СТАТУС КАРТЫ',
                 'body'   => $status,
             ],
+            $profile->public_id ? [
+                'id'     => 'card_id',
+                'header' => 'ID КАРТЫ',
+                'body'   => strtoupper($profile->public_id),
+            ] : null,
         ]));
 
-// Back fields (ИИН, срок, ссылка проверки)
-        $linksModule = [];
+        $linksModule           = [];
         $linksModule['uris'][] = [
             'uri'         => $publicUrl,
-            'description' => 'Проверка карты',
+            'description' => 'Проверить подлинность карты',
             'id'          => 'verify',
         ];
 
@@ -71,75 +75,84 @@ class GoogleWalletPassService
             ] : null,
         ]));
 
-        $genericObject = [
-            'id'      => $objectId,
-            'classId' => $classId,
-            'state'   => 'ACTIVE',
-
-            // Основное — аналог primaryFields
-            'cardTitle' => [
-                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Карта выпускника'],
-            ],
-            'header' => [
-                'defaultValue' => ['language' => 'ru-RU', 'value' => trim($profile->full_name) ?: 'Alumni'],
-            ],
-            'subheader' => [
-                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Выпускник'],
-            ],
-
-            // Secondary + auxiliary — аналог secondaryFields/auxiliaryFields
-            'textModulesData' => $textModules,
-
-            // Back fields — ИИН, срок действия
-            'infoModuleData' => [
-                'labelValueRows' => array_map(fn($f) => [
-                    'columns' => [[
-                        'label' => $f['header'],
-                        'value' => ['defaultValue' => ['language' => 'ru-RU', 'value' => $f['body']]],
-                    ]],
-                ], $infoModule),
-                'showLastUpdateTime' => false,
-            ],
-
-            // Ссылка проверки карты
-            'linksModuleData' => $linksModule,
-
-            // QR-код — аналог barcodes
-            'barcode' => [
-                'type'          => 'QR_CODE',
-                'value'         => $publicUrl,
-                'alternateText' => $profile->public_id,
-            ],
-
-            // Цвета — аналог foreground/background/labelColor
-            'hexBackgroundColor' => '#8F161C',
-            'hexForegroundColor' => '#FFFFFF',
-            'hexLabelColor' => '#E5C68D',
-        ];
-
-        // Фото выпускника (если есть) — как hero/image module.
-        $avatar = $this->avatarUrlAbsolute($profile);
-        if (is_string($avatar) && $avatar !== '') {
-            $genericObject['heroImage'] = [
-                'sourceUri' => [
-                    'uri' => $avatar,
-                ],
-                'contentDescription' => [
-                    'defaultValue' => [
-                        'language' => 'ru-RU',
-                        'value' => trim($profile->full_name) ?: 'Фото выпускника',
+        $validTimeInterval = [];
+        if ($profile->membership_expiry_date) {
+            $validTimeInterval = [
+                'validTimeInterval' => [
+                    'end' => [
+                        'date' => $profile->membership_expiry_date->toIso8601String(),
                     ],
                 ],
             ];
         }
 
+        $genericObject = array_merge([
+            'id'      => $objectId,
+            'classId' => $classId,
+            'state'   => 'ACTIVE',
 
+            'hexBackgroundColor' => '#8F161C',
+
+            'cardTitle' => [
+                'defaultValue' => [
+                    'language' => 'ru-RU',
+                    'value'    => 'КАРТА ВЫПУСКНИКА',
+                ],
+            ],
+            'header' => [
+                'defaultValue' => [
+                    'language' => 'ru-RU',
+                    'value'    => trim($profile->full_name) ?: 'Alumni',
+                ],
+            ],
+            'subheader' => [
+                'defaultValue' => [
+                    'language' => 'ru-RU',
+                    'value'    => 'Выпускник · KazGASA Alumni',
+                ],
+            ],
+
+            'textModulesData' => $textModules,
+
+            // Back fields — видны при открытии карты (листаешь вниз)
+            'infoModuleData' => empty($infoModule) ? null : [
+                'labelValueRows' => array_map(fn ($f) => [
+                    'columns' => [[
+                        'label' => $f['header'],
+                        'value' => [
+                            'defaultValue' => [
+                                'language' => 'ru-RU',
+                                'value'    => $f['body'],
+                            ],
+                        ],
+                    ]],
+                ], $infoModule),
+                'showLastUpdateTime' => false,
+            ],
+
+            // Ссылка для проверки подлинности
+            'linksModuleData' => $linksModule,
+
+            // QR-код — значение = URL страницы проверки карты
+            // Google показывает QR внизу карты при раскрытии
+            'barcode' => [
+                'type'          => 'QR_CODE',
+                'value'         => $publicUrl,
+                'alternateText' => strtoupper($profile->public_id ?? ''),
+            ],
+
+        ], array_filter($validTimeInterval), ['infoModuleData' => null]);
+
+        // Убираем null значения из массива
+        $genericObject = array_filter($genericObject, fn($v) => $v !== null);
+
+        $this->ensureObjectUpsert($genericObject, $accessToken);
 
         $jwtPayload = [
-            'iss' => $serviceAccount['client_email'],
-            'aud' => 'google',
-            'typ' => 'savetowallet',
-            'iat' => time(),
+            'iss'     => $serviceAccount['client_email'],
+            'aud'     => 'google',
+            'typ'     => 'savetowallet',
+            'iat'     => time(),
             'payload' => [
                 'genericObjects' => [$genericObject],
             ],
@@ -148,6 +161,148 @@ class GoogleWalletPassService
         $jwt = $this->encodeJwtRs256($jwtPayload, $serviceAccount['private_key']);
 
         return 'https://pay.google.com/gp/v/save/' . $jwt;
+    }
+
+    private function getAccessToken(array $serviceAccount): string
+    {
+        $jwt = $this->encodeJwtRs256([
+            'iss'   => $serviceAccount['client_email'],
+            'scope' => 'https://www.googleapis.com/auth/wallet_object.issuer',
+            'aud'   => 'https://oauth2.googleapis.com/token',
+            'iat'   => time(),
+            'exp'   => time() + 3600,
+        ], $serviceAccount['private_key']);
+
+        $tokenResponse = \Http::post('https://oauth2.googleapis.com/token', [
+            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            'assertion'  => $jwt,
+        ]);
+
+        $accessToken = (string) $tokenResponse->json('access_token');
+        if ($accessToken === '') {
+            throw new \RuntimeException('Не удалось получить access_token для Google Wallet Issuer API.');
+        }
+
+        return $accessToken;
+    }
+
+    private function ensureObjectUpsert(array $genericObject, string $accessToken): void
+    {
+        $objectId = $genericObject['id'] ?? null;
+        if (! is_string($objectId) || $objectId === '') {
+            return;
+        }
+
+        $check = \Http::withToken($accessToken)
+            ->get("https://walletobjects.googleapis.com/walletobjects/v1/genericObject/{$objectId}");
+
+        if ($check->status() === 404) {
+            $create = \Http::withToken($accessToken)
+                ->post(
+                    'https://walletobjects.googleapis.com/walletobjects/v1/genericObject',
+                    $genericObject
+                );
+            \Log::info('Google object created', ['status' => $create->status(), 'body' => $create->json()]);
+            return;
+        }
+
+        $patch = \Http::withToken($accessToken)
+            ->patch(
+                "https://walletobjects.googleapis.com/walletobjects/v1/genericObject/{$objectId}",
+                $genericObject
+            );
+        \Log::info('Google object patched', ['status' => $patch->status(), 'body' => $patch->json()]);
+    }
+
+    private function ensureClassExists(string $classId, string $accessToken): void
+    {
+        $check = \Http::withToken($accessToken)
+            ->get("https://walletobjects.googleapis.com/walletobjects/v1/genericClass/{$classId}");
+
+        \Log::info('Google class check', ['status' => $check->status()]);
+
+        // Минимальный класс — БЕЗ logo и heroImage вообще
+        $classData = [
+            'id'           => $classId,
+            'issuerName'   => 'KazGASA Alumni',
+            'reviewStatus' => 'UNDER_REVIEW',
+        ];
+
+        if ($check->status() === 404) {
+            $result = \Http::withToken($accessToken)
+                ->post(
+                    'https://walletobjects.googleapis.com/walletobjects/v1/genericClass',
+                    $classData
+                );
+            \Log::info('Google class created', ['status' => $result->status(), 'body' => $result->json()]);
+        } else {
+            // PUT полностью перезаписывает класс — logo/heroImage исчезают
+            $result = \Http::withToken($accessToken)
+                ->put(
+                    "https://walletobjects.googleapis.com/walletobjects/v1/genericClass/{$classId}",
+                    $classData
+                );
+            \Log::info('Google class replaced via PUT', ['status' => $result->status(), 'body' => $result->json()]);
+        }
+    }
+
+
+
+    private function resolvePublicImageUrl(string $localPath, string $publicName): string
+    {
+        $destDir  = public_path('images');
+        $destPath = $destDir . DIRECTORY_SEPARATOR . $publicName;
+
+        if (! is_dir($destDir)) {
+            mkdir($destDir, 0775, true);
+        }
+
+        if (is_file($localPath) && (! is_file($destPath) || filemtime($localPath) > filemtime($destPath))) {
+            copy($localPath, $destPath);
+        }
+
+        return url('/images/' . $publicName);
+    }
+
+    private function resolveAvatarPublicUrl(AlumniProfile $profile): ?string
+    {
+        $avatarUrl = $profile->avatar_url ?? null;
+        if (! is_string($avatarUrl) || $avatarUrl === '') {
+            return null;
+        }
+
+        $localAvatarPath = null;
+        $parsed          = parse_url($avatarUrl);
+
+        if (! empty($parsed['path']) && str_starts_with($parsed['path'], '/storage/')) {
+            $relative        = substr($parsed['path'], strlen('/storage/'));
+            $candidate       = storage_path('app/public/' . $relative);
+            if (is_file($candidate)) {
+                $localAvatarPath = $candidate;
+            }
+        } elseif (! str_starts_with($avatarUrl, 'http')) {
+            $candidate = public_path(ltrim($avatarUrl, '/'));
+            if (is_file($candidate)) {
+                $localAvatarPath = $candidate;
+            }
+        } elseif (str_starts_with($avatarUrl, 'https://')) {
+            return $avatarUrl;
+        }
+
+        if ($localAvatarPath && is_readable($localAvatarPath)) {
+            $destDir  = public_path('images/avatars');
+            if (! is_dir($destDir)) {
+                mkdir($destDir, 0775, true);
+            }
+            $ext      = pathinfo($localAvatarPath, PATHINFO_EXTENSION) ?: 'jpg';
+            $destName = ($profile->public_id ?? Str::random(8)) . '.' . $ext;
+            $destPath = $destDir . DIRECTORY_SEPARATOR . $destName;
+            copy($localAvatarPath, $destPath);
+
+            return url('/images/avatars/' . $destName);
+        }
+
+        return null;
     }
 
     private function loadServiceAccount(): array
@@ -168,21 +323,20 @@ class GoogleWalletPassService
 
     private function encodeJwtRs256(array $payload, string $privateKeyPem): string
     {
-        $header = ['alg' => 'RS256', 'typ' => 'JWT'];
-
-        $segments = [];
+        $header     = ['alg' => 'RS256', 'typ' => 'JWT'];
+        $segments   = [];
         $segments[] = $this->base64UrlEncode(json_encode($header, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         $segments[] = $this->base64UrlEncode(json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         $signingInput = implode('.', $segments);
+        $privateKey   = openssl_pkey_get_private($privateKeyPem);
 
-        $privateKey = openssl_pkey_get_private($privateKeyPem);
         if (! $privateKey) {
             throw new \RuntimeException('Не удалось загрузить приватный ключ Google Wallet (RS256).');
         }
 
         $signature = '';
-        $ok = openssl_sign($signingInput, $signature, $privateKey, 'sha256WithRSAEncryption');
+        $ok        = openssl_sign($signingInput, $signature, $privateKey, 'sha256WithRSAEncryption');
         openssl_pkey_free($privateKey);
 
         if (! $ok) {
@@ -194,59 +348,9 @@ class GoogleWalletPassService
         return implode('.', $segments);
     }
 
-
-    private function ensureClassExists(string $classId, string $issuerId, array $serviceAccount): void
-    {
-        $jwt = $this->encodeJwtRs256([
-            'iss' => $serviceAccount['client_email'],
-            'scope' => 'https://www.googleapis.com/auth/wallet_object.issuer',
-            'aud' => 'https://oauth2.googleapis.com/token',
-            'iat' => time(),
-            'exp' => time() + 3600,
-        ], $serviceAccount['private_key']);
-
-        $tokenResponse = \Http::post('https://oauth2.googleapis.com/token', [
-            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-            'assertion' => $jwt,
-        ]);
-
-        \Log::info('Google token response', $tokenResponse->json()); // ← лог
-
-        $accessToken = $tokenResponse->json('access_token');
-
-        $check = \Http::withToken($accessToken)
-            ->get("https://walletobjects.googleapis.com/walletobjects/v1/genericClass/{$classId}");
-
-        \Log::info('Google class check', ['status' => $check->status(), 'body' => $check->json()]); // ← лог
-
-        if ($check->status() === 404) {
-            $create = \Http::withToken($accessToken)
-                ->post('https://walletobjects.googleapis.com/walletobjects/v1/genericClass', [
-                    'id' => $classId,
-                    'issuerName' => 'KazGASA Alumni',
-                    'reviewStatus' => 'UNDER_REVIEW',
-                ]);
-
-            \Log::info('Google class create', ['status' => $create->status(), 'body' => $create->json()]); // ← лог
-        }
-    }
-
-
-
     private function base64UrlEncode(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-    }
-
-    private function avatarUrlAbsolute(AlumniProfile $profile): string
-    {
-        $url = $profile->avatar_url ?? url('/images/user.png');
-        // Если ссылка относительная — превратим в абсолютную
-        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
-            return $url;
-        }
-
-        return url($url);
     }
 
     private function assertConfigured(): void
@@ -256,14 +360,13 @@ class GoogleWalletPassService
         }
 
         foreach ([
-            'google-wallet.issuer_id',
-            'google-wallet.class_suffix',
-            'google-wallet.service_account_path',
-        ] as $key) {
+                     'google-wallet.issuer_id',
+                     'google-wallet.class_suffix',
+                     'google-wallet.service_account_path',
+                 ] as $key) {
             if (! Config::get($key)) {
                 throw new \RuntimeException("Не настроено: {$key}");
             }
         }
     }
 }
-

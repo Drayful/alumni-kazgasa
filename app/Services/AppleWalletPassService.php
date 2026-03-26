@@ -3,325 +3,249 @@
 namespace App\Services;
 
 use App\Models\AlumniProfile;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
-use ZipArchive;
 
-class AppleWalletPassService
+class GoogleWalletPassService
 {
-    public function createPkPassForAlumni(AlumniProfile $profile): array
+    public function createSaveUrlForAlumni(AlumniProfile $profile): string
     {
+
+
         $this->assertConfigured();
 
-        $serial = $profile->public_id ?: (string) Str::uuid();
-        $passJson = $this->buildPassJson($profile, $serial);
+        $issuerId = Config::get('google-wallet.issuer_id');
+        $classSuffix = Config::get('google-wallet.class_suffix', 'alumni_card');
+        $classId = "{$issuerId}.{$classSuffix}";
 
-        $tmpRoot = storage_path('app/pkpass/tmp_' . Str::random(12));
-        if (! is_dir($tmpRoot)) {
-            mkdir($tmpRoot, 0775, true);
-        }
+        $objectSuffix = $profile->public_id ?: Str::uuid()->toString();
+        $objectId = "{$issuerId}.{$classSuffix}_{$objectSuffix}";
 
-        // 1) pass.json
-        $passJsonPath = $tmpRoot . DIRECTORY_SEPARATOR . 'pass.json';
-        file_put_contents($passJsonPath, json_encode($passJson, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $serviceAccount = $this->loadServiceAccount();
+        $this->ensureClassExists($classId, $issuerId, $serviceAccount);
+        $publicUrl = url(route('alumni.card.show', ['publicId' => $profile->public_id], false));
+        $status = (string) ($profile->status ?: 'Connect');
 
-        // 2) images
-        $this->putImages($tmpRoot, $profile);
-
-        // 3) manifest.json
-        $manifest = $this->buildManifest($tmpRoot);
-        $manifestPath = $tmpRoot . DIRECTORY_SEPARATOR . 'manifest.json';
-        file_put_contents($manifestPath, json_encode($manifest, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-
-        // 4) signature (DER)
-        $signaturePath = $tmpRoot . DIRECTORY_SEPARATOR . 'signature';
-        $this->signManifest($manifestPath, $signaturePath);
-
-        // 5) zip as .pkpass
-        $outDir = storage_path('app/pkpass');
-        if (! is_dir($outDir)) {
-            mkdir($outDir, 0775, true);
-        }
-
-        $fileName = 'kazgasa-alumni-' . $serial . '.pkpass';
-        $pkpassPath = $outDir . DIRECTORY_SEPARATOR . $fileName;
-
-        $zip = new ZipArchive();
-        if ($zip->open($pkpassPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            $this->cleanupDir($tmpRoot);
-            throw new \RuntimeException('Не удалось создать .pkpass (ZipArchive)');
-        }
-
-        foreach (scandir($tmpRoot) ?: [] as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
-            $full = $tmpRoot . DIRECTORY_SEPARATOR . $entry;
-            if (is_file($full)) {
-                $zip->addFile($full, $entry);
-            }
-        }
-        $zip->close();
-
-        $this->cleanupDir($tmpRoot);
-
-        return [
-            'path' => $pkpassPath,
-            'filename' => $fileName,
-        ];
-    }
-
-    private function buildPassJson(AlumniProfile $p, string $serial): array
-    {
-        $publicUrl = URL::to(route('alumni.card.show', ['publicId' => $p->public_id], false));
-        $status = (string) ($p->status ?: 'Connect');
-
-        $primaryFields = [
-            [
-                'key' => 'name',
-                'label' => 'Выпускник',
-                'value' => $p->full_name,
-            ],
-        ];
-
-        $secondaryFields = array_values(array_filter([
-            $p->school ? [
-                'key' => 'school',
-                'label' => 'Школа/Факультет',
-                'value' => $p->school,
+// Secondary fields (школа + год выпуска)
+        $textModules = array_values(array_filter([
+            $profile->school ? [
+                'id'     => 'school',
+                'header' => 'Школа/Факультет',
+                'body'   => $profile->school,
             ] : null,
-            $p->graduation_year ? [
-                'key' => 'year',
-                'label' => 'Год выпуска',
-                'value' => (string) $p->graduation_year,
+            $profile->graduation_year ? [
+                'id'     => 'year',
+                'header' => 'Год выпуска',
+                'body'   => (string) $profile->graduation_year,
             ] : null,
-        ]));
-
-        $auxiliaryFields = array_values(array_filter([
-            $p->membership_type ? [
-                'key' => 'type',
-                'label' => 'Тип',
-                'value' => $p->membership_type === 'paid' ? 'Платный' : 'Бесплатный',
+            $profile->membership_type ? [
+                'id'     => 'type',
+                'header' => 'Тип',
+                'body'   => $profile->membership_type === 'paid' ? 'Платный' : 'Бесплатный',
             ] : null,
             [
-                'key' => 'status',
-                'label' => 'Статус',
-                'value' => $status,
+                'id'     => 'status',
+                'header' => 'Статус',
+                'body'   => $status,
             ],
         ]));
 
-        $backFields = array_values(array_filter([
-            [
-                'key' => 'verify',
-                'label' => 'Проверка карты',
-                'value' => $publicUrl,
-            ],
-            $p->iin ? [
-                'key' => 'iin',
-                'label' => 'ИИН',
-                'value' => (string) $p->iin,
+// Back fields (ИИН, срок, ссылка проверки)
+        $linksModule = [];
+        $linksModule['uris'][] = [
+            'uri'         => $publicUrl,
+            'description' => 'Проверка карты',
+            'id'          => 'verify',
+        ];
+
+        $infoModule = array_values(array_filter([
+            $profile->iin ? [
+                'id'     => 'iin',
+                'header' => 'ИИН',
+                'body'   => (string) $profile->iin,
             ] : null,
-            $p->membership_expiry_date ? [
-                'key' => 'expiry',
-                'label' => 'Действительна до',
-                'value' => $p->membership_expiry_date->format('d.m.Y'),
+            $profile->membership_expiry_date ? [
+                'id'     => 'expiry',
+                'header' => 'Действительна до',
+                'body'   => $profile->membership_expiry_date->format('d.m.Y'),
             ] : null,
         ]));
 
-        return [
-            'formatVersion' => 1,
-            'passTypeIdentifier' => config('apple-wallet.pass_type_identifier'),
-            'teamIdentifier' => config('apple-wallet.team_identifier'),
-            'serialNumber' => $serial,
-            'organizationName' => config('apple-wallet.organization_name'),
-            'description' => config('apple-wallet.description'),
+        $genericObject = [
+            'id'      => $objectId,
+            'classId' => $classId,
+            'state'   => 'ACTIVE',
 
-            // Visuals
-            'foregroundColor' => 'rgb(255,255,255)',
-            'backgroundColor' => 'rgb(143,22,28)', // #8F161C
-            'labelColor' => 'rgb(229,198,141)', // #E5C68D
-
-            // Card type
-            'storeCard' => [
-                'primaryFields' => $primaryFields,
-                'secondaryFields' => $secondaryFields,
-                'auxiliaryFields' => $auxiliaryFields,
-                'backFields' => $backFields,
+            // Основное — аналог primaryFields
+            'cardTitle' => [
+                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Карта выпускника'],
+            ],
+            'header' => [
+                'defaultValue' => ['language' => 'ru-RU', 'value' => trim($profile->full_name) ?: 'Alumni'],
+            ],
+            'subheader' => [
+                'defaultValue' => ['language' => 'ru-RU', 'value' => 'Выпускник'],
             ],
 
-            // Barcode (QR)
-            'barcodes' => [
-                [
-                    'format' => 'PKBarcodeFormatQR',
-                    'message' => $publicUrl,
-                    'messageEncoding' => 'iso-8859-1',
-                    'altText' => $p->public_id,
-                ],
+            // Secondary + auxiliary — аналог secondaryFields/auxiliaryFields
+            'textModulesData' => $textModules,
+
+            // Back fields — ИИН, срок действия
+            'infoModuleData' => [
+                'labelValueRows' => array_map(fn($f) => [
+                    'columns' => [[
+                        'label' => $f['header'],
+                        'value' => ['defaultValue' => ['language' => 'ru-RU', 'value' => $f['body']]],
+                    ]],
+                ], $infoModule),
+                'showLastUpdateTime' => false,
+            ],
+
+            // Ссылка проверки карты
+            'linksModuleData' => $linksModule,
+
+            // QR-код — аналог barcodes
+            'barcode' => [
+                'type'          => 'QR_CODE',
+                'value'         => $publicUrl,
+                'alternateText' => $profile->public_id,
+            ],
+
+            // Цвета — аналог foreground/background/labelColor
+            'hexBackgroundColor' => '#8F161C',
+        ];
+
+
+
+        $jwtPayload = [
+            'iss' => $serviceAccount['client_email'],
+            'aud' => 'google',
+            'typ' => 'savetowallet',
+            'iat' => time(),
+            'payload' => [
+                'genericObjects' => [$genericObject],
             ],
         ];
+
+        $jwt = $this->encodeJwtRs256($jwtPayload, $serviceAccount['private_key']);
+
+        return 'https://pay.google.com/gp/v/save/' . $jwt;
     }
 
-    private function putImages(string $dir, AlumniProfile $profile): void
+    private function loadServiceAccount(): array
     {
-        $iconPath = (string) config('apple-wallet.icon_path');
-        $logoPath = (string) config('apple-wallet.logo_path');
-
-        if (! is_file($iconPath)) {
-            throw new \RuntimeException("Не найден файл иконки для Wallet: {$iconPath}");
-        }
-        if (! is_file($logoPath)) {
-            throw new \RuntimeException("Не найден файл логотипа для Wallet: {$logoPath}");
+        $path = Config::get('google-wallet.service_account_path');
+        if (! is_file($path)) {
+            throw new \RuntimeException("Файл сервисного аккаунта Google не найден: {$path}");
         }
 
-        // Reuse existing PNG assets. Apple требует icon.png/icon@2x.png.
-        $icon = file_get_contents($iconPath);
-
-        // Попробовать использовать фото выпускника как «полосу» / логотип на карте.
-        $logo = file_get_contents($logoPath);
-        $avatarUrl = $profile->avatar_url ?? null;
-        if (is_string($avatarUrl) && $avatarUrl !== '') {
-            $localAvatarPath = null;
-
-            // Если это /storage/..., пробуем найти файл на диске public
-            $parsed = parse_url($avatarUrl);
-            if (! empty($parsed['path']) && str_starts_with($parsed['path'], '/storage/')) {
-                $relative = substr($parsed['path'], strlen('/storage/')); // alumni-photos/...
-                $candidate = storage_path('app/public/' . $relative);
-                if (is_file($candidate)) {
-                    $localAvatarPath = $candidate;
-                }
-            } elseif (str_starts_with($avatarUrl, 'http') === false) {
-                // относительный/абсолютный путь внутри public
-                $candidate = public_path(ltrim($avatarUrl, '/'));
-                if (is_file($candidate)) {
-                    $localAvatarPath = $candidate;
-                }
-            }
-
-            if ($localAvatarPath && is_readable($localAvatarPath)) {
-                $avatarBinary = @file_get_contents($localAvatarPath);
-                if ($avatarBinary !== false && strlen($avatarBinary) > 100) {
-                    // Используем фото выпускника как logo/strip (Apple сам впишет в макет pass’а)
-                    $logo = $avatarBinary;
-                }
-            }
+        $json = file_get_contents($path);
+        $data = json_decode($json ?? '', true);
+        if (! is_array($data) || empty($data['client_email']) || empty($data['private_key'])) {
+            throw new \RuntimeException('Некорректный json сервисного аккаунта Google.');
         }
 
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon.png', $icon);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon@2x.png', $icon);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'logo.png', $logo);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'logo@2x.png', $logo);
+        return $data;
     }
 
-    private function buildManifest(string $dir): array
+    private function encodeJwtRs256(array $payload, string $privateKeyPem): string
     {
-        $manifest = [];
-        foreach (scandir($dir) ?: [] as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
-            $full = $dir . DIRECTORY_SEPARATOR . $entry;
-            if (is_file($full)) {
-                $manifest[$entry] = sha1_file($full);
-            }
-        }
-        ksort($manifest);
-        return $manifest;
-    }
+        $header = ['alg' => 'RS256', 'typ' => 'JWT'];
 
-    private function signManifest(string $manifestPath, string $signaturePath): void
-    {
-        $cert        = 'file://' . (string) config('apple-wallet.cert_signer_path');
-        $key         = 'file://' . (string) config('apple-wallet.key_signer_path');
-        $keyPassword = (string) config('apple-wallet.key_signer_password');
-        $wwdr        = (string) config('apple-wallet.cert_wwdr_path');
-    
-        foreach ([$cert, $key, $wwdr] as $path) {
-            $fsPath = str_starts_with($path, 'file://') ? substr($path, 7) : $path;
-            if (! is_file($fsPath)) {
-                throw new \RuntimeException("Не найден сертификат/ключ Wallet: {$fsPath}");
-            }
+        $segments = [];
+        $segments[] = $this->base64UrlEncode(json_encode($header, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $segments[] = $this->base64UrlEncode(json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        $signingInput = implode('.', $segments);
+
+        $privateKey = openssl_pkey_get_private($privateKeyPem);
+        if (! $privateKey) {
+            throw new \RuntimeException('Не удалось загрузить приватный ключ Google Wallet (RS256).');
         }
-    
-        $smimeOut = $signaturePath . '.smime';
-    
-        $ok = openssl_pkcs7_sign(
-            $manifestPath,
-            $smimeOut,
-            $cert,
-            [$key, $keyPassword],
-            [],
-            PKCS7_BINARY | PKCS7_DETACHED,
-            $wwdr
-        );
-    
+
+        $signature = '';
+        $ok = openssl_sign($signingInput, $signature, $privateKey, 'sha256WithRSAEncryption');
+        openssl_pkey_free($privateKey);
+
         if (! $ok) {
-            $error = openssl_error_string();
-            throw new \RuntimeException("Не удалось подписать manifest.json: {$error}");
+            throw new \RuntimeException('Не удалось подписать JWT для Google Wallet.');
         }
-    
-        // Извлекаем DER из S/MIME — ищем маркер filename="smime.p7s"
-        $smime = file_get_contents($smimeOut);
-        @unlink($smimeOut);
-    
-        $begin = 'filename="smime.p7s"';
-        $end   = '------';
-    
-        $posBegin = strpos($smime, $begin);
-        if ($posBegin === false) {
-            throw new \RuntimeException('Не удалось найти начало подписи в S/MIME');
-        }
-    
-        $body = substr($smime, $posBegin + strlen($begin));
-    
-        $posEnd = strpos($body, $end);
-        if ($posEnd !== false) {
-            $body = substr($body, 0, $posEnd);
-        }
-    
-        $der = base64_decode(trim($body));
-        if ($der === false || strlen($der) === 0) {
-            throw new \RuntimeException('Не удалось декодировать подпись из base64');
-        }
-    
-        file_put_contents($signaturePath, $der);
+
+        $segments[] = $this->base64UrlEncode($signature);
+
+        return implode('.', $segments);
     }
-    
+
+
+    private function ensureClassExists(string $classId, string $issuerId, array $serviceAccount): void
+    {
+        $jwt = $this->encodeJwtRs256([
+            'iss' => $serviceAccount['client_email'],
+            'scope' => 'https://www.googleapis.com/auth/wallet_object.issuer',
+            'aud' => 'https://oauth2.googleapis.com/token',
+            'iat' => time(),
+            'exp' => time() + 3600,
+        ], $serviceAccount['private_key']);
+
+        $tokenResponse = \Http::post('https://oauth2.googleapis.com/token', [
+            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            'assertion' => $jwt,
+        ]);
+
+        \Log::info('Google token response', $tokenResponse->json()); // ← лог
+
+        $accessToken = $tokenResponse->json('access_token');
+
+        $check = \Http::withToken($accessToken)
+            ->get("https://walletobjects.googleapis.com/walletobjects/v1/genericClass/{$classId}");
+
+        \Log::info('Google class check', ['status' => $check->status(), 'body' => $check->json()]); // ← лог
+
+        if ($check->status() === 404) {
+            $create = \Http::withToken($accessToken)
+                ->post('https://walletobjects.googleapis.com/walletobjects/v1/genericClass', [
+                    'id' => $classId,
+                    'issuerName' => 'KazGASA Alumni',
+                    'reviewStatus' => 'UNDER_REVIEW',
+                ]);
+
+            \Log::info('Google class create', ['status' => $create->status(), 'body' => $create->json()]); // ← лог
+        }
+    }
+
+
+
+    private function base64UrlEncode(string $data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    private function avatarUrlAbsolute(AlumniProfile $profile): string
+    {
+        $url = $profile->avatar_url ?? url('/images/user.png');
+        // Если ссылка относительная — превратим в абсолютную
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            return $url;
+        }
+
+        return url($url);
+    }
 
     private function assertConfigured(): void
     {
-        if (! config('apple-wallet.enabled')) {
-            throw new \RuntimeException('Apple Wallet отключён (APPLE_WALLET_ENABLED=false).');
+        if (! Config::get('google-wallet.enabled')) {
+            throw new \RuntimeException('Google Wallet отключён (GOOGLE_WALLET_ENABLED=false).');
         }
 
-        $required = [
-            'apple-wallet.team_identifier' => config('apple-wallet.team_identifier'),
-            'apple-wallet.pass_type_identifier' => config('apple-wallet.pass_type_identifier'),
-            'apple-wallet.key_signer_password' => config('apple-wallet.key_signer_password'),
-        ];
-
-        foreach ($required as $key => $value) {
-            if (! $value) {
+        foreach ([
+            'google-wallet.issuer_id',
+            'google-wallet.class_suffix',
+            'google-wallet.service_account_path',
+        ] as $key) {
+            if (! Config::get($key)) {
                 throw new \RuntimeException("Не настроено: {$key}");
             }
         }
-    }
-
-    private function cleanupDir(string $dir): void
-    {
-        if (! is_dir($dir)) {
-            return;
-        }
-        foreach (scandir($dir) ?: [] as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
-            $full = $dir . DIRECTORY_SEPARATOR . $entry;
-            if (is_file($full)) {
-                @unlink($full);
-            }
-        }
-        @rmdir($dir);
     }
 }
 

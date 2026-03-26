@@ -84,9 +84,9 @@
 
                     {{-- HERO TEXT --}}
                     <div>
-                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-none">
-                            Слёт выпускников КазГАСА
-                        </h1>
+{{--                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-none">--}}
+{{--                            Слёт выпускников КазГАСА--}}
+{{--                        </h1>--}}
                         <p class="mt-3 text-base sm:text-lg text-white/95 max-w-none">
                             45 лет архитектурному образованию Казахстана — встреча всех поколений.
                         </p>

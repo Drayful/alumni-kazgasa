@@ -33,6 +33,18 @@ Route::get('/wallet/apple/{publicId}', [AppleWalletController::class, 'downloadP
 Route::get('/wallet/google/{publicId}', [GoogleWalletController::class, 'redirectPublic'])
     ->name('wallet.google');
 
+// 1x1 прозрачный PNG для Google Wallet (logo класса)
+Route::get('/wallet/blank.png', function () {
+    $base64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAOZ3aX8AAAAASUVORK5CYII=';
+    $bin = base64_decode($base64, true);
+    abort_if($bin === false, 500, 'Не удалось декодировать PNG');
+
+    return response($bin, 200, [
+        'Content-Type' => 'image/png',
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->name('wallet.blank-png');
+
 // Подача заявки на партнёрство (для формы на главной)
 Route::post('/partner/apply', [PartnerController::class, 'apply'])
     ->name('partner.apply');
