@@ -108,8 +108,7 @@
                         <div class="grid grid-cols-2 gap-3 mt-5">
                             <img src="{{ asset('images/contributions/image3.png') }}" alt="Библиотека материалов 1" class="rounded-xl object-cover w-full h-48">
                             <img src="{{ asset('images/contributions/image4.png') }}" alt="Библиотека материалов 2" class="rounded-xl object-cover w-full h-48">
-                            <img src="{{ asset('images/contributions/image5.png') }}" alt="Библиотека материалов 3" class="rounded-xl object-cover w-full h-48">
-                            <img src="{{ asset('images/contributions/image6.png') }}" alt="Библиотека материалов 4" class="rounded-xl object-cover w-full h-48">
+                            
                         </div>
                     </article>
                 </section>
@@ -123,7 +122,12 @@
                             <p class="text-sm text-gray-500 mt-1">ТОО «CLIMATE EXPERT PARTNERS»</p>
                             <p class="text-[#2B2B2B] mt-3">
                                 Открытие лаборатории №18 «Оборудование по кондиционированию воздуха» при поддержке компании Daikin.
+        
                             </p>
+                            <div class="grid grid-cols-2 gap-3 mt-5">
+                            <img src="{{ asset('images/contributions/image6.png') }}" alt="Оборудование по кондиционированию воздуха" class="rounded-xl object-cover w-full h-48">
+                    
+                        </div>
                         </article>
                         <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                             <p class="font-bold text-[#2B2B2B]">Баккулов Марат Сатыбалдиевич</p>
@@ -131,6 +135,10 @@
                             <p class="text-[#2B2B2B] mt-3">
                                 Открытие лаборатории №3 «Вентиляция воздуха», оснащение оборудованием на сумму 12 000 000 тенге.
                             </p>
+                            <div class="grid grid-cols-2 gap-3 mt-5">
+                            <img src="{{ asset('images/contributions/image5.png') }}" alt="Вентиляция воздуха" class="rounded-xl object-cover w-full h-48">
+                    
+                        </div>
                         </article>
                     </div>
                 </section>
