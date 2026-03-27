@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumniCardController;
+use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\Profile\PhotoController;
 use App\Http\Controllers\ProfileController;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/contributions', [ContributionController::class, 'index'])->name('contributions.index');
 
 Route::get('/faces', function () {
     $faces = [
