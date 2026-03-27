@@ -3,8 +3,13 @@
         // Маска: фиксированный +7, ввод только 10 цифр после него (как в PhoneNormalizer на сервере — 7 + 10 цифр).
         document.addEventListener('alpine:init', () => {
             function parseNationalFromInput(raw) {
-                let d = String(raw || '').replace(/\D/g, '');
+                const rawTrim = String(raw || '').trim();
+                let d = rawTrim.replace(/\D/g, '');
                 if (d.length === 0) return '';
+                // В значении поля есть «+7» — первая цифра в d — это код страны, не часть ввода
+                if (rawTrim.startsWith('+7') || rawTrim.startsWith('+ 7')) {
+                    d = d.replace(/^7/, '');
+                }
                 d = d.slice(0, 11);
                 if (d.length >= 11 && d[0] === '8') {
                     d = '7' + d.slice(1);
