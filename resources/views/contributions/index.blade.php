@@ -108,6 +108,8 @@
                         <div class="grid grid-cols-2 gap-3 mt-5">
                             <img src="{{ asset('images/contributions/image3.png') }}" alt="Библиотека материалов 1" class="rounded-xl object-cover w-full h-48">
                             <img src="{{ asset('images/contributions/image4.png') }}" alt="Библиотека материалов 2" class="rounded-xl object-cover w-full h-48">
+                            <img src="{{ asset('images/contributions/image1.png') }}" alt="Библиотека материалов 1" class="rounded-xl object-cover w-full h-48">
+                            <img src="{{ asset('images/contributions/image2.png') }}" alt="Библиотека материалов 2" class="rounded-xl object-cover w-full h-48">
                             
                         </div>
                     </article>
