@@ -62,8 +62,8 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="lg:col-span-5">
                 <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_program_name" name="edu_program" class="js-portal-select js-gop-select mt-1 block w-full">
                     <option value="">Выберите ГОП</option>
@@ -75,7 +75,7 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_program')" />
             </div>
-            <div>
+            <div class="lg:col-span-5">
                 <x-input-label for="alumni_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_op_name" name="edu_op" class="js-portal-select js-op-select mt-1 block w-full">
                     <option value="">Выберите ОП</option>
@@ -87,7 +87,7 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_op')" />
             </div>
-            <div>
+            <div class="lg:col-span-2">
                 <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_study_group_name" name="study_group" class="js-portal-select js-group-select mt-1 block w-full">
                     <option value="">Выберите группу</option>
@@ -109,6 +109,54 @@
     </form>
 
     @once
+        <style>
+            .select2-container--default .select2-selection--single {
+                min-height: 44px;
+                border: 1px solid #D9D9D9;
+                border-radius: 0.5rem;
+                background-color: #fff;
+                transition: border-color .15s ease, box-shadow .15s ease;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                color: #2B2B2B;
+                line-height: 1.35;
+                padding: 10px 34px 10px 14px;
+                white-space: normal;
+                word-break: break-word;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 42px;
+                right: 8px;
+            }
+
+            .select2-container--default.select2-container--focus .select2-selection--single,
+            .select2-container--default .select2-selection--single:focus {
+                border-color: #8F161C;
+                box-shadow: 0 0 0 2px rgba(143, 22, 28, .2);
+            }
+
+            .select2-container--default .select2-results__option {
+                white-space: normal;
+                word-break: break-word;
+                line-height: 1.35;
+            }
+
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #8F161C;
+                color: #fff;
+            }
+
+            .select2-container .select2-dropdown {
+                border: 1px solid #D9D9D9;
+                border-radius: 0.5rem;
+                overflow: hidden;
+            }
+        </style>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
