@@ -179,7 +179,7 @@
                         <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 sm:p-8">
                             <div class="border-l-4 border-[#8F161C] pl-4">
                                 <h2 class="text-xl font-bold text-[#2B2B2B]">Профиль выпускника</h2>
-                                <p class="text-sm text-gray-500 mt-1 mb-6">Редактируйте данные выпускника: ФИО, школа, год выпуска, факультет, форма обучения, степень.</p>
+                                <p class="text-sm text-gray-500 mt-1 mb-6">Редактируйте данные выпускника: ФИО, школа, год выпуска, форма обучения, степень, группа, ОП и ГОП.</p>
                             </div>
                             @include('profile.partials.update-alumni-profile-form')
                         </div>

@@ -47,13 +47,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-                <x-input-label for="alumni_faculty_name" :value="__('Факультет')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                <x-text-input id="alumni_faculty_name" name="faculty_name" type="text" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
-                    :value="old('faculty_name', $alumniProfile->faculty_name)" />
-                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('faculty_name')" />
-            </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
                 <x-input-label for="alumni_study_form_name" :value="__('Форма обучения')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <x-text-input id="alumni_study_form_name" name="study_form_name" type="text" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
@@ -70,22 +64,40 @@
 
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-                <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                <x-text-input id="alumni_study_group_name" name="study_group_name" type="text" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
-                    :value="old('study_group_name', $alumniProfile->study_group_name)" />
-                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('study_group_name')" />
+                <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                <select id="alumni_edu_program_name" name="edu_program" class="js-portal-select js-gop-select mt-1 block w-full">
+                    <option value="">Выберите ГОП</option>
+                    @foreach(($portalOptions['gops'] ?? collect()) as $gop)
+                        <option value="{{ $gop->id }}" {{ (string) old('edu_program', $alumniProfile->edu_program) === (string) $gop->id ? 'selected' : '' }}>
+                            {{ $gop->name_ru }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_program')" />
             </div>
             <div>
                 <x-input-label for="alumni_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                <x-text-input id="alumni_edu_op_name" name="edu_op_name" type="text" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
-                    :value="old('edu_op_name', $alumniProfile->edu_op_name)" />
-                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_op_name')" />
+                <select id="alumni_edu_op_name" name="edu_op" class="js-portal-select js-op-select mt-1 block w-full">
+                    <option value="">Выберите ОП</option>
+                    @foreach(($portalOptions['ops'] ?? collect()) as $op)
+                        <option value="{{ $op->id }}" data-gop-id="{{ $op->group_op_id }}" {{ (string) old('edu_op', $alumniProfile->edu_op) === (string) $op->id ? 'selected' : '' }}>
+                            {{ $op->name_ru }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_op')" />
             </div>
             <div>
-                <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                <x-text-input id="alumni_edu_program_name" name="edu_program_name" type="text" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
-                    :value="old('edu_program_name', $alumniProfile->edu_program_name)" />
-                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_program_name')" />
+                <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                <select id="alumni_study_group_name" name="study_group" class="js-portal-select js-group-select mt-1 block w-full">
+                    <option value="">Выберите группу</option>
+                    @foreach(($portalOptions['groups'] ?? collect()) as $group)
+                        <option value="{{ $group->id }}" data-op-id="{{ $group->edu_op }}" {{ (string) old('study_group', $alumniProfile->study_group) === (string) $group->id ? 'selected' : '' }}>
+                            {{ $group->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('study_group')" />
             </div>
         </div>
 
@@ -95,4 +107,76 @@
             </button>
         </div>
     </form>
+
+    @once
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const $all = $('.js-portal-select');
+                const $gop = $('.js-gop-select');
+                const $op = $('.js-op-select');
+                const $group = $('.js-group-select');
+
+                $all.select2({
+                    width: '100%',
+                    placeholder: 'Выберите значение',
+                    allowClear: true
+                });
+
+                const $opOptions = $op.find('option').clone();
+                const $groupOptions = $group.find('option').clone();
+
+                function rebuildOpsByGop(gopId) {
+                    const current = $op.val();
+                    const filtered = $opOptions.filter(function () {
+                        const val = $(this).attr('value');
+                        if (!val) return true;
+                        return !gopId || $(this).data('gop-id') == gopId;
+                    });
+
+                    $op.empty().append(filtered);
+                    $op.prop('disabled', !gopId);
+                    if ($op.find('option[value="' + current + '"]').length) {
+                        $op.val(current);
+                    } else {
+                        $op.val('');
+                    }
+                    $op.trigger('change.select2');
+                }
+
+                function rebuildGroupsByOp(opId) {
+                    const current = $group.val();
+                    const filtered = $groupOptions.filter(function () {
+                        const val = $(this).attr('value');
+                        if (!val) return true;
+                        return !opId || $(this).data('op-id') == opId;
+                    });
+
+                    $group.empty().append(filtered);
+                    $group.prop('disabled', !opId);
+                    if ($group.find('option[value="' + current + '"]').length) {
+                        $group.val(current);
+                    } else {
+                        $group.val('');
+                    }
+                    $group.trigger('change.select2');
+                }
+
+                $gop.on('change', function () {
+                    rebuildOpsByGop($gop.val());
+                    rebuildGroupsByOp('');
+                });
+
+                $op.on('change', function () {
+                    rebuildGroupsByOp($op.val());
+                });
+
+                // Первичная синхронизация для уже сохраненных значений.
+                rebuildOpsByGop($gop.val());
+                rebuildGroupsByOp($op.val());
+            });
+        </script>
+    @endonce
 </section>
