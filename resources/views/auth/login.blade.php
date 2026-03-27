@@ -58,10 +58,10 @@
                     <input id="login_display" type="text" inputmode="text"
                            :value="display"
                            @input="onInput($event)"
-                           placeholder="your@email.com или +7 (___) ___-__-__" autofocus autocomplete="username"
+                           placeholder="Email или 10 цифр телефона (+7 подставится сам)" autofocus autocomplete="username"
                            class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                     <input type="hidden" name="login" :value="loginValue" />
-                    <p class="text-xs text-gray-400 mt-1">Телефон: маска +7, как при регистрации. Email — введите адрес с буквами или @.</p>
+                    <p class="text-xs text-gray-400 mt-1">Телефон: начните с цифр — появится +7. Email — введите адрес с буквами или @.</p>
                 </div>
 
                 <div>

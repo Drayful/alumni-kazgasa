@@ -31,7 +31,7 @@
 
         function formatNational(national) {
             const n = (national || '').slice(0, 10);
-            if (n.length === 0) return '+7 ';
+            if (n.length === 0) return '';
             let s = '+7 (' + n.slice(0, 3);
             if (n.length <= 3) return s + (n.length === 3 ? ') ' : '');
             s += ') ' + n.slice(3, 6);
@@ -47,7 +47,7 @@
         }
 
         Alpine.data('registerPhoneMask', (initial) => ({
-            display: '+7 ',
+            display: '',
             phoneCanon: '',
 
             init() {
@@ -66,7 +66,7 @@
         }));
 
         Alpine.data('loginEmailOrPhone', (initial) => ({
-            display: '+7 ',
+            display: '',
             loginValue: '',
 
             init() {
@@ -76,7 +76,7 @@
                     this.loginValue = init;
                 } else {
                     const national = nationalFromSaved(init);
-                    this.display = national ? formatNational(national) : '+7 ';
+                    this.display = national ? formatNational(national) : '';
                     this.loginValue = national.length === 10 ? '7' + national : init.replace(/\D/g, '');
                 }
             },

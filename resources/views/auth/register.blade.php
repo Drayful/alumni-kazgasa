@@ -149,10 +149,10 @@
                             <input id="phone_display" type="tel" inputmode="numeric" autocomplete="tel"
                                    :value="display"
                                    @input="onInput($event)"
-                                   placeholder="+7 (___) ___-__-__"
+                                   placeholder="+7 (___) ___-__-__ — +7 не вводите, начните с цифр"
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                             <input type="hidden" name="phone" :value="phoneCanon" />
-                            <p class="text-xs text-gray-400 mt-1">+7 фиксирован; введите 10 цифр номера (как на телефоне после +7).</p>
+                            <p class="text-xs text-gray-400 mt-1">Поле сначала пустое: введите цифры — появится +7 и маска. Код страны подставляется сам.</p>
                             @error('phone')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
                     </div>
