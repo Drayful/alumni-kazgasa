@@ -7,17 +7,30 @@
                 if (v.length === 0) return '';
                 if (v.length === 11 && v[0] === '8') v = '7' + v.slice(1);
                 if (v.length === 10 && v[0] === '8') v = '7' + v.slice(1);
-                if (v.length === 10 && v[0] === '7') v = '7' + v;
+                // 10 цифр, начинается с 7 — национальный номер без кода страны; префикс 7 только на сервере (PhoneNormalizer)
                 return v.slice(0, 11);
+            }
+
+            function phoneCanonFromDigits(v) {
+                if (!v) return '';
+                if (v.length === 11 && v[0] === '7') return v;
+                if (v.length === 10 && v[0] === '7') return v;
+                return '';
             }
 
             function formatDisplay11(v) {
                 if (!v || v.length === 0) return '+7 ';
+                let p;
                 if (v[0] !== '7') {
-                    v = normalizePhoneDigits('7' + v);
+                    const full = normalizePhoneDigits('7' + v);
+                    if (!full || full[0] !== '7') return '+7 ';
+                    p = full.length === 11 ? full.slice(1) : full;
+                } else if (v.length === 11) {
+                    p = v.slice(1);
+                } else {
+                    // 1..10 цифр, начинается с 7: национальная часть (в т.ч. 776…), без лишней «семёрки» в строке
+                    p = v;
                 }
-                if (!v || v[0] !== '7') return '+7 ';
-                const p = v.slice(1);
                 if (p.length === 0) return '+7 ';
                 let s = '+7 (' + p.slice(0, 3);
                 if (p.length <= 3) return s + (p.length === 3 ? ') ' : '');
@@ -37,14 +50,14 @@
                     if (initial) {
                         const v = normalizePhoneDigits(String(initial));
                         this.display = formatDisplay11(v);
-                        this.phoneCanon = v.length === 11 ? v : '';
+                        this.phoneCanon = phoneCanonFromDigits(v);
                     }
                 },
 
                 onInput(e) {
                     const v = normalizePhoneDigits(e.target.value);
                     this.display = formatDisplay11(v);
-                    this.phoneCanon = v.length === 11 ? v : '';
+                    this.phoneCanon = phoneCanonFromDigits(v);
                 },
             }));
         });
