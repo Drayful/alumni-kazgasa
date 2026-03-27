@@ -13,7 +13,10 @@
 
             function formatDisplay11(v) {
                 if (!v || v.length === 0) return '+7 ';
-                if (v[0] !== '7') return '+7 ';
+                if (v[0] !== '7') {
+                    v = normalizePhoneDigits('7' + v);
+                }
+                if (!v || v[0] !== '7') return '+7 ';
                 const p = v.slice(1);
                 if (p.length === 0) return '+7 ';
                 let s = '+7 (' + p.slice(0, 3);
@@ -28,22 +31,20 @@
 
             Alpine.data('registerPhoneMask', (initial) => ({
                 display: '+7 ',
+                phoneCanon: '',
 
                 init() {
                     if (initial) {
                         const v = normalizePhoneDigits(String(initial));
                         this.display = formatDisplay11(v);
+                        this.phoneCanon = v.length === 11 ? v : '';
                     }
                 },
 
                 onInput(e) {
                     const v = normalizePhoneDigits(e.target.value);
                     this.display = formatDisplay11(v);
-                },
-
-                get phoneRaw() {
-                    const v = normalizePhoneDigits(this.display.replace(/\D/g, ''));
-                    return v.length === 11 ? v : '';
+                    this.phoneCanon = v.length === 11 ? v : '';
                 },
             }));
         });
@@ -195,10 +196,11 @@
                                 <span class="bg-[#8F161C] text-white text-xs px-2 py-0.5 rounded">Обязательно</span>
                             </div>
                             <input id="phone_display" type="tel" inputmode="numeric" autocomplete="tel"
-                                   x-model="display" @input="onInput($event)"
+                                   :value="display"
+                                   @input="onInput($event)"
                                    placeholder="+7 (___) ___-__-__"
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
-                            <input type="hidden" name="phone" :value="phoneRaw" required />
+                            <input type="hidden" name="phone" :value="phoneCanon" />
                             <p class="text-xs text-gray-400 mt-1">Формат в базе: 11 цифр (7XXXXXXXXXX). Маска совпадает с проверкой на сервере.</p>
                             @error('phone')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
