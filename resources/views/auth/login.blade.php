@@ -1,4 +1,6 @@
 <x-guest-layout>
+    @include('auth.partials.phone-mask-alpine')
+
     {{-- LEFT PANEL (desktop only) --}}
     <div class="hidden lg:flex lg:w-1/2 relative bg-[#8F161C] min-h-screen flex-col items-center justify-center px-8 overflow-hidden">
         <div class="absolute inset-0 opacity-10" aria-hidden="true"
@@ -51,11 +53,15 @@
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
                 @csrf
 
-                <div>
-                    <label for="login" class="block text-sm font-medium text-[#2B2B2B] mb-1">Email или телефон</label>
-                    <input id="login" type="text" name="login" value="{{ old('login') }}"
-                           placeholder="your@email.com или +7 700 123 45 67" required autofocus autocomplete="username"
+                <div x-data="loginEmailOrPhone(@js(old('login')))">
+                    <label for="login_display" class="block text-sm font-medium text-[#2B2B2B] mb-1">Email или телефон</label>
+                    <input id="login_display" type="text" inputmode="text"
+                           :value="display"
+                           @input="onInput($event)"
+                           placeholder="your@email.com или +7 (___) ___-__-__" autofocus autocomplete="username"
                            class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
+                    <input type="hidden" name="login" :value="loginValue" />
+                    <p class="text-xs text-gray-400 mt-1">Телефон: маска +7, как при регистрации. Email — введите адрес с буквами или @.</p>
                 </div>
 
                 <div>
