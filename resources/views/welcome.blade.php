@@ -40,7 +40,7 @@
                         <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Карта выпускника</a>
                         <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Вклад выпускников</a>
                         <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Встреча</a>
-                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Архив KazGASA</a>
+                        <a href="https://museum.kazgasa.kz/" target="_blank" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Архив KazGASA</a>
                         @auth
                             <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Личный кабинет</a>
                         @endauth
@@ -852,6 +852,7 @@
                             <p class="mt-3 text-sm text-white/80">E-mail: l.lau@kazgasa.kz</p>
                             <p class="mt-3 text-sm text-white/80">Телефон: +7(778)403 1983</p>
                             <p class="mt-3 text-sm text-white/80">Адрес: Ул. Рыскулбекова, 28. Каб 301</p>
+                            <p class="mt-3 text-sm text-white/80">Сайт КазГАСА: <a href="https://kazgasa.kz/" target ="_blank">kazgasa.kz</a></p>
                             <p class="mt-3 text-sm text-white/80">Международная Образовательная Корпорация</p>
                             <p class="mt-1 text-sm text-white/80">г. Алматы, Казахстан</p>
                             <div class="mt-4 flex items-center gap-4">
