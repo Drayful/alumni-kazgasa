@@ -62,8 +62,8 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-5">
+        <div class="space-y-4">
+            <div>
                 <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_program_name" name="edu_program" class="js-portal-select js-gop-select mt-1 block w-full">
                     <option value="">Выберите ГОП</option>
@@ -75,7 +75,7 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_program')" />
             </div>
-            <div class="lg:col-span-5">
+            <div>
                 <x-input-label for="alumni_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_op_name" name="edu_op" class="js-portal-select js-op-select mt-1 block w-full">
                     <option value="">Выберите ОП</option>
@@ -87,7 +87,7 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_op')" />
             </div>
-            <div class="lg:col-span-2">
+            <div>
                 <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_study_group_name" name="study_group" class="js-portal-select js-group-select mt-1 block w-full">
                     <option value="">Выберите группу</option>
@@ -111,7 +111,7 @@
     @once
         <style>
             .select2-container--default .select2-selection--single {
-                min-height: 44px;
+                min-height: 46px;
                 border: 1px solid #D9D9D9;
                 border-radius: 0.5rem;
                 background-color: #fff;
@@ -124,7 +124,7 @@
                 padding: 10px 34px 10px 14px;
                 white-space: normal;
                 word-break: break-word;
-                min-height: 44px;
+                min-height: 46px;
                 display: flex;
                 align-items: center;
             }
@@ -156,6 +156,36 @@
                 border-radius: 0.5rem;
                 overflow: hidden;
             }
+
+            .select2-container--default .select2-search--dropdown .select2-search__field {
+                min-height: 40px;
+                border: 1px solid #D9D9D9;
+                border-radius: 0.5rem;
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
+            @media (max-width: 640px) {
+                .select2-container--default .select2-selection--single {
+                    min-height: 50px;
+                }
+
+                .select2-container--default .select2-selection--single .select2-selection__rendered {
+                    min-height: 50px;
+                    font-size: 15px;
+                    padding-right: 36px;
+                }
+
+                .select2-container--default .select2-selection--single .select2-selection__arrow {
+                    height: 48px;
+                }
+
+                .select2-results__option {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    font-size: 15px;
+                }
+            }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -170,7 +200,8 @@
                 $all.select2({
                     width: '100%',
                     placeholder: 'Выберите значение',
-                    allowClear: true
+                    allowClear: true,
+                    dropdownAutoWidth: true
                 });
 
                 const $opOptions = $op.find('option').clone();
