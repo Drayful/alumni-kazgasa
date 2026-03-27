@@ -44,9 +44,9 @@ class RegisteredUserController extends Controller
         ]);
 
         $phone = PhoneNormalizer::normalize($request->phone);
-        if (! $phone || strlen($phone) < 10) {
+        if (! PhoneNormalizer::isValidKzMobile($phone)) {
             return back()->withErrors([
-                'phone' => 'Укажите корректный номер телефона',
+                'phone' => 'Укажите полный номер мобильного телефона в формате +7 (XXX) XXX-XX-XX',
             ])->withInput();
         }
 

@@ -1,4 +1,54 @@
 <x-guest-layout>
+    <script>
+        // Логика как в App\Support\PhoneNormalizer (11 цифр, начинается с 7)
+        document.addEventListener('alpine:init', () => {
+            function normalizePhoneDigits(raw) {
+                let v = String(raw || '').replace(/\D/g, '');
+                if (v.length === 0) return '';
+                if (v.length === 11 && v[0] === '8') v = '7' + v.slice(1);
+                if (v.length === 10 && v[0] === '8') v = '7' + v.slice(1);
+                if (v.length === 10 && v[0] === '7') v = '7' + v;
+                return v.slice(0, 11);
+            }
+
+            function formatDisplay11(v) {
+                if (!v || v.length === 0) return '+7 ';
+                if (v[0] !== '7') return '+7 ';
+                const p = v.slice(1);
+                if (p.length === 0) return '+7 ';
+                let s = '+7 (' + p.slice(0, 3);
+                if (p.length <= 3) return s + (p.length === 3 ? ') ' : '');
+                s += ') ' + p.slice(3, 6);
+                if (p.length <= 6) return s;
+                s += '-' + p.slice(6, 8);
+                if (p.length <= 8) return s;
+                s += '-' + p.slice(8, 10);
+                return s;
+            }
+
+            Alpine.data('registerPhoneMask', (initial) => ({
+                display: '+7 ',
+
+                init() {
+                    if (initial) {
+                        const v = normalizePhoneDigits(String(initial));
+                        this.display = formatDisplay11(v);
+                    }
+                },
+
+                onInput(e) {
+                    const v = normalizePhoneDigits(e.target.value);
+                    this.display = formatDisplay11(v);
+                },
+
+                get phoneRaw() {
+                    const v = normalizePhoneDigits(this.display.replace(/\D/g, ''));
+                    return v.length === 11 ? v : '';
+                },
+            }));
+        });
+    </script>
+
     {{-- LEFT PANEL (desktop only) --}}
     <div class="hidden lg:flex lg:w-1/2 relative bg-[#8F161C] min-h-screen flex-col items-center justify-center px-8 overflow-hidden">
         <div class="absolute inset-0 opacity-10" aria-hidden="true"
@@ -139,13 +189,17 @@
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                             @error('email')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
-                        <div>
+                        <div x-data="registerPhoneMask(@js(old('phone')))">
                             <div class="flex items-center gap-2 mb-1">
-                                <label for="phone" class="block text-sm font-medium text-[#2B2B2B]">Телефон</label>
+                                <label for="phone_display" class="block text-sm font-medium text-[#2B2B2B]">Телефон</label>
                                 <span class="bg-[#8F161C] text-white text-xs px-2 py-0.5 rounded">Обязательно</span>
                             </div>
-                            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="+7 (7XX) XXX-XX-XX" required autocomplete="tel"
+                            <input id="phone_display" type="tel" inputmode="numeric" autocomplete="tel"
+                                   x-model="display" @input="onInput($event)"
+                                   placeholder="+7 (___) ___-__-__"
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
+                            <input type="hidden" name="phone" :value="phoneRaw" required />
+                            <p class="text-xs text-gray-400 mt-1">Формат в базе: 11 цифр (7XXXXXXXXXX). Маска совпадает с проверкой на сервере.</p>
                             @error('phone')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
                     </div>

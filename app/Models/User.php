@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PhoneNormalizer;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,5 +52,16 @@ class User extends Authenticatable
     public function alumniProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(AlumniProfile::class);
+    }
+
+    public function setPhoneAttribute(?string $value): void
+    {
+        if ($value === null || trim($value) === '') {
+            $this->attributes['phone'] = null;
+
+            return;
+        }
+
+        $this->attributes['phone'] = PhoneNormalizer::normalize($value);
     }
 }
