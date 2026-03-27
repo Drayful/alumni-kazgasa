@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\AlumniProfile;
+use App\Support\PhoneNormalizer;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class RegisteredUserController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'phone' => ['required', 'string', 'max:30'],
             'graduation_year' => ['required', 'integer', 'min:1990', 'max:' . date('Y')],
             'school' => ['required', 'in:ШИ,ША,ШС,ШД,КАУ'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -39,7 +40,21 @@ class RegisteredUserController extends Controller
             'iin.unique' => 'Выпускник с таким ИИН уже зарегистрирован',
             'graduation_year.required' => 'Выберите год выпуска',
             'school.required' => 'Выберите школу',
+            'phone.required' => 'Укажите номер телефона',
         ]);
+
+        $phone = PhoneNormalizer::normalize($request->phone);
+        if (! $phone || strlen($phone) < 10) {
+            return back()->withErrors([
+                'phone' => 'Укажите корректный номер телефона',
+            ])->withInput();
+        }
+
+        if (User::where('phone', $phone)->exists()) {
+            return back()->withErrors([
+                'phone' => 'Пользователь с таким номером уже зарегистрирован',
+            ])->withInput();
+        }
 
         DB::beginTransaction();
 
@@ -52,7 +67,7 @@ class RegisteredUserController extends Controller
             $user = User::create([
                 'name' => trim($request->last_name . ' ' . $request->first_name),
                 'email' => $request->email,
-                'phone' => $request->phone,
+                'phone' => $phone,
                 'password' => Hash::make($request->password),
             ]);
 

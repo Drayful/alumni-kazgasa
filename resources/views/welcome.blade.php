@@ -97,21 +97,15 @@
                     </div>
 
                     {{-- ФОТО + ЦИТАТА ПРЕДСЕДАТЕЛЯ --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="flex flex-col md:flex-row gap-6 items-center">
                         {{-- СЛЕВА: Фото --}}
-                        <div class="flex justify-center md:justify-end">
-                            <div class="relative">
-                                {{-- Декоративная рамка --}}
-                                <div class="absolute -inset-2 rounded-2xl bg-[#8F161C]/20"></div>
-
-                                <img src="{{ asset('images/kusainov.jpg') }}"
-                                     onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
-                                     alt="Кусаинов Айгазы Амирланович"
-                                     class="relative w-80 h-120 md:w-72 md:h-80 object-cover object-top rounded-2xl shadow-2xl">
-
-                                {{-- Золотая рамка снизу --}}
-                                <div class="absolute -bottom-1 -left-1 -right-1 h-1 bg-[#E5C68D] rounded-b-2xl"></div>
-                            </div>
+                        <div class="relative flex-shrink-0">
+                            <div class="absolute -inset-2 rounded-2xl bg-[#8F161C]/20"></div>
+                            <img src="{{ asset('images/kusainov.jpg') }}"
+                                 onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
+                                 alt="Кусаинов Айгазы Амирланович"
+                                 class="relative w-72 h-80 object-cover object-top rounded-2xl shadow-2xl">
+                            <div class="absolute -bottom-1 -left-1 -right-1 h-1 bg-[#E5C68D] rounded-b-2xl"></div>
                         </div>
 
                         {{-- СПРАВА: Цитата --}}

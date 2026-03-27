@@ -52,9 +52,9 @@
                 @csrf
 
                 <div>
-                    <label for="email" class="block text-sm font-medium text-[#2B2B2B] mb-1">Email адрес</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}"
-                           placeholder="your@email.com" required autofocus autocomplete="username"
+                    <label for="login" class="block text-sm font-medium text-[#2B2B2B] mb-1">Email или телефон</label>
+                    <input id="login" type="text" name="login" value="{{ old('login') }}"
+                           placeholder="your@email.com или +7 700 123 45 67" required autofocus autocomplete="username"
                            class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                 </div>
 

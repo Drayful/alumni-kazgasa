@@ -140,8 +140,11 @@
                             @error('email')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-[#2B2B2B] mb-1">Телефон</label>
-                            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="+7 (7XX) XXX-XX-XX"
+                            <div class="flex items-center gap-2 mb-1">
+                                <label for="phone" class="block text-sm font-medium text-[#2B2B2B]">Телефон</label>
+                                <span class="bg-[#8F161C] text-white text-xs px-2 py-0.5 rounded">Обязательно</span>
+                            </div>
+                            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="+7 (7XX) XXX-XX-XX" required autocomplete="tel"
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                             @error('phone')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
