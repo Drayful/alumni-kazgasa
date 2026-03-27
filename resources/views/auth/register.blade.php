@@ -1,44 +1,41 @@
 <x-guest-layout>
     <script>
-        // Логика как в App\Support\PhoneNormalizer (11 цифр, начинается с 7)
+        // Маска: фиксированный +7, ввод только 10 цифр после него (как в PhoneNormalizer на сервере — 7 + 10 цифр).
         document.addEventListener('alpine:init', () => {
-            function normalizePhoneDigits(raw) {
-                let v = String(raw || '').replace(/\D/g, '');
-                if (v.length === 0) return '';
-                if (v.length === 11 && v[0] === '8') v = '7' + v.slice(1);
-                if (v.length === 10 && v[0] === '8') v = '7' + v.slice(1);
-                // 10 цифр, начинается с 7 — национальный номер без кода страны; префикс 7 только на сервере (PhoneNormalizer)
-                return v.slice(0, 11);
+            function parseNationalFromInput(raw) {
+                let d = String(raw || '').replace(/\D/g, '');
+                if (d.length === 0) return '';
+                d = d.slice(0, 11);
+                if (d.length >= 11 && d[0] === '8') {
+                    d = '7' + d.slice(1);
+                }
+                if (d.length >= 11 && d[0] === '7') {
+                    return d.slice(1, 11);
+                }
+                if (d.length === 10 && d[0] === '8') {
+                    d = '7' + d.slice(1);
+                }
+                return d.slice(0, 10);
             }
 
-            function phoneCanonFromDigits(v) {
-                if (!v) return '';
-                if (v.length === 11 && v[0] === '7') return v;
-                if (v.length === 10 && v[0] === '7') return v;
+            function nationalFromSaved(phone) {
+                const d = String(phone || '').replace(/\D/g, '').slice(0, 11);
+                if (d.length === 11 && d[0] === '7') return d.slice(1);
+                if (d.length === 10 && d[0] === '7') return d;
+                if (d.length === 10 && d[0] === '8') return '7' + d.slice(1);
                 return '';
             }
 
-            function formatDisplay11(v) {
-                if (!v || v.length === 0) return '+7 ';
-                let p;
-                if (v[0] !== '7') {
-                    const full = normalizePhoneDigits('7' + v);
-                    if (!full || full[0] !== '7') return '+7 ';
-                    p = full.length === 11 ? full.slice(1) : full;
-                } else if (v.length === 11) {
-                    p = v.slice(1);
-                } else {
-                    // 1..10 цифр, начинается с 7: национальная часть (в т.ч. 776…), без лишней «семёрки» в строке
-                    p = v;
-                }
-                if (p.length === 0) return '+7 ';
-                let s = '+7 (' + p.slice(0, 3);
-                if (p.length <= 3) return s + (p.length === 3 ? ') ' : '');
-                s += ') ' + p.slice(3, 6);
-                if (p.length <= 6) return s;
-                s += '-' + p.slice(6, 8);
-                if (p.length <= 8) return s;
-                s += '-' + p.slice(8, 10);
+            function formatNational(national) {
+                const n = (national || '').slice(0, 10);
+                if (n.length === 0) return '+7 ';
+                let s = '+7 (' + n.slice(0, 3);
+                if (n.length <= 3) return s + (n.length === 3 ? ') ' : '');
+                s += ') ' + n.slice(3, 6);
+                if (n.length <= 6) return s;
+                s += '-' + n.slice(6, 8);
+                if (n.length <= 8) return s;
+                s += '-' + n.slice(8, 10);
                 return s;
             }
 
@@ -48,16 +45,16 @@
 
                 init() {
                     if (initial) {
-                        const v = normalizePhoneDigits(String(initial));
-                        this.display = formatDisplay11(v);
-                        this.phoneCanon = phoneCanonFromDigits(v);
+                        const national = nationalFromSaved(initial);
+                        this.display = formatNational(national);
+                        this.phoneCanon = national.length === 10 ? '7' + national : '';
                     }
                 },
 
                 onInput(e) {
-                    const v = normalizePhoneDigits(e.target.value);
-                    this.display = formatDisplay11(v);
-                    this.phoneCanon = phoneCanonFromDigits(v);
+                    const national = parseNationalFromInput(e.target.value);
+                    this.display = formatNational(national);
+                    this.phoneCanon = national.length === 10 ? '7' + national : '';
                 },
             }));
         });
@@ -214,7 +211,7 @@
                                    placeholder="+7 (___) ___-__-__"
                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] placeholder-gray-400 focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150" />
                             <input type="hidden" name="phone" :value="phoneCanon" />
-                            <p class="text-xs text-gray-400 mt-1">Формат в базе: 11 цифр (7XXXXXXXXXX). Маска совпадает с проверкой на сервере.</p>
+                            <p class="text-xs text-gray-400 mt-1">+7 фиксирован; введите 10 цифр номера (как на телефоне после +7).</p>
                             @error('phone')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
                     </div>
