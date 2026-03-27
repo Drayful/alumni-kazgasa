@@ -24,6 +24,8 @@
           ['route' => 'super-admin.dashboard',          'icon' => '🏠', 'label' => 'Главная'],
           ['route' => 'super-admin.users.index',        'icon' => '👥', 'label' => 'Пользователи'],
           ['route' => 'super-admin.applications.index', 'icon' => '📋', 'label' => 'Заявки'],
+          ['route' => 'super-admin.project-applications.index', 'icon' => '🧾', 'label' => 'Заявки на проекты'],
+          ['route' => 'super-admin.projects.index',     'icon' => '🧩', 'label' => 'Проекты'],
           ['route' => 'super-admin.stats',              'icon' => '📊', 'label' => 'Статистика'],
         ];
       @endphp

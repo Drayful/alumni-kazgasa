@@ -5,9 +5,12 @@ use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\Profile\PhotoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectApplicationController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\ApplicationController;
+use App\Http\Controllers\SuperAdmin\ProjectApplicationController as SuperAdminProjectApplicationController;
+use App\Http\Controllers\SuperAdmin\ProjectController as SuperAdminProjectController;
 use App\Http\Controllers\SuperAdmin\StatsController;
 use App\Http\Controllers\Wallet\AppleWalletController;
 use App\Http\Controllers\Wallet\GoogleWalletController;
@@ -97,6 +100,9 @@ Route::get('/wallet/blank.png', function () {
 Route::post('/partner/apply', [PartnerController::class, 'apply'])
     ->name('partner.apply');
 
+Route::post('/project-applications', [ProjectApplicationController::class, 'store'])
+    ->name('project-applications.store');
+
 // Кабинет супер-админа
 Route::prefix('super-admin')
     ->middleware(['auth', 'super.admin'])
@@ -124,6 +130,20 @@ Route::prefix('super-admin')
 
         Route::get('stats', [StatsController::class, 'index'])
             ->name('stats');
+
+        Route::get('project-applications', [SuperAdminProjectApplicationController::class, 'index'])
+            ->name('project-applications.index');
+        Route::patch('project-applications/{application}/status', [SuperAdminProjectApplicationController::class, 'updateStatus'])
+            ->name('project-applications.status');
+
+        Route::get('projects', [SuperAdminProjectController::class, 'index'])->name('projects.index');
+        Route::get('projects/create', [SuperAdminProjectController::class, 'create'])->name('projects.create');
+        Route::post('projects', [SuperAdminProjectController::class, 'store'])->name('projects.store');
+        Route::get('projects/{project}/edit', [SuperAdminProjectController::class, 'edit'])->name('projects.edit');
+        Route::put('projects/{project}', [SuperAdminProjectController::class, 'update'])->name('projects.update');
+        Route::delete('projects/{project}', [SuperAdminProjectController::class, 'destroy'])->name('projects.destroy');
+        Route::patch('projects/{project}/toggle', [SuperAdminProjectController::class, 'toggle'])->name('projects.toggle');
+        Route::patch('projects/{project}/move', [SuperAdminProjectController::class, 'move'])->name('projects.move');
     });
 
 Route::middleware('auth')->group(function () {

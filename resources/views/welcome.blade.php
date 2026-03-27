@@ -608,6 +608,175 @@
             </div>
         </section>
 
+        {{-- 7.1. ПРОЕКТЫ --}}
+        @php
+            $projects = \App\Models\Project::active()->get();
+            $prefProjectId = (int) request()->query('project', (int) old('project_id', 0));
+        @endphp
+        <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8 bg-[#FAF7F2]"
+                 x-data="{
+                    openId: null,
+                    selectedProjectId: @js($prefProjectId),
+                    toggle(id){ this.openId = this.openId === id ? null : id },
+                    choose(id){
+                        this.selectedProjectId = id;
+                        const el = document.getElementById('projects-form');
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('project', String(id));
+                        history.replaceState({}, '', url.toString());
+                    }
+                 }">
+            <div class="max-w-7xl mx-auto">
+                <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold">Участие выпускников</p>
+                <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl mt-2">Проекты, в которых вы нужны</h2>
+                <p class="text-sm text-gray-500 mt-3 max-w-3xl">
+                    Мы не просим просто «помочь». Мы предлагаем конкретные форматы — под ваш ритм, ваши возможности и ваши цели.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+                    @foreach($projects as $p)
+                        <div class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
+                            <button type="button" class="w-full text-left"
+                                    @click="toggle({{ $p->id }})"
+                                    :aria-expanded="openId === {{ $p->id }} ? 'true' : 'false'">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-2xl leading-none">{{ $p->icon }}</span>
+                                            <p class="font-bold text-[#2B2B2B] leading-snug">
+                                                {{ $p->title }}
+                                            </p>
+                                        </div>
+                                        @if($p->tags)
+                                            <p class="text-sm text-gray-500 mt-2">
+                                                {{ $p->tags }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                    <span class="shrink-0 text-sm font-semibold text-[#8F161C]">
+                                        Подробнее <span x-text="openId === {{ $p->id }} ? '▲' : '▼'"></span>
+                                    </span>
+                                </div>
+                            </button>
+
+                            <div x-show="openId === {{ $p->id }}" x-transition x-cloak class="mt-5 pt-5 border-t border-[#D9D9D9] space-y-4">
+                                <div>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Коротко</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->short }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Как это работает</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->how_it_works }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Что это даёт вам</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->what_you_get }}</p>
+                                </div>
+
+                                <div class="pt-1">
+                                    <button type="button"
+                                            class="w-full sm:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-3 rounded-xl font-semibold transition text-sm"
+                                            @click="choose({{ $p->id }})">
+                                        {{ $p->button_text }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="mt-12 bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-[#D9D9D9]">
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">Путь партнёрства</p>
+                    <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">5 шагов — и вы в проекте</h3>
+
+                    <div class="mt-6 space-y-5">
+                        @php
+                            $steps = [
+                                ['when' => 'Сегодня', 'title' => '1. Выберите проект', 'desc' => 'Заполните форму — укажите, какой проект вам ближе'],
+                                ['when' => '1-я неделя', 'title' => '2. Фиксируем интерес', 'desc' => 'Мы связываемся, отвечаем на вопросы и согласуем детали'],
+                                ['when' => '2-й месяц', 'title' => '3. Меморандум', 'desc' => 'Подписываем меморандум о партнёрстве без финансовых обязательств'],
+                                ['when' => '2–3-й месяц', 'title' => '4. Первые шаги', 'desc' => 'Определяем роль и запускаем пилотные активности'],
+                                ['when' => '5-й месяц', 'title' => '5. Результаты', 'desc' => 'Публикации о вас, студенты в ваших проектах, первые итоги'],
+                                ['when' => 'Через год', 'title' => 'Масштаб', 'desc' => 'Ваше имя в истории Ассоциации', 'highlight' => true],
+                            ];
+                        @endphp
+                        <div class="relative">
+                            <div class="absolute left-4 top-2 bottom-2 w-px bg-[#E5C68D]"></div>
+                            <div class="space-y-6">
+                                @foreach($steps as $s)
+                                    <div class="relative pl-12">
+                                        <div class="absolute left-0 top-1.5 w-8 h-8 rounded-full flex items-center justify-center border-2"
+                                             style="border-color:#E5C68D;background-color:#FFFFFF;">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#8F161C]"></span>
+                                        </div>
+                                        <p class="text-xs uppercase tracking-widest {{ !empty($s['highlight']) ? 'text-[#8F161C] font-semibold' : 'text-gray-500' }}">
+                                            {{ $s['when'] }}
+                                        </p>
+                                        <p class="font-bold {{ !empty($s['highlight']) ? 'text-[#8F161C]' : 'text-[#2B2B2B]' }}">
+                                            {{ $s['title'] }}
+                                        </p>
+                                        <p class="text-sm {{ !empty($s['highlight']) ? 'text-[#8F161C]' : 'text-gray-600' }}">
+                                            {{ $s['desc'] }}
+                                        </p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="projects-form" class="mt-10 scroll-mt-24">
+                        <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">Заявка</p>
+                        <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">Участвую</h3>
+                        @if(session('success'))
+                            <div class="mt-4 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 text-sm">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('project-applications.store') }}" class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @csrf
+                            <div>
+                                <label class="text-sm font-medium text-[#2B2B2B]">Имя</label>
+                                <input name="name" value="{{ old('name') }}" required
+                                       class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
+                                @error('name')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-[#2B2B2B]">Компания</label>
+                                <input name="company" value="{{ old('company') }}"
+                                       class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
+                                @error('company')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-[#2B2B2B]">Интересует проект</label>
+                                <select name="project_id" required
+                                        class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]"
+                                        x-model.number="selectedProjectId">
+                                    <option value="">Выберите проект</option>
+                                    @foreach($projects as $p)
+                                        <option value="{{ $p->id }}">{{ $p->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('project_id')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-[#2B2B2B]">Контакт (телефон или e-mail)</label>
+                                <input name="contact" value="{{ old('contact') }}" required
+                                       class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
+                                @error('contact')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
+                            </div>
+                            <div class="md:col-span-2">
+                                <button class="w-full sm:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition">
+                                    Участвую
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         {{-- 5.5. ВАКАНСИИ ДЛЯ ВЫПУСКНИКОВ --}}
         @php
             $latestJobs = app(\App\Services\JobService::class)->getActiveJobs(3);
