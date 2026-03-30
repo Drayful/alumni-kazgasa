@@ -932,8 +932,12 @@
         </section>
 
         {{-- 7. АРХИВ KAZGASA --}}
+        @php
+            $archiveUploadVerified = auth()->check()
+                && auth()->user()->alumniProfile?->verification_status === 'verified';
+        @endphp
         <section id="archive" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-            <div class="max-w-5xl mx-auto">
+            <div class="max-w-5xl mx-auto" x-data="{ decade: '90s' }">
                 <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
                     История в фотографиях
                 </p>
@@ -941,54 +945,131 @@
                     Архив KazGASA Alumni
                 </h2>
                 <p class="text-sm sm:text-base leading-relaxed mb-5" style="color: #2B2B2B;">
-                    Фотографии кампуса, выпусков и знаковых событий разных десятилетий. Вы можете прислать свои
-                    снимки и пополнить архив.
+                    Фотографии кампуса, выпусков и знаковых событий разных десятилетий. Верифицированные выпускники
+                    могут прислать свои снимки и пополнить архив.
                 </p>
 
-                <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-2">
-                    @foreach(['80‑е', '90‑е', '00‑е', '10‑е', '20‑е'] as $idx => $label)
+                @if(session('archive_success'))
+                    <div class="mb-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                        {{ session('archive_success') }}
+                    </div>
+                @endif
+                @if($errors->has('photo') || $errors->has('decade'))
+                    <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-[#8F161C]">
+                        <ul class="list-disc list-inside space-y-1">
+                            @foreach($errors->only(['photo', 'decade']) as $fieldErrors)
+                                @foreach((array) $fieldErrors as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory">
+                    @foreach($archiveDecades as $key => $label)
                         <button type="button"
-                                class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border whitespace-nowrap
-                                   {{ $idx === 1 ? 'bg-[#8F161C] text-white border-[#8F161C]' : 'bg-white text-[#2B2B2B] border-[#D9D9D9]' }}">
+                                @click="decade = '{{ $key }}'"
+                                :class="decade === '{{ $key }}'
+                                    ? 'bg-[#8F161C] text-white border-[#8F161C]'
+                                    : 'bg-white text-[#2B2B2B] border-[#D9D9D9]'"
+                                class="snap-start shrink-0 px-4 py-3 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border whitespace-nowrap min-h-[44px] sm:min-h-0 inline-flex items-center justify-center transition">
                             {{ $label }}
                         </button>
                     @endforeach
                 </div>
 
-                <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #1F2A44, #5E0F14);">
-                        🏛️
+                @foreach($archiveDecades as $key => $label)
+                    @php
+                        $decadePhotos = $archivePhotos->where('decade', $key);
+                    @endphp
+                    <div x-show="decade === '{{ $key }}'" x-cloak class="mt-4">
+                        @if($decadePhotos->isEmpty())
+                            <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #1F2A44, #5E0F14);">🏛️</div>
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #8F161C, #E5C68D);">🎓</div>
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #2B2B2B, #8F161C);">📐</div>
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #E5C68D, #5E0F14);">🏗️</div>
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #1F2A44, #E5C68D);">🎨</div>
+                                <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
+                                     style="background: linear-gradient(135deg, #5E0F14, #2B2B2B);">🏙️</div>
+                            </div>
+                            <p class="mt-3 text-sm text-center" style="color: #2B2B2B99;">
+                                Пока нет загруженных фото за этот период.
+                            </p>
+                        @else
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                                @foreach($decadePhotos as $photo)
+                                    <a href="{{ Storage::url($photo->path) }}"
+                                       target="_blank" rel="noopener"
+                                       class="group aspect-square rounded-lg overflow-hidden border bg-[#F6F2EA] border-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
+                                        <img src="{{ Storage::url($photo->path) }}"
+                                             alt="Архив {{ $label }}"
+                                             class="w-full h-full object-cover group-hover:opacity-95 transition">
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #8F161C, #E5C68D);">
-                        🎓
-                    </div>
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #2B2B2B, #8F161C);">
-                        📐
-                    </div>
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #E5C68D, #5E0F14);">
-                        🏗️
-                    </div>
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #1F2A44, #E5C68D);">
-                        🎨
-                    </div>
-                    <div class="aspect-square rounded-lg flex items-center justify-center text-2xl sm:text-3xl"
-                         style="background: linear-gradient(135deg, #5E0F14, #2B2B2B);">
-                        🏙️
-                    </div>
-                </div>
+                @endforeach
 
-                <div class="mt-5">
-                    <button type="button"
-                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 text-sm font-semibold"
-                            style="border-color: #D9D9D9; color: #2B2B2B; background-color: #F6F2EA;">
-                        <span>📷</span>
-                        <span>Загрузить своё фото в архив</span>
-                    </button>
+                <div class="mt-6">
+                    @if($archiveUploadVerified)
+                        <details @if($errors->has('photo') || $errors->has('decade')) open @endif class="group rounded-2xl border overflow-hidden" style="border-color: #D9D9D9; background-color: #F6F2EA;">
+                            <summary class="cursor-pointer list-none flex items-center justify-between gap-3 px-4 py-4 sm:px-5 sm:py-4 min-h-[52px] font-semibold text-sm sm:text-base select-none"
+                                     style="color: #2B2B2B;">
+                                <span class="inline-flex items-center gap-2">
+                                    <span class="text-xl" aria-hidden="true">📷</span>
+                                    <span>Добавить фото в архив</span>
+                                </span>
+                                <span class="text-[#8F161C] text-lg group-open:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div class="px-4 pb-5 sm:px-5 border-t bg-white" style="border-color: #D9D9D9;">
+                                <form action="{{ route('archive.photos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 pt-4">
+                                    @csrf
+
+                                    <div>
+                                        <label for="archive-decade" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">Десятилетие</label>
+                                        <select name="decade" id="archive-decade" required
+                                                class="w-full min-h-[48px] rounded-xl border px-4 text-base sm:text-sm bg-white"
+                                                style="border-color: #D9D9D9; color: #2B2B2B;">
+                                            @foreach($archiveDecades as $k => $lab)
+                                                <option value="{{ $k }}" @selected(old('decade', '90s') === $k)>{{ $lab }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="archive-photo" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">Фотография</label>
+                                        <p class="text-xs mb-2" style="color: #2B2B2B99;">JPEG, PNG или WebP, до 10 МБ</p>
+                                        <input type="file" name="photo" id="archive-photo" required accept="image/jpeg,image/png,image/webp"
+                                               class="block w-full min-h-[48px] text-base file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#8F161C] file:text-white cursor-pointer rounded-xl border bg-white px-2 py-2"
+                                               style="border-color: #D9D9D9;">
+                                    </div>
+
+                                    <button type="submit"
+                                            class="w-full sm:w-auto min-h-[52px] inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-95"
+                                            style="background-color: #8F161C;">
+                                        Отправить в архив
+                                    </button>
+                                </form>
+                            </div>
+                        </details>
+                    @elseif(auth()->check())
+                        <p class="text-sm rounded-xl border px-4 py-3" style="border-color: #D9D9D9; color: #2B2B2B99; background: #FAFAFA;">
+                            Загрузка фото доступна после <strong class="text-[#2B2B2B]">верификации</strong> профиля выпускника.
+                        </p>
+                    @else
+                        <p class="text-sm rounded-xl border px-4 py-3" style="border-color: #D9D9D9; color: #2B2B2B99; background: #FAFAFA;">
+                            <a href="{{ route('login') }}" class="font-semibold text-[#8F161C] underline underline-offset-2">Войдите</a>
+                            как выпускник, чтобы добавлять снимки после верификации.
+                        </p>
+                    @endif
                 </div>
             </div>
         </section>

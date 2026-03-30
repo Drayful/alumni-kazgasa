@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AlumniCardController;
+use App\Http\Controllers\ArchivePhotoController;
 use App\Http\Controllers\ContributionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\Profile\PhotoController;
 use App\Http\Controllers\ProfileController;
@@ -10,6 +12,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\ApplicationController;
 use App\Http\Controllers\SuperAdmin\ProjectApplicationController as SuperAdminProjectApplicationController;
+use App\Http\Controllers\SuperAdmin\ArchivePhotoController as SuperAdminArchivePhotoController;
 use App\Http\Controllers\SuperAdmin\ProjectController as SuperAdminProjectController;
 use App\Http\Controllers\SuperAdmin\StatsController;
 use App\Http\Controllers\Wallet\AppleWalletController;
@@ -17,9 +20,7 @@ use App\Http\Controllers\Wallet\GoogleWalletController;
 use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'welcome'])->name('home');
 
 Route::get('/contributions', [ContributionController::class, 'index'])->name('contributions.index');
 
@@ -103,6 +104,10 @@ Route::post('/partner/apply', [PartnerController::class, 'apply'])
 Route::post('/project-applications', [ProjectApplicationController::class, 'store'])
     ->name('project-applications.store');
 
+Route::post('/archive/photos', [ArchivePhotoController::class, 'store'])
+    ->middleware(['auth', 'throttle:20,60'])
+    ->name('archive.photos.store');
+
 // Кабинет супер-админа
 Route::prefix('super-admin')
     ->middleware(['auth', 'super.admin'])
@@ -144,6 +149,10 @@ Route::prefix('super-admin')
         Route::delete('projects/{project}', [SuperAdminProjectController::class, 'destroy'])->name('projects.destroy');
         Route::patch('projects/{project}/toggle', [SuperAdminProjectController::class, 'toggle'])->name('projects.toggle');
         Route::patch('projects/{project}/move', [SuperAdminProjectController::class, 'move'])->name('projects.move');
+
+        Route::get('archive-photos', [SuperAdminArchivePhotoController::class, 'index'])->name('archive-photos.index');
+        Route::delete('archive-photos/{archivePhoto}', [SuperAdminArchivePhotoController::class, 'destroy'])->name('archive-photos.destroy');
+        Route::post('archive-photos/bulk-delete', [SuperAdminArchivePhotoController::class, 'bulkDestroy'])->name('archive-photos.bulk-delete');
     });
 
 Route::middleware('auth')->group(function () {

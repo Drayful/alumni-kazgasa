@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasOne(AlumniProfile::class);
     }
 
+    public function archivePhotos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ArchivePhoto::class);
+    }
+
     public function setPhoneAttribute(?string $value): void
     {
         if ($value === null || trim($value) === '') {
