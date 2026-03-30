@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class ContributionController extends Controller
@@ -111,7 +112,32 @@ class ContributionController extends Controller
             ],
         ];
 
-        return view('contributions.index', compact('contributions'));
+        /** @var Collection<int, array<string, mixed>> $contributionsCollection */
+        $contributionsCollection = collect($contributions);
+
+        $contributionGroups = $contributionsCollection
+            ->groupBy(function (array $row): string {
+                return implode('|', [
+                    $row['fio'] ?? '',
+                    $row['year'] ?? '',
+                    $row['position'] ?? '',
+                ]);
+            })
+            ->map(function (Collection $rows): array {
+                $first = $rows->first();
+
+                return [
+                    'fio' => $first['fio'] ?? '',
+                    'year' => $first['year'] ?? '',
+                    'position' => $first['position'] ?? '',
+                    'items' => $rows->values()->all(),
+                ];
+            })
+            ->values();
+
+        return view('contributions.index', [
+            'contributionGroups' => $contributionGroups,
+        ]);
     }
 }
 

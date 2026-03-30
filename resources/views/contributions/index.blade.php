@@ -92,47 +92,51 @@
                     </p>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        @foreach($contributions as $row)
+                        @foreach($contributionGroups as $group)
                             <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                                 <p class="font-bold text-[#2B2B2B]">
-                                    {{ $row['fio'] }} ({{ $row['year'] }})
+                                    {{ $group['fio'] }} ({{ $group['year'] }})
                                 </p>
-                                <p class="text-sm text-gray-500 mt-1">{{ $row['position'] }}</p>
+                                <p class="text-sm text-gray-500 mt-1">{{ $group['position'] }}</p>
 
-                                <div class="mt-3 space-y-2 text-[#2B2B2B]">
-                                    @if(!empty($row['description_title']))
-                                        <p class="font-semibold">{{ $row['description_title'] }}</p>
-                                    @endif
-                                    @if(!empty($row['initiators']))
-                                        <p class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</p>
-                                    @endif
-                                    @if(!empty($row['description']))
-                                        <p class="text-[#2B2B2B]">{{ $row['description'] }}</p>
-                                    @endif
-                                    @if(!empty($row['what_done']))
-                                        <div>
-                                            <p class="font-semibold">Что сделано:</p>
-                                            <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
-                                                @foreach($row['what_done'] as $item)
-                                                    <li>{{ $item }}</li>
-                                                @endforeach
-                                            </ul>
+                                <div class="mt-4 space-y-5">
+                                    @foreach($group['items'] as $row)
+                                        <div class="space-y-2">
+                                            @if(!empty($row['description_title']))
+                                                <p class="font-semibold text-[#2B2B2B]">{{ $row['description_title'] }}</p>
+                                            @endif
+                                            @if(!empty($row['initiators']))
+                                                <p class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</p>
+                                            @endif
+                                            @if(!empty($row['description']))
+                                                <p class="text-[#2B2B2B]">{{ $row['description'] }}</p>
+                                            @endif
+                                            @if(!empty($row['what_done']))
+                                                <div>
+                                                    <p class="font-semibold">Что сделано:</p>
+                                                    <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
+                                                        @foreach($row['what_done'] as $item)
+                                                            <li>{{ $item }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
+                                            @if(!empty($row['note']))
+                                                <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $row['note'] }}</p>
+                                            @endif
+
+                                            @if(!empty($row['photo']))
+                                                <div class="pt-2">
+                                                    <button type="button"
+                                                            class="w-full rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
+                                                            @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($group['fio']) }}')">
+                                                        <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-56 object-cover cursor-zoom-in">
+                                                    </button>
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
-                                    @if(!empty($row['note']))
-                                        <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $row['note'] }}</p>
-                                    @endif
+                                    @endforeach
                                 </div>
-
-                                @if(!empty($row['photo']))
-                                    <div class="mt-5">
-                                        <button type="button"
-                                                class="w-full rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
-                                                @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($row['fio']) }}')">
-                                            <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-56 object-cover cursor-zoom-in">
-                                        </button>
-                                    </div>
-                                @endif
                             </article>
                         @endforeach
                     </div>
