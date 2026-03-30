@@ -9,6 +9,9 @@ class ArchivePhoto extends Model
 {
     public const DECADES = ['80s', '90s', '00s', '10s', '20s'];
 
+    /** Максимум превью на главной странице (на одно десятилетие). */
+    public const HOME_PREVIEW_LIMIT = 6;
+
     protected $fillable = [
         'user_id',
         'decade',

@@ -981,7 +981,9 @@
 
                 @foreach($archiveDecades as $key => $label)
                     @php
-                        $decadePhotos = $archivePhotos->where('decade', $key);
+                        $decadePhotos = $archivePhotosPreview[$key] ?? collect();
+                        $decadeTotal = (int) ($archivePhotoTotals[$key] ?? 0);
+                        $showViewAll = $decadeTotal > \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT;
                     @endphp
                     <div x-show="decade === '{{ $key }}'" x-cloak class="mt-4">
                         @if($decadePhotos->isEmpty())
@@ -1010,10 +1012,21 @@
                                        class="group aspect-square rounded-lg overflow-hidden border bg-[#F6F2EA] border-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
                                         <img src="{{ Storage::url($photo->path) }}"
                                              alt="Архив {{ $label }}"
-                                             class="w-full h-full object-cover group-hover:opacity-95 transition">
+                                             class="w-full h-full object-cover group-hover:opacity-95 transition"
+                                             loading="lazy"
+                                             decoding="async">
                                     </a>
                                 @endforeach
                             </div>
+                            @if($showViewAll)
+                                <div class="mt-4 flex justify-center sm:justify-start">
+                                    <a href="{{ route('archive.index', ['decade' => $key]) }}"
+                                       class="inline-flex min-h-[48px] items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-95"
+                                       style="background-color: #8F161C;">
+                                        Посмотреть все (ещё {{ $decadeTotal - \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT }})
+                                    </a>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 @endforeach

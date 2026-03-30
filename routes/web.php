@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlumniCardController;
+use App\Http\Controllers\ArchiveGalleryController;
 use App\Http\Controllers\ArchivePhotoController;
 use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\HomeController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
+
+Route::get('/archive', [ArchiveGalleryController::class, 'index'])->name('archive.index');
 
 Route::get('/contributions', [ContributionController::class, 'index'])->name('contributions.index');
 
