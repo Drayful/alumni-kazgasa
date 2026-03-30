@@ -85,77 +85,56 @@
                 </section>
 
                 <section class="space-y-4">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Таблица</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Вклад выпускников (список)</h2>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Школа</p>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа архитектуры</h2>
                     <p class="text-[#2B2B2B]/80 text-sm">
-                        Нажмите на миниатюру, чтобы увеличить фотографию. Фото сейчас стоят как заглушки — вы обновите позже.
+                        Нажмите на фотографию, чтобы увеличить.
                     </p>
 
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#D9D9D9] overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-[1100px] w-full text-sm">
-                                <thead class="bg-[#F6F2EA]">
-                                <tr class="text-left text-[#2B2B2B]/70">
-                                    <th class="py-3 px-4 w-16">№</th>
-                                    <th class="py-3 px-4 w-72">ФИО</th>
-                                    <th class="py-3 px-4 w-48">Год выпуска</th>
-                                    <th class="py-3 px-4 w-72">Должность / организация</th>
-                                    <th class="py-3 px-4">Краткое описание</th>
-                                    <th class="py-3 px-4 w-48">Примечание</th>
-                                    <th class="py-3 px-4 w-28">Фото</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($contributions as $row)
-                                    <tr class="border-t border-[#D9D9D9] align-top">
-                                        <td class="py-4 px-4 text-[#2B2B2B]/70 font-semibold">{{ $loop->iteration }}</td>
-                                        <td class="py-4 px-4">
-                                            <div class="font-semibold text-[#2B2B2B]">{{ $row['fio'] }}</div>
-                                        </td>
-                                        <td class="py-4 px-4 text-[#2B2B2B]">{{ $row['year'] }}</td>
-                                        <td class="py-4 px-4 text-[#2B2B2B]">{{ $row['position'] }}</td>
-                                        <td class="py-4 px-4">
-                                            <div class="space-y-2 text-[#2B2B2B]">
-                                                @if(!empty($row['description_title']))
-                                                    <div class="font-semibold">{{ $row['description_title'] }}</div>
-                                                @endif
-                                                @if(!empty($row['initiators']))
-                                                    <div class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</div>
-                                                @endif
-                                                @if(!empty($row['description']))
-                                                    <div class="text-[#2B2B2B]">{{ $row['description'] }}</div>
-                                                @endif
-                                                @if(!empty($row['what_done']))
-                                                    <div>
-                                                        <div class="font-semibold">Что сделано:</div>
-                                                        <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
-                                                            @foreach($row['what_done'] as $item)
-                                                                <li>{{ $item }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="py-4 px-4 text-[#2B2B2B]/80">
-                                            {{ $row['note'] ?? '—' }}
-                                        </td>
-                                        <td class="py-4 px-4">
-                                            @if(!empty($row['photo']))
-                                                <button type="button"
-                                                        @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($row['fio']) }}')"
-                                                        class="group w-20 h-20 rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
-                                                    <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-full object-cover group-hover:opacity-95 transition">
-                                                </button>
-                                            @else
-                                                <span class="text-[#2B2B2B]/60">—</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        @foreach($contributions as $row)
+                            <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
+                                <p class="font-bold text-[#2B2B2B]">
+                                    {{ $row['fio'] }} ({{ $row['year'] }})
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">{{ $row['position'] }}</p>
+
+                                <div class="mt-3 space-y-2 text-[#2B2B2B]">
+                                    @if(!empty($row['description_title']))
+                                        <p class="font-semibold">{{ $row['description_title'] }}</p>
+                                    @endif
+                                    @if(!empty($row['initiators']))
+                                        <p class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</p>
+                                    @endif
+                                    @if(!empty($row['description']))
+                                        <p class="text-[#2B2B2B]">{{ $row['description'] }}</p>
+                                    @endif
+                                    @if(!empty($row['what_done']))
+                                        <div>
+                                            <p class="font-semibold">Что сделано:</p>
+                                            <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
+                                                @foreach($row['what_done'] as $item)
+                                                    <li>{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    @if(!empty($row['note']))
+                                        <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $row['note'] }}</p>
+                                    @endif
+                                </div>
+
+                                @if(!empty($row['photo']))
+                                    <div class="mt-5">
+                                        <button type="button"
+                                                class="w-full rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
+                                                @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($row['fio']) }}')">
+                                            <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-56 object-cover cursor-zoom-in">
+                                        </button>
+                                    </div>
+                                @endif
+                            </article>
+                        @endforeach
                     </div>
                 </section>
 
