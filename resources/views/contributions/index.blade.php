@@ -138,8 +138,8 @@
                                 asset('images/contributions/image8.png'),
                                 asset('images/contributions/image9.png'),
                                 asset('images/contributions/image10.png'),
-                                asset('images/contributions/image5.png'),
-                                asset('images/contributions/image6.png'),
+                                asset('images/contributions/image11.png'),
+                               
                             ],
                         ];
                     @endphp
