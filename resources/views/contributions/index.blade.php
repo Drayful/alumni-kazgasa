@@ -91,55 +91,53 @@
                         Нажмите на фотографию, чтобы увеличить.
                     </p>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        @foreach($contributionGroups as $group)
-                            <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                                <p class="font-bold text-[#2B2B2B]">
-                                    {{ $group['fio'] }} ({{ $group['year'] }})
-                                </p>
-                                <p class="text-sm text-gray-500 mt-1">{{ $group['position'] }}</p>
+                    <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
+                        <p class="font-bold text-[#2B2B2B]">{{ $architectureCard['title'] }}</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ implode(' · ', $architectureCard['people'] ?? []) }}
+                        </p>
 
-                                <div class="mt-4 space-y-5">
-                                    @foreach($group['items'] as $row)
-                                        <div class="space-y-2">
-                                            @if(!empty($row['description_title']))
-                                                <p class="font-semibold text-[#2B2B2B]">{{ $row['description_title'] }}</p>
-                                            @endif
-                                            @if(!empty($row['initiators']))
-                                                <p class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</p>
-                                            @endif
-                                            @if(!empty($row['description']))
-                                                <p class="text-[#2B2B2B]">{{ $row['description'] }}</p>
-                                            @endif
-                                            @if(!empty($row['what_done']))
-                                                <div>
-                                                    <p class="font-semibold">Что сделано:</p>
-                                                    <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
-                                                        @foreach($row['what_done'] as $item)
-                                                            <li>{{ $item }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            @endif
-                                            @if(!empty($row['note']))
-                                                <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $row['note'] }}</p>
-                                            @endif
-
-                                            @if(!empty($row['photo']))
-                                                <div class="pt-2">
-                                                    <button type="button"
-                                                            class="w-full rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
-                                                            @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($group['fio']) }}')">
-                                                        <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-56 object-cover cursor-zoom-in">
-                                                    </button>
-                                                </div>
-                                            @endif
+                        <div class="mt-4 space-y-5 text-[#2B2B2B]">
+                            @foreach(($architectureCard['items'] ?? []) as $item)
+                                <div class="space-y-2">
+                                    @if(!empty($item['title']))
+                                        <p class="font-semibold">{{ $item['title'] }}</p>
+                                    @endif
+                                    @if(!empty($item['initiators']))
+                                        <p class="text-[#2B2B2B]/70">{{ $item['initiators'] }}</p>
+                                    @endif
+                                    @if(!empty($item['description']))
+                                        <p>{{ $item['description'] }}</p>
+                                    @endif
+                                    @if(!empty($item['what_done']))
+                                        <div>
+                                            <p class="font-semibold">Что сделано:</p>
+                                            <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
+                                                @foreach($item['what_done'] as $w)
+                                                    <li>{{ $w }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
-                                    @endforeach
+                                    @endif
+                                    @if(!empty($item['note']))
+                                        <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $item['note'] }}</p>
+                                    @endif
                                 </div>
-                            </article>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
+
+                        @if(!empty($architectureCard['photos']))
+                            <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                @foreach($architectureCard['photos'] as $src)
+                                    <button type="button"
+                                            class="rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
+                                            @click="openLB('{{ $src }}', '{{ $architectureCard['title'] }}')">
+                                        <img src="{{ $src }}" alt="Фото" class="w-full h-36 sm:h-40 object-cover cursor-zoom-in">
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
+                    </article>
                 </section>
 
                 <section class="space-y-6">
