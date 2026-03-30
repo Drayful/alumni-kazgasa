@@ -94,7 +94,7 @@
                     <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                         <p class="font-bold text-[#2B2B2B]">{{ $architectureCard['title'] }}</p>
                         <p class="text-sm text-gray-500 mt-1">
-                            {{ implode(' · ', $architectureCard['people'] ?? []) }}
+                            {{ implode(' · ', $architectureCard['roles'] ?? []) }}
                         </p>
 
                         <div class="mt-4 space-y-5 text-[#2B2B2B]">
@@ -102,6 +102,9 @@
                                 <div class="space-y-2">
                                     @if(!empty($item['title']))
                                         <p class="font-semibold">{{ $item['title'] }}</p>
+                                    @endif
+                                    @if(!empty($item['pre_initiators_bold']))
+                                        <p class="font-semibold">{{ $item['pre_initiators_bold'] }}</p>
                                     @endif
                                     @if(!empty($item['initiators']))
                                         <p class="text-[#2B2B2B]/70">{{ $item['initiators'] }}</p>
