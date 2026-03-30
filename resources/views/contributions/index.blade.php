@@ -3,7 +3,16 @@
 @section('title', 'Вклад выпускников')
 
 @section('content')
-    <div x-data="{ mobileMenuOpen: false }" class="min-h-screen flex flex-col bg-[#F6F2EA]">
+    <div x-data="{
+            mobileMenuOpen: false,
+            lbOpen: false,
+            lbSrc: '',
+            lbAlt: '',
+            openLB(src, alt) { this.lbSrc = src; this.lbAlt = alt || ''; this.lbOpen = true; },
+            closeLB() { this.lbOpen = false; this.lbSrc = ''; this.lbAlt = ''; }
+        }"
+        @keydown.escape.window="closeLB()"
+        class="min-h-screen flex flex-col bg-[#F6F2EA]">
         <div class="w-full h-9 flex items-center justify-end px-4 sm:px-6 lg:px-8" style="background-color: #8F161C;">
             <div class="flex items-center gap-3">
                 @auth
@@ -75,6 +84,81 @@
                     </p>
                 </section>
 
+                <section class="space-y-4">
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Таблица</p>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Вклад выпускников (список)</h2>
+                    <p class="text-[#2B2B2B]/80 text-sm">
+                        Нажмите на миниатюру, чтобы увеличить фотографию. Фото сейчас стоят как заглушки — вы обновите позже.
+                    </p>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#D9D9D9] overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-[1100px] w-full text-sm">
+                                <thead class="bg-[#F6F2EA]">
+                                <tr class="text-left text-[#2B2B2B]/70">
+                                    <th class="py-3 px-4 w-16">№</th>
+                                    <th class="py-3 px-4 w-72">ФИО</th>
+                                    <th class="py-3 px-4 w-48">Год выпуска</th>
+                                    <th class="py-3 px-4 w-72">Должность / организация</th>
+                                    <th class="py-3 px-4">Краткое описание</th>
+                                    <th class="py-3 px-4 w-48">Примечание</th>
+                                    <th class="py-3 px-4 w-28">Фото</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($contributions as $row)
+                                    <tr class="border-t border-[#D9D9D9] align-top">
+                                        <td class="py-4 px-4 text-[#2B2B2B]/70 font-semibold">{{ $loop->iteration }}</td>
+                                        <td class="py-4 px-4">
+                                            <div class="font-semibold text-[#2B2B2B]">{{ $row['fio'] }}</div>
+                                        </td>
+                                        <td class="py-4 px-4 text-[#2B2B2B]">{{ $row['year'] }}</td>
+                                        <td class="py-4 px-4 text-[#2B2B2B]">{{ $row['position'] }}</td>
+                                        <td class="py-4 px-4">
+                                            <div class="space-y-2 text-[#2B2B2B]">
+                                                @if(!empty($row['description_title']))
+                                                    <div class="font-semibold">{{ $row['description_title'] }}</div>
+                                                @endif
+                                                @if(!empty($row['initiators']))
+                                                    <div class="text-[#2B2B2B]/70">{{ $row['initiators'] }}</div>
+                                                @endif
+                                                @if(!empty($row['description']))
+                                                    <div class="text-[#2B2B2B]">{{ $row['description'] }}</div>
+                                                @endif
+                                                @if(!empty($row['what_done']))
+                                                    <div>
+                                                        <div class="font-semibold">Что сделано:</div>
+                                                        <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
+                                                            @foreach($row['what_done'] as $item)
+                                                                <li>{{ $item }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-[#2B2B2B]/80">
+                                            {{ $row['note'] ?? '—' }}
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            @if(!empty($row['photo']))
+                                                <button type="button"
+                                                        @click="openLB('{{ $row['photo'] }}', 'Фото: {{ addslashes($row['fio']) }}')"
+                                                        class="group w-20 h-20 rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
+                                                    <img src="{{ $row['photo'] }}" alt="Фото" class="w-full h-full object-cover group-hover:opacity-95 transition">
+                                                </button>
+                                            @else
+                                                <span class="text-[#2B2B2B]/60">—</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="space-y-6">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">Кафедра</p>
                     <h2 class="font-bold text-2xl text-[#2B2B2B]">«Геодезия и картография, кадастр»</h2>
@@ -106,10 +190,18 @@
                             Куратор проекта «Библиотека материалов».
                         </p>
                         <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image3.png') }}" alt="Библиотека материалов 1" class="rounded-xl object-cover w-full h-48">
-                            <img src="{{ asset('images/contributions/image4.png') }}" alt="Библиотека материалов 2" class="rounded-xl object-cover w-full h-48">
-                            <img src="{{ asset('images/contributions/image1.png') }}" alt="Библиотека материалов 1" class="rounded-xl object-cover w-full h-48">
-                            <img src="{{ asset('images/contributions/image2.png') }}" alt="Библиотека материалов 2" class="rounded-xl object-cover w-full h-48">
+                            <img src="{{ asset('images/contributions/image3.png') }}" alt="Библиотека материалов 1"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image3.png') }}', 'Библиотека материалов 1')">
+                            <img src="{{ asset('images/contributions/image4.png') }}" alt="Библиотека материалов 2"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image4.png') }}', 'Библиотека материалов 2')">
+                            <img src="{{ asset('images/contributions/image1.png') }}" alt="Библиотека материалов 3"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image1.png') }}', 'Библиотека материалов 3')">
+                            <img src="{{ asset('images/contributions/image2.png') }}" alt="Библиотека материалов 4"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image2.png') }}', 'Библиотека материалов 4')">
                             
                         </div>
                     </article>
@@ -117,7 +209,7 @@
 
                 <section class="space-y-6">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">Школа</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа строительства (ШС)</h2>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа строительства</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                             <p class="font-bold text-[#2B2B2B]">Оспанов Омар Рахманович</p>
@@ -127,7 +219,9 @@
         
                             </p>
                             <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image6.png') }}" alt="Оборудование по кондиционированию воздуха" class="rounded-xl object-cover w-full h-48">
+                            <img src="{{ asset('images/contributions/image6.png') }}" alt="Оборудование по кондиционированию воздуха"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image6.png') }}', 'Оборудование по кондиционированию воздуха')">
                     
                         </div>
                         </article>
@@ -138,7 +232,9 @@
                                 Открытие лаборатории №3 «Вентиляция воздуха», оснащение оборудованием на сумму 12 000 000 тенге.
                             </p>
                             <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image5.png') }}" alt="Вентиляция воздуха" class="rounded-xl object-cover w-full h-48">
+                            <img src="{{ asset('images/contributions/image5.png') }}" alt="Вентиляция воздуха"
+                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                 @click="openLB('{{ asset('images/contributions/image5.png') }}', 'Вентиляция воздуха')">
                     
                         </div>
                         </article>
@@ -146,6 +242,26 @@
                 </section>
             </div>
         </main>
+
+        <div x-cloak x-show="lbOpen" class="fixed inset-0 z-[100]">
+            <div class="absolute inset-0 bg-black/70" @click="closeLB()"></div>
+            <div class="absolute inset-0 p-4 sm:p-8 flex items-center justify-center">
+                <div class="w-full max-w-5xl">
+                    <div class="flex items-center justify-end mb-3">
+                        <button type="button"
+                                class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-[#2B2B2B] font-bold hover:bg-[#F6F2EA] transition"
+                                @click="closeLB()"
+                                aria-label="Закрыть">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden border border-[#D9D9D9] shadow-lg">
+                        <img :src="lbSrc" :alt="lbAlt" class="w-full max-h-[80vh] object-contain bg-[#F6F2EA]">
+                        <div class="px-4 py-3 text-sm text-[#2B2B2B]/70" x-text="lbAlt"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
