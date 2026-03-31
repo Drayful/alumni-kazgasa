@@ -230,7 +230,7 @@
 
         {{-- FOOTER NOTE --}}
         <p class="text-xs text-gray-400 text-center mt-8">
-            Эта страница подтверждает подлинность карты выпускника КазГАСА.<br>
+            Эта страница подтверждает подлинность карты выпускника KazGASA.<br>
             <a href="https://alumni.kazgasa.kz" class="text-[#8F161C] hover:underline">
                 alumni.kazgasa.kz
             </a>

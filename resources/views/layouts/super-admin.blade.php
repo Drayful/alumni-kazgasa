@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@yield('title', 'Super Admin') — Alumni КазГАСА</title>
+  <title>@yield('title', 'Super Admin') — Alumni KazGASA</title>
   <link rel="icon" type="image/svg+xml" href="{{ asset('images/AV-logotip-2.svg') }}">
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -12,7 +12,7 @@
   <aside class="fixed top-0 left-0 h-full w-64 bg-[#5E0F14] z-20 flex flex-col">
     <div class="px-6 py-5 border-b border-[#8F161C]">
       <img src="{{ asset('images/AV-logotip-2.svg') }}" class="h-8 mb-2" style="filter: brightness(0) invert(1)">
-      <p class="text-white font-bold text-sm">Alumni КазГАСА</p>
+      <p class="text-white font-bold text-sm">Alumni KazGASA</p>
       <span class="inline-block mt-1 bg-[#E5C68D] text-[#5E0F14] text-xs font-bold px-2 py-0.5 rounded-full">
         Super Admin
       </span>

@@ -9,7 +9,7 @@
         <div class="relative z-10 flex flex-col items-center text-center">
             <img src="{{ asset('images/AV-logotip-2.svg') }}" alt="KazGASA" class="w-24 h-24 mb-6 brightness-0 invert" />
             <h1 class="text-4xl font-bold text-white">KazGASA Alumni</h1>
-            <p class="text-[#E5C68D] text-lg mt-2">Платформа выпускников КазГАСА / ААСИ / КазПТИ</p>
+            <p class="text-[#E5C68D] text-lg mt-2">Платформа выпускников KazGASA / ААСИ / КазПТИ</p>
             <div class="w-16 h-1 bg-[#E5C68D] my-8" aria-hidden="true"></div>
 
             <ul class="space-y-4 text-white text-left">
@@ -40,7 +40,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8 sm:p-10 max-w-lg w-full mx-auto">
             <p class="text-xs tracking-widest text-[#8F161C] uppercase mb-2">РЕГИСТРАЦИЯ</p>
             <h2 class="text-2xl font-bold text-[#2B2B2B]">Создайте аккаунт выпускника</h2>
-            <p class="text-sm text-gray-500 mb-6">Заполните данные для верификации в системе КазГАСА</p>
+            <p class="text-sm text-gray-500 mb-6">Заполните данные для верификации в системе KazGASA</p>
 
             {{-- Global errors --}}
             @if ($errors->any())

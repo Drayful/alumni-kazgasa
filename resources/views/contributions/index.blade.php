@@ -78,7 +78,7 @@
             <div class="max-w-7xl mx-auto space-y-12">
                 <section class="space-y-5">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">Вклад выпускников</p>
-                    <h1 class="font-bold text-3xl sm:text-4xl text-[#2B2B2B]">Истории поддержки и развития КазГАСА</h1>
+                    <h1 class="font-bold text-3xl sm:text-4xl text-[#2B2B2B]">Истории поддержки и развития KazGASA</h1>
                     <p class="text-[#2B2B2B]/80 text-sm sm:text-base">
                         Выпускники участвуют в развитии кафедр и школ: оснащают лаборатории, поддерживают образовательные проекты и помогают студентам с практикой.
                     </p>

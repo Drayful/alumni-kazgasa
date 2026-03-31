@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title', 'Лица КазГАСА')
+@section('title', 'Лица KazGASA')
 
 @section('content')
     <div class="min-h-screen" style="background-color: #F6F2EA;">
@@ -9,10 +9,10 @@
                 <div>
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Гордость университета</p>
                     <h1 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
-                        Лица КазГАСА
+                        Лица KazGASA
                     </h1>
                     <p class="text-sm text-gray-600 mt-2 max-w-3xl">
-                        Министры, депутаты, предприниматели, архитекторы — выпускники и представители КазГАСА.
+                        Министры, депутаты, предприниматели, архитекторы — выпускники и представители KazGASA.
                     </p>
                 </div>
 

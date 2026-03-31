@@ -9,7 +9,7 @@
         <div class="relative z-10 flex flex-col items-center text-center">
             <img src="{{ asset('images/AV-logotip-2.svg') }}" alt="KazGASA" class="w-24 h-24 mb-6 brightness-0 invert" />
             <h1 class="text-4xl font-bold text-white">KazGASA Alumni</h1>
-            <p class="text-[#E5C68D] text-lg mt-2">Платформа выпускников КазГАСА / ААСИ / КазПТИ</p>
+            <p class="text-[#E5C68D] text-lg mt-2">Платформа выпускников KazGASA / ААСИ / КазПТИ</p>
             <div class="w-16 h-1 bg-[#E5C68D] my-8" aria-hidden="true"></div>
 
             <ul class="space-y-4 text-white text-left">
