@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlumniCardPartner;
 use App\Models\ArchivePhoto;
 use Illuminate\View\View;
 
@@ -40,6 +41,13 @@ class HomeController extends Controller
                 ->get();
         }
 
-        return view('welcome', compact('archiveDecades', 'archivePhotosPreview', 'archivePhotoTotals'));
+        $cardPartners = AlumniCardPartner::query()->active()->get();
+
+        return view('welcome', compact(
+            'archiveDecades',
+            'archivePhotosPreview',
+            'archivePhotoTotals',
+            'cardPartners'
+        ));
     }
 }

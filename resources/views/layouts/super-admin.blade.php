@@ -26,6 +26,7 @@
           ['route' => 'super-admin.applications.index', 'icon' => '📋', 'label' => 'Заявки'],
           ['route' => 'super-admin.project-applications.index', 'icon' => '🧾', 'label' => 'Заявки на проекты'],
           ['route' => 'super-admin.projects.index',     'icon' => '🧩', 'label' => 'Проекты'],
+          ['route' => 'super-admin.alumni-card-partners.index', 'icon' => '🤝', 'label' => 'Партнёры карты'],
           ['route' => 'super-admin.archive-photos.index', 'icon' => '📷', 'label' => 'Архив фото'],
           ['route' => 'super-admin.stats',              'icon' => '📊', 'label' => 'Статистика'],
         ];

@@ -13,6 +13,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 use App\Http\Controllers\SuperAdmin\ApplicationController;
 use App\Http\Controllers\SuperAdmin\ProjectApplicationController as SuperAdminProjectApplicationController;
+use App\Http\Controllers\SuperAdmin\AlumniCardPartnerController;
 use App\Http\Controllers\SuperAdmin\ArchivePhotoController as SuperAdminArchivePhotoController;
 use App\Http\Controllers\SuperAdmin\ProjectController as SuperAdminProjectController;
 use App\Http\Controllers\SuperAdmin\StatsController;
@@ -156,6 +157,12 @@ Route::prefix('super-admin')
         Route::get('archive-photos', [SuperAdminArchivePhotoController::class, 'index'])->name('archive-photos.index');
         Route::delete('archive-photos/{archivePhoto}', [SuperAdminArchivePhotoController::class, 'destroy'])->name('archive-photos.destroy');
         Route::post('archive-photos/bulk-delete', [SuperAdminArchivePhotoController::class, 'bulkDestroy'])->name('archive-photos.bulk-delete');
+
+        Route::resource('alumni-card-partners', AlumniCardPartnerController::class)->except(['show']);
+        Route::patch('alumni-card-partners/{alumni_card_partner}/toggle', [AlumniCardPartnerController::class, 'toggle'])
+            ->name('alumni-card-partners.toggle');
+        Route::patch('alumni-card-partners/{alumni_card_partner}/move', [AlumniCardPartnerController::class, 'move'])
+            ->name('alumni-card-partners.move');
     });
 
 Route::middleware('auth')->group(function () {

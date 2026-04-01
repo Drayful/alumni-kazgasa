@@ -354,93 +354,12 @@
                     Партнёры, где работает карта выпускника
                 </h2>
 
-                @php
-                    $partners = [
-                        [
-                            'name' => 'Школа KazGASA',
-                            'discount' => 'X%',
-                            'desc' => 'Скидка распространяется на детей и внуков выпускников KazGASA.',
-                            'logo' => 'К',
-                            'popup' => 'Покажите карту выпускника администратору школы при подаче заявления на поступление. Скидка распространяется на детей и внуков выпускников KazGASA.',
-                            'note' => 'Нужен скан диплома, подтверждающий ваш статус выпускника.',
-                        ],
-                        [
-                            'name' => 'Школа КАУ',
-                            'discount' => 'X%',
-                            'desc' => 'Скидка применяется к стоимости обучения за первый учебный год.',
-                            'logo' => 'К',
-                            'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
-                            'note' => 'Нужен скан диплома.',
-                        ],
-                        [
-                            'name' => 'Digital колледж KazGASA',
-                            'discount' => 'X%',
-                            'desc' => 'Скидка действует при оформлении договора на первый год.',
-                            'logo' => 'D',
-                            'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
-                            'note' => 'Нужен скан диплома.',
-                        ],
-                        [
-                            'name' => 'Колледж КАУ',
-                            'discount' => 'X%',
-                            'desc' => 'Подача договора — и скидка активируется по карте выпускника.',
-                            'logo' => 'К',
-                            'popup' => 'Покажите карту выпускника в приёмной комиссии при оформлении договора. Скидка применяется к стоимости обучения за первый учебный год.',
-                            'note' => 'Нужен скан диплома.',
-                        ],
-                        [
-                            'name' => 'Магистратура KazGASA',
-                            'discount' => 'X%',
-                            'desc' => 'Скидка на поступление и обучение для выпускников и семьи.',
-                            'logo' => 'М',
-                            'popup' => 'Покажите карту при подаче заявления. Скидка на детей и внуков выпускников KazGASA.',
-                            'note' => 'Нужен скан диплома.',
-                        ],
-                        [
-                            'name' => 'Докторантура KazGASA',
-                            'discount' => 'X%',
-                            'desc' => 'Поддержка выпускников на этапе докторантуры.',
-                            'logo' => 'Д',
-                            'popup' => 'Покажите карту при подаче заявления. Скидка применяется по программе для детей и внуков выпускников KazGASA.',
-                            'note' => 'Нужен скан диплома.',
-                        ],
-                        [
-                            'name' => 'FabLab',
-                            'discount' => 'X%',
-                            'desc' => 'Современное пространство для воплощения архитектурных идей в модели.',
-                            'logo' => 'F',
-                            'popup' => 'Покажите карту выпускника менеджеру. Мы подберём подходящий формат участия и доступ к ресурсам FabLab.',
-                            'note' => '',
-                        ],
-                        [
-                            'name' => 'Лаборатория Дронов',
-                            'discount' => 'X%',
-                            'desc' => 'Аэрофото, тепловизия, 3D-моделирование и пилотирование.',
-                            'logo' => 'U',
-                            'popup' => 'Покажите карту выпускника менеджеру и получите условия участия по программе партнёрства Alumni.',
-                            'note' => '',
-                        ],
-                        [
-                            'name' => 'Gaudi Paint',
-                            'discount' => '5%',
-                            'desc' => 'Скидка на ассортимент водно-дисперсионных акриловых красок и декоративных покрытий.',
-                            'logo' => 'G',
-                            'popup' => 'Покажите карту выпускника KazGASA продавцу-консультанту в магазине. Скидка применяется ко всему ассортименту.',
-                            'note' => '',
-                        ],
-                        [
-                            'name' => 'Автошкола Sapar',
-                            'discount' => '20%',
-                            'desc' => 'Права с нуля Алматы: теория + практика + экзамен.',
-                            'logo' => 'S',
-                            'popup' => 'Покажите карту выпускника при записи на курс или назовите, что вы выпускник KazGASA. Скидка действует на полный курс обучения любой категории.',
-                            'note' => '',
-                        ],
-                    ];
-                @endphp
+                @if($cardPartners->isEmpty())
+                    <p class="mt-8 text-sm text-gray-500">Список партнёров появится после настройки в панели администратора.</p>
+                @endif
 
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    @foreach($partners as $p)
+                    @foreach($cardPartners as $p)
                         <div x-data="{ open: false }"
                              class="bg-white rounded-2xl shadow-sm p-5 cursor-pointer
                                 border border-transparent hover:border-[#8F161C] transition">
@@ -448,15 +367,15 @@
                                 <div class="flex items-start justify-between gap-4">
                                     <div class="w-12 h-12 rounded-2xl bg-[#F6F2EA] border border-[#D9D9D9]
                                             flex items-center justify-center text-[#8F161C] font-bold">
-                                        {{ $p['logo'] }}
+                                        {{ $p->logo_letter }}
                                     </div>
                                     <span class="bg-[#8F161C] text-white text-sm px-2 py-0.5 rounded-full">
-                                    {{ $p['discount'] }}
+                                    {{ $p->discount }}
                                 </span>
                                 </div>
                                 <div class="mt-4">
-                                    <p class="font-bold text-[#2B2B2B] text-sm">{{ $p['name'] }}</p>
-                                    <p class="text-sm text-gray-500 mt-2">{{ $p['desc'] }}</p>
+                                    <p class="font-bold text-[#2B2B2B] text-sm">{{ $p->name }}</p>
+                                    <p class="text-sm text-gray-500 mt-2">{{ $p->description }}</p>
                                 </div>
                             </div>
 
@@ -468,10 +387,10 @@
                                     <div class="flex items-start justify-between gap-4">
                                         <div>
                                             <p class="text-[#8F161C] font-bold text-xl">
-                                                {{ $p['name'] }}
+                                                {{ $p->name }}
                                             </p>
                                             <p class="mt-1 text-sm text-gray-500">
-                                                Скидка: <span class="font-semibold text-[#8F161C]">{{ $p['discount'] }}</span>
+                                                Скидка: <span class="font-semibold text-[#8F161C]">{{ $p->discount }}</span>
                                             </p>
                                         </div>
                                         <button @click="open = false"
@@ -481,11 +400,11 @@
                                     </div>
 
                                     <p class="text-sm text-[#2B2B2B] mt-4 whitespace-pre-line">
-                                        {{ $p['popup'] }}
+                                        {{ $p->popup }}
                                     </p>
-                                    @if(!empty($p['note']))
+                                    @if(filled($p->note))
                                         <p class="text-xs text-gray-400 mt-3">
-                                            {{ $p['note'] }}
+                                            {{ $p->note }}
                                         </p>
                                     @endif
 
