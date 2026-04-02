@@ -56,7 +56,7 @@
                         <span class="text-xs text-[#8F161C]">{{ $message }}</span>
                     @enderror
                     @foreach ($errors->getMessages() as $errKey => $errMessages)
-                        @if (str_starts_with($errKey, 'photos.'))
+                        @if (\Illuminate\Support\Str::startsWith($errKey, 'photos.'))
                             @foreach ($errMessages as $message)
                                 <span class="text-xs text-[#8F161C] block">{{ $message }}</span>
                             @endforeach
