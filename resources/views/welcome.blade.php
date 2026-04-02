@@ -878,7 +878,9 @@
                         <ul class="list-disc list-inside space-y-1">
                             @foreach($errors->only(['photo', 'decade']) as $fieldErrors)
                                 @foreach((array) $fieldErrors as $err)
-                                    <li>{{ $err }}</li>
+                                    <li>
+                                        {{ is_array($err) ? implode(', ', $err) : $err }}
+                                    </li>
                                 @endforeach
                             @endforeach
                         </ul>
@@ -962,7 +964,7 @@
                                 <span class="text-[#8F161C] text-lg group-open:rotate-180 transition-transform">▼</span>
                             </summary>
                             <div class="px-4 pb-5 sm:px-5 border-t bg-white" style="border-color: #D9D9D9;">
-                                <form action="{{ route('archive.photos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 pt-4">
+                                <form id="archive-photo-upload-form" action="{{ route('archive.photos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4 pt-4">
                                     @csrf
 
                                     <div>
@@ -1132,6 +1134,79 @@
 
             updateCurrentSlot();
             setInterval(updateCurrentSlot, 60 * 1000);
+
+            // Массовые проблемы с загрузкой фото из-за ограничений POST на сервере.
+            // Перед отправкой уменьшаем выбранное фото в браузере, чтобы избежать PostTooLargeException.
+            const archiveForm = document.getElementById('archive-photo-upload-form');
+            const archiveFileInput = document.getElementById('archive-photo');
+            if (archiveForm && archiveFileInput) {
+                const TARGET_MAX_BYTES = 700 * 1024; // ~700KB, обычно проходит при низких лимитах
+                const MAX_DIMENSION = 1600;
+
+                async function compressFileToJpeg(file) {
+                    const imgUrl = URL.createObjectURL(file);
+                    try {
+                        const img = await new Promise((resolve, reject) => {
+                            const el = new Image();
+                            el.onload = () => resolve(el);
+                            el.onerror = reject;
+                            el.src = imgUrl;
+                        });
+
+                        let w = img.naturalWidth || img.width;
+                        let h = img.naturalHeight || img.height;
+                        if (!w || !h) return { blob: file, filename: file.name };
+
+                        const scale = Math.min(1, MAX_DIMENSION / Math.max(w, h));
+                        w = Math.round(w * scale);
+                        h = Math.round(h * scale);
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d', { willReadFrequently: false });
+                        if (!ctx) return { blob: file, filename: file.name };
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.drawImage(img, 0, 0, w, h);
+
+                        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+                        const candidates = [0.92, 0.82, 0.72, 0.62, 0.52, 0.42, 0.32, 0.22, 0.15];
+                        let lastBlob = null;
+
+                        for (const q of candidates) {
+                            const blob = await new Promise((resolve) => {
+                                canvas.toBlob((b) => resolve(b), 'image/jpeg', q);
+                            });
+                            if (!blob) continue;
+                            lastBlob = blob;
+                            if (blob.size <= TARGET_MAX_BYTES) {
+                                return { blob, filename: nameWithoutExt + '.jpg' };
+                            }
+                        }
+
+                        return lastBlob ? { blob: lastBlob, filename: nameWithoutExt + '.jpg' } : { blob: file, filename: file.name };
+                    } finally {
+                        URL.revokeObjectURL(imgUrl);
+                    }
+                }
+
+                archiveForm.addEventListener('submit', async (e) => {
+                    try {
+                        const file = archiveFileInput.files && archiveFileInput.files[0];
+                        if (!file) return;
+                        if (file.size <= TARGET_MAX_BYTES) return;
+
+                        const compressed = await compressFileToJpeg(file);
+                        const dt = new DataTransfer();
+                        dt.items.add(new File([compressed.blob], compressed.filename, { type: 'image/jpeg' }));
+                        archiveFileInput.files = dt.files;
+                    } catch (err) {
+                        // Если ресайз не удался — всё равно отправим исходный файл.
+                        console.warn('archive-photo compress failed', err);
+                    }
+                });
+            }
         })();
     </script>
 @endpush
