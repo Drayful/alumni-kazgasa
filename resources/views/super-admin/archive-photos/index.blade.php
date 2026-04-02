@@ -152,6 +152,71 @@
 
     <script>
         (function () {
+            const form = document.getElementById('bulk-upload-form');
+            const input = document.getElementById('bulk-photos');
+            const decadeSelect = document.getElementById('bulk-decade');
+            const statusBox = document.getElementById('bulk-upload-status');
+            if (!form || !input || !decadeSelect || !statusBox) return;
+
+            const routeUrl = form.getAttribute('action');
+            const token = form.querySelector('input[name="_token"]')?.value;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const indexBaseUrl = "{{ route('super-admin.archive-photos.index') }}";
+
+            if (!routeUrl || !token) return;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const files = Array.from(input.files || []);
+                if (!files.length) return;
+
+                const decade = decadeSelect.value;
+                if (!decade) return;
+
+                statusBox.classList.remove('hidden');
+                statusBox.classList.remove('bg-red-50', 'border-red-200', 'text-[#8F161C]');
+                statusBox.classList.add('bg-[#F6F2EA]', 'border-[#D9D9D9]', 'text-gray-800');
+                statusBox.textContent = 'Загрузка... (0/' + files.length + ')';
+
+                if (submitBtn) submitBtn.disabled = true;
+
+                let okCount = 0;
+                try {
+                    for (let i = 0; i < files.length; i++) {
+                        const fd = new FormData();
+                        fd.append('_token', token);
+                        fd.append('decade', decade);
+                        fd.append('photos[]', files[i]);
+
+                        const res = await fetch(routeUrl, {
+                            method: 'POST',
+                            body: fd,
+                            credentials: 'same-origin',
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+
+                        if (res.status < 200 || res.status >= 400) {
+                            throw new Error('Server returned HTTP ' + res.status + ' for file #' + (i + 1));
+                        }
+
+                        okCount++;
+                        statusBox.textContent = 'Загрузка... (' + okCount + '/' + files.length + ')';
+                    }
+
+                    window.location.href = indexBaseUrl + '?decade=' + encodeURIComponent(decade) + '#bulk-upload';
+                } catch (err) {
+                    statusBox.classList.remove('bg-[#F6F2EA]', 'border-[#D9D9D9]', 'text-gray-800');
+                    statusBox.classList.add('bg-red-50', 'border-red-200', 'text-[#8F161C]');
+                    statusBox.textContent = 'Ошибка загрузки: ' + (err?.message || 'неизвестная ошибка');
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            });
+        })();
+    </script>
+
+    <script>
+        (function () {
             const form = document.getElementById('bulk-archive-form');
             if (!form) return;
             const checks = () => form.querySelectorAll('.archive-row-check');
