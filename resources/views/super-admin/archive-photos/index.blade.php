@@ -193,11 +193,34 @@
                             method: 'POST',
                             body: fd,
                             credentials: 'same-origin',
-                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            }
                         });
 
                         if (res.status < 200 || res.status >= 400) {
-                            throw new Error('Server returned HTTP ' + res.status + ' for file #' + (i + 1));
+                            let details = '';
+                            try {
+                                const data = await res.json();
+                                if (data?.errors) {
+                                    const firstKey = Object.keys(data.errors)[0];
+                                    const firstVal = data.errors[firstKey];
+                                    details = Array.isArray(firstVal) ? firstVal.join(', ') : String(firstVal);
+                                } else if (data?.message) {
+                                    details = data.message;
+                                } else {
+                                    details = JSON.stringify(data);
+                                }
+                            } catch (jsonErr) {
+                                try {
+                                    const text = await res.text();
+                                    details = text.slice(0, 500);
+                                } catch (textErr) {
+                                    details = '';
+                                }
+                            }
+                            throw new Error('Server returned HTTP ' + res.status + ' for file #' + (i + 1) + (details ? (': ' + details) : ''));
                         }
 
                         okCount++;
