@@ -155,6 +155,11 @@ Route::prefix('super-admin')
         Route::patch('projects/{project}/move', [SuperAdminProjectController::class, 'move'])->name('projects.move');
 
         Route::get('archive-photos', [SuperAdminArchivePhotoController::class, 'index'])->name('archive-photos.index');
+        Route::get('archive-photos/bulk-upload', function () {
+            return redirect()
+                ->route('super-admin.archive-photos.index', request()->query())
+                ->withFragment('bulk-upload');
+        })->name('archive-photos.bulk-upload');
         Route::post('archive-photos/bulk-upload', [SuperAdminArchivePhotoController::class, 'bulkStore'])
             ->middleware('throttle:30,60')
             ->name('archive-photos.bulk-store');
