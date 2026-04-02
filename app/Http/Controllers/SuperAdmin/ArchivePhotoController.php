@@ -78,15 +78,9 @@ class ArchivePhotoController extends Controller
             $validated = $request->validate([
                 'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
                 'photos' => ['required', 'array', 'min:1', 'max:100'],
-                // Важно: правило `image` декодирует картинку и может съесть много памяти.
-                // Для массовой загрузки проверяем только по MIME/размеру.
-                'photos.*' => ['required', 'file', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             ], [
                 'photos.required' => 'Выберите хотя бы одну фотографию',
                 'photos.max' => 'Не более 100 файлов за одну загрузку',
-                'photos.*.file' => 'Файл не получен. Попробуйте выбрать заново.',
-                'photos.*.mimes' => 'Допустимые форматы: JPEG, PNG, WebP',
-                'photos.*.max' => 'Размер каждого файла не более 10 МБ',
                 'decade.required' => 'Выберите десятилетие',
             ]);
 
@@ -95,8 +89,34 @@ class ArchivePhotoController extends Controller
             $decade = $validated['decade'];
 
             $count = 0;
-            DB::transaction(function () use ($request, $userId, $dir, $decade, &$count) {
-                foreach ($request->file('photos') as $file) {
+            $files = $request->file('photos');
+            DB::transaction(function () use ($files, $userId, $dir, $decade, &$count) {
+                $allowedExts = ['jpeg', 'jpg', 'png', 'webp'];
+                $maxBytes = 10240 * 1024; // 10MB
+
+                foreach ($files as $i => $file) {
+                    if (! $file || ! $file->isValid()) {
+                        // Если PHP не принял upload (limit/upload_tmp_dir), сюда попадет "failed to upload".
+                        $errCode = $file?->getError();
+                        throw ValidationException::withMessages([
+                            'photos.'.$i => 'Файл не загрузился на сервер. Код ошибки: '.$errCode.'.',
+                        ]);
+                    }
+
+                    $ext = strtolower((string) $file->getClientOriginalExtension());
+                    if (! in_array($ext, $allowedExts, true)) {
+                        throw ValidationException::withMessages([
+                            'photos.'.$i => 'Недопустимый формат файла. Допустимые: JPEG, PNG, WebP.',
+                        ]);
+                    }
+
+                    $size = (int) $file->getSize();
+                    if ($size > $maxBytes) {
+                        throw ValidationException::withMessages([
+                            'photos.'.$i => 'Размер файла превышает 10 МБ.',
+                        ]);
+                    }
+
                     $path = $file->store($dir, 'public');
                     ArchivePhoto::create([
                         'user_id' => $userId,
