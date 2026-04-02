@@ -165,6 +165,62 @@
 
             if (!routeUrl || !token) return;
 
+            // Сервер может иметь низкий `upload_max_filesize`/`post_max_size`.
+            // Чтобы обойти это, уменьшаем/пересохраняем картинки в браузере.
+            const TARGET_MAX_BYTES = 1024 * 1024; // ~1MB
+            const MAX_DIMENSION = 1600; // ограничим длинную сторону
+
+            async function compressFileToJpeg(file) {
+                const imgUrl = URL.createObjectURL(file);
+                try {
+                    const img = await new Promise((resolve, reject) => {
+                        const el = new Image();
+                        el.onload = () => resolve(el);
+                        el.onerror = reject;
+                        el.src = imgUrl;
+                    });
+
+                    let w = img.naturalWidth || img.width;
+                    let h = img.naturalHeight || img.height;
+                    if (!w || !h) return { blob: file, filename: file.name };
+
+                    const scale = Math.min(1, MAX_DIMENSION / Math.max(w, h));
+                    w = Math.round(w * scale);
+                    h = Math.round(h * scale);
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d', { willReadFrequently: false });
+                    if (!ctx) return { blob: file, filename: file.name };
+
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, w, h);
+
+                    const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+                    const candidates = [0.92, 0.82, 0.72, 0.62, 0.52, 0.42, 0.32, 0.22, 0.15];
+                    let lastBlob = null;
+
+                    for (const q of candidates) {
+                        const blob = await new Promise((resolve) => {
+                            canvas.toBlob((b) => resolve(b), 'image/jpeg', q);
+                        });
+                        if (!blob) continue;
+                        lastBlob = blob;
+                        if (blob.size <= TARGET_MAX_BYTES) {
+                            return { blob, filename: nameWithoutExt + '.jpg' };
+                        }
+                    }
+
+                    return lastBlob
+                        ? { blob: lastBlob, filename: nameWithoutExt + '.jpg' }
+                        : { blob: file, filename: file.name };
+                } finally {
+                    URL.revokeObjectURL(imgUrl);
+                }
+            }
+
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -184,10 +240,18 @@
                 let okCount = 0;
                 try {
                     for (let i = 0; i < files.length; i++) {
+                        let uploadFile = files[i];
+                        let uploadName = files[i].name;
+                        if (files[i].size > TARGET_MAX_BYTES) {
+                            const compressed = await compressFileToJpeg(files[i]);
+                            uploadFile = compressed.blob;
+                            uploadName = compressed.filename;
+                        }
+
                         const fd = new FormData();
                         fd.append('_token', token);
                         fd.append('decade', decade);
-                        fd.append('photos[]', files[i]);
+                        fd.append('photos[]', uploadFile, uploadName);
 
                         const res = await fetch(routeUrl, {
                             method: 'POST',
