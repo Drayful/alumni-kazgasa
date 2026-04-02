@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ArchivePhoto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -58,5 +59,44 @@ class ArchivePhotoController extends Controller
         }
 
         return back()->with('success', 'Удалено фотографий: '.count($ids).'.');
+    }
+
+    public function bulkStore(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
+            'photos' => ['required', 'array', 'min:1', 'max:100'],
+            'photos.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
+        ], [
+            'photos.required' => 'Выберите хотя бы одну фотографию',
+            'photos.max' => 'Не более 100 файлов за одну загрузку',
+            'photos.*.image' => 'Каждый файл должен быть изображением',
+            'photos.*.mimes' => 'Допустимые форматы: JPEG, PNG, WebP',
+            'photos.*.max' => 'Размер каждого файла не более 10 МБ',
+            'decade.required' => 'Выберите десятилетие',
+        ]);
+
+        $userId = $request->user()->id;
+        $dir = 'archive-photos/'.$userId;
+        $decade = $validated['decade'];
+
+        $count = 0;
+        DB::transaction(function () use ($request, $userId, $dir, $decade, &$count) {
+            foreach ($request->file('photos') as $file) {
+                $path = $file->store($dir, 'public');
+                ArchivePhoto::create([
+                    'user_id' => $userId,
+                    'decade' => $decade,
+                    'path' => $path,
+                ]);
+                $count++;
+            }
+        });
+
+        if ($count === 0) {
+            return back()->withErrors(['photos' => 'Не удалось сохранить файлы. Проверьте формат и размер.']);
+        }
+
+        return back()->with('success', 'Загружено фотографий: '.$count.'.');
     }
 }

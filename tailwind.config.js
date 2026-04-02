@@ -30,5 +30,5 @@ export default {
         },
     },
 
-    plugins: [forms, lineClamp],
+    // plugins: [forms, lineClamp],
 };
