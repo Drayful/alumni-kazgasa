@@ -32,8 +32,9 @@
                     {{ $message }}
                 </div>
             @enderror
-            <form method="POST" action="{{ route('super-admin.archive-photos.bulk-store') }}"
-                  enctype="multipart/form-data" class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
+            <form id="bulk-upload-form" method="POST" action="{{ route('super-admin.archive-photos.bulk-store') }}"
+                  enctype="multipart/form-data"
+                  class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
                 @csrf
                 <div class="flex flex-col gap-1.5">
                     <label for="bulk-decade" class="text-xs font-medium text-gray-600">Десятилетие</label>
@@ -68,6 +69,8 @@
                     Загрузить в архив
                 </button>
             </form>
+
+            <div id="bulk-upload-status" class="hidden mt-4 p-3 rounded-xl border text-sm"></div>
         </div>
 
         @foreach($photos as $photo)

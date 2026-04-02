@@ -78,11 +78,13 @@ class ArchivePhotoController extends Controller
             $validated = $request->validate([
                 'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
                 'photos' => ['required', 'array', 'min:1', 'max:100'],
-                'photos.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
+                // Важно: правило `image` декодирует картинку и может съесть много памяти.
+                // Для массовой загрузки проверяем только по MIME/размеру.
+                'photos.*' => ['required', 'file', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             ], [
                 'photos.required' => 'Выберите хотя бы одну фотографию',
                 'photos.max' => 'Не более 100 файлов за одну загрузку',
-                'photos.*.image' => 'Каждый файл должен быть изображением',
+                'photos.*.file' => 'Файл не получен. Попробуйте выбрать заново.',
                 'photos.*.mimes' => 'Допустимые форматы: JPEG, PNG, WebP',
                 'photos.*.max' => 'Размер каждого файла не более 10 МБ',
                 'decade.required' => 'Выберите десятилетие',
