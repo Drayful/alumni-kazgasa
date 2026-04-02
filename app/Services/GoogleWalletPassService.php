@@ -264,47 +264,6 @@ class GoogleWalletPassService
         return url('/images/' . $publicName);
     }
 
-    private function resolveAvatarPublicUrl(AlumniProfile $profile): ?string
-    {
-        $avatarUrl = $profile->avatar_url ?? null;
-        if (! is_string($avatarUrl) || $avatarUrl === '') {
-            return null;
-        }
-
-        $localAvatarPath = null;
-        $parsed          = parse_url($avatarUrl);
-
-        if (! empty($parsed['path']) && str_starts_with($parsed['path'], '/storage/')) {
-            $relative        = substr($parsed['path'], strlen('/storage/'));
-            $candidate       = storage_path('app/public/' . $relative);
-            if (is_file($candidate)) {
-                $localAvatarPath = $candidate;
-            }
-        } elseif (! str_starts_with($avatarUrl, 'http')) {
-            $candidate = public_path(ltrim($avatarUrl, '/'));
-            if (is_file($candidate)) {
-                $localAvatarPath = $candidate;
-            }
-        } elseif (str_starts_with($avatarUrl, 'https://')) {
-            return $avatarUrl;
-        }
-
-        if ($localAvatarPath && is_readable($localAvatarPath)) {
-            $destDir  = public_path('images/avatars');
-            if (! is_dir($destDir)) {
-                mkdir($destDir, 0775, true);
-            }
-            $ext      = pathinfo($localAvatarPath, PATHINFO_EXTENSION) ?: 'jpg';
-            $destName = ($profile->public_id ?? Str::random(8)) . '.' . $ext;
-            $destPath = $destDir . DIRECTORY_SEPARATOR . $destName;
-            copy($localAvatarPath, $destPath);
-
-            return url('/images/avatars/' . $destName);
-        }
-
-        return null;
-    }
-
     private function loadServiceAccount(): array
     {
         $path = Config::get('google-wallet.service_account_path');

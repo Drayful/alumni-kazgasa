@@ -176,36 +176,8 @@ class AppleWalletPassService
         // Reuse existing PNG assets. Apple требует icon.png/icon@2x.png.
         $icon = file_get_contents($iconPath);
 
-        // Попробовать использовать фото выпускника как «полосу» / логотип на карте.
+        // Не используем фото выпускника в pass — только статический логотип проекта.
         $logo = file_get_contents($logoPath);
-        $avatarUrl = $profile->avatar_url ?? null;
-        if (is_string($avatarUrl) && $avatarUrl !== '') {
-            $localAvatarPath = null;
-
-            // Если это /storage/..., пробуем найти файл на диске public
-            $parsed = parse_url($avatarUrl);
-            if (! empty($parsed['path']) && str_starts_with($parsed['path'], '/storage/')) {
-                $relative = substr($parsed['path'], strlen('/storage/')); // alumni-photos/...
-                $candidate = storage_path('app/public/' . $relative);
-                if (is_file($candidate)) {
-                    $localAvatarPath = $candidate;
-                }
-            } elseif (str_starts_with($avatarUrl, 'http') === false) {
-                // относительный/абсолютный путь внутри public
-                $candidate = public_path(ltrim($avatarUrl, '/'));
-                if (is_file($candidate)) {
-                    $localAvatarPath = $candidate;
-                }
-            }
-
-            if ($localAvatarPath && is_readable($localAvatarPath)) {
-                $avatarBinary = @file_get_contents($localAvatarPath);
-                if ($avatarBinary !== false && strlen($avatarBinary) > 100) {
-                    // Используем фото выпускника как logo/strip (Apple сам впишет в макет pass’а)
-                    $logo = $avatarBinary;
-                }
-            }
-        }
 
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon.png', $icon);
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon@2x.png', $icon);
