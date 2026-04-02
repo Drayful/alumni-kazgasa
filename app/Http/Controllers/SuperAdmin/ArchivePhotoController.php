@@ -92,7 +92,7 @@ class ArchivePhotoController extends Controller
             $files = $request->file('photos');
             DB::transaction(function () use ($files, $userId, $dir, $decade, &$count) {
                 $allowedExts = ['jpeg', 'jpg', 'png', 'webp'];
-                $maxBytes = 10240 * 1024; // 10MB
+                $maxBytes = 20 * 1024 * 1024; // 20MB
 
                 foreach ($files as $i => $file) {
                     if (! $file || ! $file->isValid()) {
@@ -113,7 +113,7 @@ class ArchivePhotoController extends Controller
                     $size = (int) $file->getSize();
                     if ($size > $maxBytes) {
                         throw ValidationException::withMessages([
-                            'photos.'.$i => 'Размер файла превышает 10 МБ.',
+                            'photos.'.$i => 'Размер файла превышает 20 МБ.',
                         ]);
                     }
 

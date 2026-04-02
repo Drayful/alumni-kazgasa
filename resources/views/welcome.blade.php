@@ -980,7 +980,7 @@
 
                                     <div>
                                         <label for="archive-photo" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">Фотография</label>
-                                        <p class="text-xs mb-2" style="color: #2B2B2B99;">JPEG, PNG или WebP, до 10 МБ</p>
+                                        <p class="text-xs mb-2" style="color: #2B2B2B99;">JPEG, PNG или WebP, до 20 МБ</p>
                                         <input type="file" name="photo" id="archive-photo" required accept="image/jpeg,image/png,image/webp"
                                                class="block w-full min-h-[48px] text-base file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#8F161C] file:text-white cursor-pointer rounded-xl border bg-white px-2 py-2"
                                                style="border-color: #D9D9D9;">

@@ -24,7 +24,7 @@
         <div id="bulk-upload" class="mt-8 p-5 rounded-xl border border-dashed border-[#D9D9D9] bg-[#F6F2EA]/50 scroll-mt-24">
             <h2 class="text-sm font-semibold text-gray-800 mb-3">Массовая загрузка</h2>
             <p class="text-xs text-gray-500 mb-4">
-                До 100 файлов за раз (JPEG, PNG, WebP, до 10 МБ каждый). Все снимки попадут в выбранное десятилетие.
+                До 100 файлов за раз (JPEG, PNG, WebP, до 20 МБ каждый). Все снимки попадут в выбранное десятилетие.
                 Автор записей в базе — ваш аккаунт супер-админа.
             </p>
             @error('bulk')

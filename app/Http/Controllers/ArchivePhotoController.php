@@ -21,12 +21,13 @@ class ArchivePhotoController extends Controller
         $validated = $request->validate([
             // `image` может вызывать декодирование картинки и съедать память.
             // Для массовой/одиночной загрузки используем лёгкую проверку.
-            'photo' => ['required', 'file', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
+            // `max` в Laravel задается в килобайтах, 20480 = 20MB.
+            'photo' => ['required', 'file', 'mimes:jpeg,jpg,png,webp', 'max:20480'],
             'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
         ], [
             'photo.required' => 'Выберите фотографию',
             'photo.file' => 'Файл не получен. Попробуйте выбрать заново.',
-            'photo.max' => 'Размер файла не более 10 МБ',
+            'photo.max' => 'Размер файла не более 20 МБ',
             'decade.required' => 'Выберите десятилетие',
         ]);
 
