@@ -253,15 +253,26 @@
                         fd.append('decade', decade);
                         fd.append('photos[]', uploadFile, uploadName);
 
-                        const res = await fetch(routeUrl, {
-                            method: 'POST',
-                            body: fd,
-                            credentials: 'same-origin',
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'Accept': 'application/json'
-                            }
-                        });
+                        async function sleep(ms) {
+                            return new Promise(r => setTimeout(r, ms));
+                        }
+
+                        // Ретрай при 429 (rate limit) с небольшим backoff.
+                        let res = null;
+                        for (let attempt = 0; attempt < 6; attempt++) {
+                            res = await fetch(routeUrl, {
+                                method: 'POST',
+                                body: fd,
+                                credentials: 'same-origin',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            if (res.status !== 429) break;
+                            await sleep(1500 + attempt * 1200);
+                        }
 
                         if (res.status < 200 || res.status >= 400) {
                             let details = '';

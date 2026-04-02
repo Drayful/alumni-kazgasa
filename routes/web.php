@@ -109,7 +109,7 @@ Route::post('/project-applications', [ProjectApplicationController::class, 'stor
     ->name('project-applications.store');
 
 Route::post('/archive/photos', [ArchivePhotoController::class, 'store'])
-    ->middleware(['auth', 'throttle:20,60'])
+    ->middleware(['auth', 'throttle:220,60'])
     ->name('archive.photos.store');
 
 // Кабинет супер-админа
@@ -161,7 +161,9 @@ Route::prefix('super-admin')
                 ->withFragment('bulk-upload');
         })->name('archive-photos.bulk-upload');
         Route::post('archive-photos/bulk-upload', [SuperAdminArchivePhotoController::class, 'bulkStore'])
-            ->middleware('throttle:30,60')
+            // Массовая загрузка отправляет по одному запросу на файл.
+            // Даем больший лимит, чтобы не ловить 429 на пачках.
+            ->middleware('throttle:240,60')
             ->name('archive-photos.bulk-store');
         Route::delete('archive-photos/{archivePhoto}', [SuperAdminArchivePhotoController::class, 'destroy'])->name('archive-photos.destroy');
         Route::post('archive-photos/bulk-delete', [SuperAdminArchivePhotoController::class, 'bulkDestroy'])->name('archive-photos.bulk-delete');
