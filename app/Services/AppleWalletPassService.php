@@ -164,25 +164,16 @@ class AppleWalletPassService
     private function putImages(string $dir, AlumniProfile $profile): void
     {
         $iconPath = (string) config('apple-wallet.icon_path');
-        $logoPath = (string) config('apple-wallet.logo_path');
 
         if (! is_file($iconPath)) {
             throw new \RuntimeException("Не найден файл иконки для Wallet: {$iconPath}");
-        }
-        if (! is_file($logoPath)) {
-            throw new \RuntimeException("Не найден файл логотипа для Wallet: {$logoPath}");
         }
 
         // Reuse existing PNG assets. Apple требует icon.png/icon@2x.png.
         $icon = file_get_contents($iconPath);
 
-        // Не используем фото выпускника в pass — только статический логотип проекта.
-        $logo = file_get_contents($logoPath);
-
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon.png', $icon);
         file_put_contents($dir . DIRECTORY_SEPARATOR . 'icon@2x.png', $icon);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'logo.png', $logo);
-        file_put_contents($dir . DIRECTORY_SEPARATOR . 'logo@2x.png', $logo);
     }
 
     private function buildManifest(string $dir): array
