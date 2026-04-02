@@ -27,6 +27,11 @@
                 До 100 файлов за раз (JPEG, PNG, WebP, до 10 МБ каждый). Все снимки попадут в выбранное десятилетие.
                 Автор записей в базе — ваш аккаунт супер-админа.
             </p>
+            @error('bulk')
+                <div class="mb-4 p-3 rounded-xl bg-red-50 text-[#8F161C] text-sm border border-red-200">
+                    {{ $message }}
+                </div>
+            @enderror
             <form method="POST" action="{{ route('super-admin.archive-photos.bulk-store') }}"
                   enctype="multipart/form-data" class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
                 @csrf

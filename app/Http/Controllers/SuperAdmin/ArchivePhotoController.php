@@ -7,8 +7,10 @@ use App\Models\ArchivePhoto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class ArchivePhotoController extends Controller
 {
@@ -63,40 +65,61 @@ class ArchivePhotoController extends Controller
 
     public function bulkStore(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
-            'photos' => ['required', 'array', 'min:1', 'max:100'],
-            'photos.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
-        ], [
-            'photos.required' => 'Выберите хотя бы одну фотографию',
-            'photos.max' => 'Не более 100 файлов за одну загрузку',
-            'photos.*.image' => 'Каждый файл должен быть изображением',
-            'photos.*.mimes' => 'Допустимые форматы: JPEG, PNG, WebP',
-            'photos.*.max' => 'Размер каждого файла не более 10 МБ',
-            'decade.required' => 'Выберите десятилетие',
-        ]);
+        try {
+            $incomingPhotos = $request->file('photos');
+            $incomingCount = is_array($incomingPhotos) ? count($incomingPhotos) : ($incomingPhotos ? 1 : 0);
 
-        $userId = $request->user()->id;
-        $dir = 'archive-photos/'.$userId;
-        $decade = $validated['decade'];
+            Log::info('super-admin.bulkStore called', [
+                'user_id' => $request->user()?->id,
+                'decade' => $request->input('decade'),
+                'files_count' => $incomingCount,
+            ]);
 
-        $count = 0;
-        DB::transaction(function () use ($request, $userId, $dir, $decade, &$count) {
-            foreach ($request->file('photos') as $file) {
-                $path = $file->store($dir, 'public');
-                ArchivePhoto::create([
-                    'user_id' => $userId,
-                    'decade' => $decade,
-                    'path' => $path,
-                ]);
-                $count++;
+            $validated = $request->validate([
+                'decade' => ['required', 'string', 'in:'.implode(',', ArchivePhoto::DECADES)],
+                'photos' => ['required', 'array', 'min:1', 'max:100'],
+                'photos.*' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
+            ], [
+                'photos.required' => 'Выберите хотя бы одну фотографию',
+                'photos.max' => 'Не более 100 файлов за одну загрузку',
+                'photos.*.image' => 'Каждый файл должен быть изображением',
+                'photos.*.mimes' => 'Допустимые форматы: JPEG, PNG, WebP',
+                'photos.*.max' => 'Размер каждого файла не более 10 МБ',
+                'decade.required' => 'Выберите десятилетие',
+            ]);
+
+            $userId = $request->user()->id;
+            $dir = 'archive-photos/'.$userId;
+            $decade = $validated['decade'];
+
+            $count = 0;
+            DB::transaction(function () use ($request, $userId, $dir, $decade, &$count) {
+                foreach ($request->file('photos') as $file) {
+                    $path = $file->store($dir, 'public');
+                    ArchivePhoto::create([
+                        'user_id' => $userId,
+                        'decade' => $decade,
+                        'path' => $path,
+                    ]);
+                    $count++;
+                }
+            });
+
+            if ($count === 0) {
+                return back()->withErrors(['photos' => 'Не удалось сохранить файлы. Проверьте формат и размер.']);
             }
-        });
 
-        if ($count === 0) {
-            return back()->withErrors(['photos' => 'Не удалось сохранить файлы. Проверьте формат и размер.']);
+            return back()->with('success', 'Загружено фотографий: '.$count.'.');
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            Log::error('super-admin.bulkStore failed', [
+                'user_id' => $request->user()?->id,
+                'decade' => $request->input('decade'),
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->withErrors(['bulk' => 'Ошибка загрузки фотографий. Проверьте файл/лимиты и повторите.']);
         }
-
-        return back()->with('success', 'Загружено фотографий: '.$count.'.');
     }
 }
