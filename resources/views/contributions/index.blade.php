@@ -277,7 +277,8 @@
                         </article>
                         <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition lg:col-span-2">
                             <p class="font-bold text-[#2B2B2B]">Бесимбаев Ерик Турашович</p>
-                            <p class="text-sm text-gray-500 mt-1">Выпускник</p>
+                            <p class="text-sm text-gray-500 mt-1">Кандидат технических наук, доцент, ассоциированный профессор
+                            Институт автоматики и информационных технологий</p>
                             <div class="text-[#2B2B2B] mt-3 space-y-3 text-sm leading-relaxed">
                                 <p>
                                     Наш университет получил особенный подарок от своего выпускника — уникальную малую архитектурную форму (МАФ), ставшую воплощением духа инженерной мысли. Эта концепция — не просто арт-объект, а визуальный манифест строительной науки.
