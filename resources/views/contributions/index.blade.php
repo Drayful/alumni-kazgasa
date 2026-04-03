@@ -275,6 +275,26 @@
                     
                         </div>
                         </article>
+                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition lg:col-span-2">
+                            <p class="font-bold text-[#2B2B2B]">Бесимбаев Ерик Турашович</p>
+                            <p class="text-sm text-gray-500 mt-1">Выпускник</p>
+                            <div class="text-[#2B2B2B] mt-3 space-y-3 text-sm leading-relaxed">
+                                <p>
+                                    Наш университет получил особенный подарок от своего выпускника — уникальную малую архитектурную форму (МАФ), ставшую воплощением духа инженерной мысли. Эта концепция — не просто арт-объект, а визуальный манифест строительной науки.
+                                </p>
+                                <p>В основе МАФ заложены три фундаментальные идеи:</p>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li><span class="font-semibold">Наука:</span> орбита, венчающая композицию, символизирует непрерывный поиск знаний и глобальность научных исследований.</li>
+                                    <li><span class="font-semibold">Инженерия:</span> стилизованные формы здания, фундамента и сваи напоминают о неразрывной связи элементов системы «грунт — фундамент — сооружение».</li>
+                                    <li><span class="font-semibold">Устойчивость:</span> гранитная плита в основании служит гарантом надежности всей конструкции.</li>
+                                </ul>
+                            </div>
+                            <div class="mt-5 max-w-3xl">
+                                <img src="{{ asset('images/contributions/image12.png') }}" alt="МАФ — подарок выпускника Бесимбаева Е. Т."
+                                     class="rounded-xl object-cover w-full h-auto max-h-[28rem] cursor-zoom-in"
+                                     @click="openLB('{{ asset('images/contributions/image12.png') }}', 'МАФ — подарок выпускника Бесимбаева Е. Т.')">
+                            </div>
+                        </article>
                     </div>
                 </section>
             </div>
