@@ -289,9 +289,9 @@
                                     <li><span class="font-semibold">Устойчивость:</span> гранитная плита в основании служит гарантом надежности всей конструкции.</li>
                                 </ul>
                             </div>
-                            <div class="mt-5 max-w-3xl">
+                            <div class="grid grid-cols-2 gap-3 mt-5 max-w-lg">
                                 <img src="{{ asset('images/contributions/image12.png') }}" alt="МАФ — подарок выпускника Бесимбаева Е. Т."
-                                     class="rounded-xl object-cover w-full h-auto max-h-[28rem] cursor-zoom-in"
+                                     class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
                                      @click="openLB('{{ asset('images/contributions/image12.png') }}', 'МАФ — подарок выпускника Бесимбаева Е. Т.')">
                             </div>
                         </article>
