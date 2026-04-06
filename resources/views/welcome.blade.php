@@ -1,22 +1,23 @@
 @extends('layouts.home')
 
-@section('title', 'Главная')
+@section('title', __('site.meta.home_title'))
 
 @section('content')
     <div x-data="{ mobileMenuOpen: false }" class="min-h-screen flex flex-col">
         {{-- 1. TOP BAR --}}
         <div class="w-full h-9 flex items-center justify-end px-4 sm:px-6 lg:px-8" style="background-color: #8F161C;">
             <div class="flex items-center gap-3">
+                <x-language-switch variant="inverse" />
                 @auth
                     <a href="{{ route('dashboard') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Личный кабинет
+                        {{ __('site.nav.dashboard') }}
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Вход
+                        {{ __('site.nav.login') }}
                     </a>
                     <a href="{{ route('register') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Регистрация
+                        {{ __('site.nav.register') }}
                     </a>
                 @endauth
             </div>
@@ -35,21 +36,22 @@
                         <span class="font-bold text-lg sm:text-xl" style="color: #8F161C;">KazGASA Alumni</span>
                     </a>
 
-                    <div class="hidden lg:flex items-center gap-8">
-                        <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Главная</a>
-                        <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Карта выпускника</a>
-                        <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Вклад выпускников</a>
-                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Встреча</a>
-                        <a href="https://museum.kazgasa.kz/" target="_blank" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Архив KazGASA</a>
+                    <div class="hidden lg:flex items-center gap-6">
+                        <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
+                        <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
+                        <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
+                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="https://museum.kazgasa.kz/" target="_blank" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
-                            <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Личный кабинет</a>
+                            <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
                         @endauth
-                        <button type="button" class="p-2 rounded-full hover:bg-[#F6F2EA] transition-colors" aria-label="Поиск">
+                        <x-language-switch />
+                        <button type="button" class="p-2 rounded-full hover:bg-[#F6F2EA] transition-colors" aria-label="{{ __('site.nav.search_aria') }}">
                             <svg class="w-5 h-5" style="color: #2B2B2B;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         </button>
                     </div>
 
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="lg:hidden p-2 rounded-md hover:bg-[#F6F2EA]" aria-label="Меню">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="lg:hidden p-2 rounded-md hover:bg-[#F6F2EA]" aria-label="{{ __('site.nav.menu_aria') }}">
                         <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                         <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -57,14 +59,17 @@
 
                 <div x-show="mobileMenuOpen" x-transition class="lg:hidden border-t border-[#D9D9D9]">
                     <div class="py-4 flex flex-col gap-2">
-                        <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Главная</a>
-                        <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Карта выпускника</a>
-                        <a href="{{ route('contributions.index') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Вклад выпускников</a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Встреча</a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Архив KazGASA</a>
+                        <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
+                        <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
+                        <a href="{{ route('contributions.index') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
+                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="https://museum.kazgasa.kz/" target="_blank" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
-                            <a href="{{ route('profile.edit') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Личный кабинет</a>
+                            <a href="{{ route('profile.edit') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
                         @endauth
+                        <div class="px-4 pt-2">
+                            <x-language-switch />
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -90,11 +95,10 @@
 {{--                            Слёт выпускников KazGASA--}}
 {{--                        </h1>--}}
                         <p class="mt-3 text-base sm:text-lg text-white/95 max-w-none">
-                            60 лет архитектурному образованию Казахстана — встреча всех поколений.
+                            {{ __('site.hero.line1') }}
                         </p>
                         <p class="mt-4 text-base sm:text-lg text-white/95 max-w-none">
-                            Один день — тысячи историй. Приходи встретить своих однокурсников,
-                            увидеть изменения в родных стенах и стать частью истории KazGASA.
+                            {{ __('site.hero.line2') }}
                         </p>
                     </div>
 
@@ -105,7 +109,7 @@
                             <div class="absolute -inset-2 rounded-2xl bg-[#8F161C]/20"></div>
                             <img src="{{ asset('images/kusainov.jpg') }}"
                                  onerror="this.src='{{ asset('images/hero-photo.jpg') }}'"
-                                 alt="Кусаинов Айгазы Амирланович"
+                                 alt="{{ __('site.hero.chair_alt') }}"
                                  class="relative w-72 h-80 object-cover object-top rounded-2xl shadow-2xl">
                             <div class="absolute -bottom-1 -left-1 -right-1 h-1 bg-[#E5C68D] rounded-b-2xl"></div>
                         </div>
@@ -117,9 +121,7 @@
 
                             {{-- Текст цитаты --}}
                             <blockquote class="text-white text-lg md:text-xl italic leading-relaxed font-light">
-                                KazGASA — это не просто университет. Это место, где рождается
-                                архитектурная душа Казахстана. 45 лет назад здесь начались судьбы
-                                тысяч людей, которые сегодня строят нашу страну. Добро пожаловать домой.
+                                {{ __('site.hero.chair_quote') }}
                             </blockquote>
 
                             {{-- Разделитель --}}
@@ -128,12 +130,11 @@
                             {{-- Имя и должность --}}
                             <div>
                                 <p class="text-[#E5C68D] font-bold text-base">
-                                    Кусаинов Айгазы Амирланович
+                                    {{ __('site.hero.chair_name') }}
                                 </p>
                                 <p class="text-white/60 text-sm mt-1 leading-snug">
-                                    Председатель Наблюдательного совета IEC,<br>
-                                    Председатель Правления Международной образовательной
-                                    корпорации,<br>владелец группы компаний Verum
+                                    {{ __('site.hero.chair_role_1') }}<br>
+                                    {{ __('site.hero.chair_role_2') }}<br>{{ __('site.hero.chair_role_3') }}
                                 </p>
                             </div>
                         </div>
@@ -142,16 +143,21 @@
                     {{-- ДАТА + ТАЙМЕР (обратный отсчёт до 15 апреля) --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
-                            <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">📅 Дата</p>
-                            <p class="text-[#2B2B2B] font-bold text-sm mt-1">15 апреля 2026 года</p>
+                            <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">{{ __('site.hero.date_label') }}</p>
+                            <p class="text-[#2B2B2B] font-bold text-sm mt-1">{{ __('site.hero.date_value') }}</p>
                         </div>
 
                         <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C] sm:col-span-2">
                             <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color: #8F161C;">
-                                До слёта
+                                {{ __('site.hero.countdown_title') }}
                             </p>
                             <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>
-                                @foreach(['дней','часов','минут','секунд'] as $label)
+                                @foreach([
+                                    __('site.countdown.days'),
+                                    __('site.countdown.hours'),
+                                    __('site.countdown.minutes'),
+                                    __('site.countdown.seconds'),
+                                ] as $label)
                                     <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"
                                          style="border-color: #E5C68D33; background-color: #F6F2EA;">
                                         <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>
@@ -168,11 +174,11 @@
                     <div class="flex flex-col md:flex-row gap-4 w-full items-stretch md:items-start justify-center md:justify-start">
                         <a href="#program"
                            class="w-full md:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition shadow-lg shadow-[#8F161C]/30 text-sm sm:text-base text-center">
-                            Программа слёта
+                            {{ __('site.hero.cta_program') }}
                         </a>
                         <a href="#alumni-card"
                            class="w-full md:w-auto border-2 border-white/40 text-white hover:border-white hover:bg-white/10 px-8 py-3 rounded-xl font-semibold transition text-sm sm:text-base text-center">
-                            Карта выпускника
+                            {{ __('site.hero.cta_card') }}
                         </a>
                     </div>
                 </div>
@@ -185,19 +191,19 @@
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     <div class="text-center">
                         <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30000+</div>
-                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Выпускников</div>
+                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.graduates') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">45+</div>
-                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Лет истории</div>
+                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.years') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">50+</div>
-                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Партнёров</div>
+                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.partners') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">100+</div>
-                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">Мероприятий</div>
+                        <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.events') }}</div>
                     </div>
                 </div>
             </div>
@@ -205,28 +211,15 @@
 
         {{-- 5. ПРОГРАММА 15 АПРЕЛЯ — СЛЁТ ВЫПУСКНИКОВ --}}
         <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-            @php
-                $schedule = [
-                    ['time' => '15:00', 'start' => '15:00', 'end' => '15:30', 'title' => 'Регистрация участников', 'place' => 'Главный вход KazGASA'],
-                    ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Торжественное открытие', 'place' => 'Территория KazGASA'],
-                    ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Приветственные слова руководства', 'place' => 'Территория KazGASA'],
-                    ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Презентация цифровой платформы', 'place' => 'Территория KazGASA'],
-                    ['time' => '15:30', 'start' => '15:30', 'end' => '16:30', 'title' => 'Выступления и подарки от выпускников', 'place' => 'Территория KazGASA'],
-                    ['time' => '16:30', 'start' => '16:30', 'end' => '18:00', 'title' => 'Экскурсии по факультетам', 'place' => 'Корпуса KazGASA'],
-                    ['time' => '18:00', 'start' => '18:00', 'end' => '19:00', 'title' => 'Фуршет и концертная программа', 'place' => 'Территория KazGASA'],
-                    ['time' => '19:00', 'start' => '19:00', 'end' => '19:30', 'title' => 'Завершение вечера', 'place' => 'Территория KazGASA'],
-                ];
-            @endphp
-
             <div class="max-w-5xl mx-auto">
                 <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    15 апреля 2026
+                    {{ __('site.program.date_line') }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-bold mb-2" style="color: #2B2B2B;">
-                    Программа встречи выпускников
+                    {{ __('site.program.title') }}
                 </h2>
                 <p class="text-sm text-gray-500 mb-8">
-                    Текущее событие подсвечивается автоматически по времени
+                    {{ __('site.program.subtitle') }}
                 </p>
 
                 <div x-data="{
@@ -280,11 +273,11 @@
                     <a href="{{ asset('files/program.pdf') }}"
                        download
                        class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
-                        📄 Скачать программу (PDF)
+                        {{ __('site.program.download_pdf') }}
                     </a>
                     <a href="https://vrmir3d.com/KazGASA_VR/"
                        class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
-                        🗺 Карта кампуса
+                        {{ __('site.program.campus_map') }}
                     </a>
                 </div>
             </div>
@@ -308,11 +301,10 @@
 
                     {{-- Текст + кнопки --}}
                     <div>
-                        <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-3">Скидки и привилегии</p>
-                        <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">Карта выпускника KazGASA</h2>
+                        <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-3">{{ __('site.alumni_card.eyebrow') }}</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">{{ __('site.alumni_card.title') }}</h2>
                         <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
-                            Предъявите карту у партнёров — и получите скидку.
-                            Сохраняется в Apple Wallet и Google Pay.
+                            {{ __('site.alumni_card.body') }}
                         </p>
 
                         <div class="mt-6">
@@ -321,23 +313,23 @@
                                     <div class="grid sm:grid-cols-2 gap-3">
                                         <a href="{{ route('wallet.apple', $publicId) }}"
                                            class="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-900 transition">
-                                            🍎 Добавить в Apple Wallet
+                                            {{ __('site.alumni_card.apple') }}
                                         </a>
                                         <a href="{{ route('wallet.google', $publicId) }}"
                                            class="flex items-center justify-center gap-2 bg-[#4285F4] text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-600 transition">
-                                            G Добавить в Google Pay
+                                            {{ __('site.alumni_card.google') }}
                                         </a>
                                     </div>
                                 @else
                                     <a href="{{ route('profile.edit') }}"
                                        class="bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition inline-flex items-center justify-center w-full">
-                                        Заполните профиль, чтобы добавить карту
+                                        {{ __('site.alumni_card.fill_profile') }}
                                     </a>
                                 @endif
                             @else
                                 <a href="{{ route('login') }}"
                                    class="bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition inline-flex items-center justify-center w-full">
-                                    Войти чтобы получить карту
+                                    {{ __('site.alumni_card.login_for_card') }}
                                 </a>
                             @endauth
                         </div>
@@ -349,13 +341,13 @@
         {{-- 6. ПАРТНЁРЫ Alumni --}}
         <section id="partners" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
             <div class="max-w-7xl mx-auto">
-                <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Партнёры Alumni</p>
+                <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">{{ __('site.partners.eyebrow') }}</p>
                 <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
-                    Партнёры, где работает карта выпускника
+                    {{ __('site.partners.title') }}
                 </h2>
 
                 @if($cardPartners->isEmpty())
-                    <p class="mt-8 text-sm text-gray-500">Список партнёров появится после настройки в панели администратора.</p>
+                    <p class="mt-8 text-sm text-gray-500">{{ __('site.partners.empty') }}</p>
                 @endif
 
                 <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -390,7 +382,7 @@
                                                 {{ $p->name }}
                                             </p>
                                             <p class="mt-1 text-sm text-gray-500">
-                                                Скидка: <span class="font-semibold text-[#8F161C]">{{ $p->discount }}</span>
+                                                {{ __('site.partners.discount_label') }} <span class="font-semibold text-[#8F161C]">{{ $p->discount }}</span>
                                             </p>
                                         </div>
                                         <button @click="open = false"
@@ -411,7 +403,7 @@
                                     <div class="mt-6">
                                         <button @click="open = false"
                                                 class="w-full bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
-                                            Понятно
+                                            {{ __('site.partners.understood') }}
                                         </button>
                                     </div>
                                 </div>
@@ -426,7 +418,7 @@
                         <button @click="open = true"
                                 class="w-full border-2 border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white
                                    px-6 py-2.5 rounded-xl font-medium transition">
-                            + Стать партнёром
+                            {{ __('site.partners.become') }}
                         </button>
 
                         <div x-show="open" x-cloak
@@ -436,34 +428,34 @@
                                         class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">✕</button>
 
                                 <div x-show="!sent">
-                                    <h3 class="text-[#5E0F14] font-bold text-xl mb-1">Предложите партнёрство</h3>
+                                    <h3 class="text-[#5E0F14] font-bold text-xl mb-1">{{ __('site.partners.modal_title') }}</h3>
                                     <p class="text-sm text-gray-500 mb-4">
-                                        Мы рассмотрим заявку и свяжемся с вами в течение 2 рабочих дней.
+                                        {{ __('site.partners.modal_text') }}
                                     </p>
                                     <form method="POST"
                                           action="{{ route('partner.apply') }}"
                                           @submit.prevent="sent = true; $el.submit()">
                                         @csrf
-                                        <input name="name" placeholder="Ваше имя"
+                                        <input name="name" placeholder="{{ __('site.partners.name_ph') }}"
                                                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-3"
                                                required>
-                                        <input name="company" placeholder="Название компании"
+                                        <input name="company" placeholder="{{ __('site.partners.company_ph') }}"
                                                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-3"
                                                required>
-                                        <input name="contact" placeholder="Телефон или e-mail"
+                                        <input name="contact" placeholder="{{ __('site.partners.contact_ph') }}"
                                                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:border-[#8F161C] mb-4"
                                                required>
                                         <button class="w-full bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
-                                            Отправить заявку
+                                            {{ __('site.partners.submit') }}
                                         </button>
                                     </form>
                                 </div>
 
                                 <div x-show="sent" class="text-center py-6">
                                     <span class="text-4xl">✅</span>
-                                    <p class="text-[#5E0F14] font-bold text-lg mt-3">Спасибо!</p>
+                                    <p class="text-[#5E0F14] font-bold text-lg mt-3">{{ __('site.partners.thanks') }}</p>
                                     <p class="text-gray-500 text-sm mt-1">
-                                        Мы рассмотрим заявку и свяжемся с вами в течение 2 рабочих дней.
+                                        {{ __('site.partners.thanks_repeat') }}
                                     </p>
                                 </div>
                             </div>
@@ -476,12 +468,12 @@
         {{-- 7. ЛИЦА KazGASA --}}
         <section id="faces" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
             <div class="max-w-7xl mx-auto">
-                <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Гордость университета</p>
+                <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">{{ __('site.faces.eyebrow') }}</p>
                 <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
-                    Лица KazGASA
+                    {{ __('site.faces.title') }}
                 </h2>
                 <p class="text-sm text-gray-500 mt-2 max-w-3xl">
-                    Министры, депутаты, предприниматели, архитекторы — они начинали здесь, в этих стенах.
+                    {{ __('site.faces.subtitle') }}
                 </p>
 
                 @php
@@ -521,7 +513,7 @@
                     <a href="{{ route('faces.index') }}"
                        class="inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold text-sm transition shadow-sm"
                        style="background-color: #8F161C; color: #FFFFFF;">
-                        Подробнее
+                        {{ __('site.faces.more') }}
                     </a>
                 </div>
             </div>
@@ -547,10 +539,10 @@
                     }
                  }">
             <div class="max-w-7xl mx-auto">
-                <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold">Участие выпускников</p>
-                <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl mt-2">Проекты, в которых вы нужны</h2>
+                <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold">{{ __('site.projects.eyebrow') }}</p>
+                <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl mt-2">{{ __('site.projects.title') }}</h2>
                 <p class="text-sm text-gray-500 mt-3 max-w-3xl">
-                    Мы не просим просто «помочь». Мы предлагаем конкретные форматы — под ваш ритм, ваши возможности и ваши цели.
+                    {{ __('site.projects.intro') }}
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
@@ -574,22 +566,22 @@
                                         @endif
                                     </div>
                                     <span class="shrink-0 text-sm font-semibold text-[#8F161C]">
-                                        Подробнее <span x-text="openId === {{ $p->id }} ? '▲' : '▼'"></span>
+                                        {{ __('site.projects.details') }} <span x-text="openId === {{ $p->id }} ? '▲' : '▼'"></span>
                                     </span>
                                 </div>
                             </button>
 
                             <div x-show="openId === {{ $p->id }}" x-transition x-cloak class="mt-5 pt-5 border-t border-[#D9D9D9] space-y-4">
                                 <div>
-                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Коротко</p>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.short') }}</p>
                                     <p class="text-[#2B2B2B] mt-1">{{ $p->short }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Как это работает</p>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.how') }}</p>
                                     <p class="text-[#2B2B2B] mt-1">{{ $p->how_it_works }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">Что это даёт вам</p>
+                                    <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.benefit') }}</p>
                                     <p class="text-[#2B2B2B] mt-1">{{ $p->what_you_get }}</p>
                                 </div>
 
@@ -606,19 +598,12 @@
                 </div>
 
                 <div class="mt-12 bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-[#D9D9D9]">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">Путь партнёрства</p>
-                    <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">5 шагов — и вы в проекте</h3>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">{{ __('site.projects.path_eyebrow') }}</p>
+                    <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">{{ __('site.projects.path_title') }}</h3>
 
                     <div class="mt-6 space-y-5">
                         @php
-                            $steps = [
-                                ['when' => 'Сегодня', 'title' => '1. Выберите проект', 'desc' => 'Заполните форму — укажите, какой проект вам ближе'],
-                                ['when' => '1-я неделя', 'title' => '2. Фиксируем интерес', 'desc' => 'Мы связываемся, отвечаем на вопросы и согласуем детали'],
-                                ['when' => '2-й месяц', 'title' => '3. Меморандум', 'desc' => 'Подписываем меморандум о партнёрстве без финансовых обязательств'],
-                                ['when' => '2–3-й месяц', 'title' => '4. Первые шаги', 'desc' => 'Определяем роль и запускаем пилотные активности'],
-                                ['when' => '5-й месяц', 'title' => '5. Результаты', 'desc' => 'Публикации о вас, студенты в ваших проектах, первые итоги'],
-                                ['when' => 'Через год', 'title' => 'Масштаб', 'desc' => 'Ваше имя в истории Ассоциации', 'highlight' => true],
-                            ];
+                            $steps = __('site.project_steps');
                         @endphp
                         <div class="relative">
                             <div class="absolute left-4 top-2 bottom-2 w-px bg-[#E5C68D]"></div>
@@ -645,8 +630,8 @@
                     </div>
 
                     <div id="projects-form" class="mt-10 scroll-mt-24">
-                        <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">Заявка</p>
-                        <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">Участвую</h3>
+                        <p class="text-[#8F161C] text-xs uppercase tracking-widest font-semibold mb-2">{{ __('site.projects.form_eyebrow') }}</p>
+                        <h3 class="text-[#2B2B2B] font-bold text-xl sm:text-2xl">{{ __('site.projects.form_title') }}</h3>
                         @if(session('success'))
                             <div class="mt-4 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 text-sm">
                                 {{ session('success') }}
@@ -656,23 +641,23 @@
                         <form method="POST" action="{{ route('project-applications.store') }}" class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
                             @csrf
                             <div>
-                                <label class="text-sm font-medium text-[#2B2B2B]">Имя</label>
+                                <label class="text-sm font-medium text-[#2B2B2B]">{{ __('site.projects.form_name') }}</label>
                                 <input name="name" value="{{ old('name') }}" required
                                        class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
                                 @error('name')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
                             </div>
                             <div>
-                                <label class="text-sm font-medium text-[#2B2B2B]">Компания</label>
+                                <label class="text-sm font-medium text-[#2B2B2B]">{{ __('site.projects.form_company') }}</label>
                                 <input name="company" value="{{ old('company') }}"
                                        class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
                                 @error('company')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
                             </div>
                             <div>
-                                <label class="text-sm font-medium text-[#2B2B2B]">Интересует проект</label>
+                                <label class="text-sm font-medium text-[#2B2B2B]">{{ __('site.projects.form_project') }}</label>
                                 <select name="project_id" required
                                         class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]"
                                         x-model.number="selectedProjectId">
-                                    <option value="">Выберите проект</option>
+                                    <option value="">{{ __('site.projects.form_project_placeholder') }}</option>
                                     @foreach($projects as $p)
                                         <option value="{{ $p->id }}">{{ $p->title }}</option>
                                     @endforeach
@@ -680,14 +665,14 @@
                                 @error('project_id')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
                             </div>
                             <div>
-                                <label class="text-sm font-medium text-[#2B2B2B]">Контакт (телефон или e-mail)</label>
+                                <label class="text-sm font-medium text-[#2B2B2B]">{{ __('site.projects.form_contact') }}</label>
                                 <input name="contact" value="{{ old('contact') }}" required
                                        class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:border-[#8F161C] focus:ring-[#8F161C]" />
                                 @error('contact')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
                             </div>
                             <div class="md:col-span-2">
                                 <button class="w-full sm:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition">
-                                    Участвую
+                                    {{ __('site.projects.submit') }}
                                 </button>
                             </div>
                         </form>
@@ -705,28 +690,28 @@
                 <div class="flex items-end justify-between mb-8">
                     <div>
                         <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-1">
-                            Карьера
+                            {{ __('site.jobs.eyebrow') }}
                         </p>
                         <h2 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
-                            Вакансии для выпускников
+                            {{ __('site.jobs.title') }}
                         </h2>
                     </div>
                     @auth
                         <a href="{{ route('jobs.index') }}"
                            class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
-                            Все вакансии →
+                            {{ __('site.jobs.all') }}
                         </a>
                     @else
                         <a href="{{ route('login') }}"
                            class="hidden sm:block text-[#8F161C] text-sm font-semibold hover:text-[#5E0F14] hover:underline transition">
-                            Все вакансии →
+                            {{ __('site.jobs.all') }}
                         </a>
                     @endauth
                 </div>
 
                 @if($latestJobs->isEmpty())
                     <div class="border border-dashed border-[#D9D9D9] rounded-2xl p-8 text-center text-sm text-gray-500">
-                        Вакансий пока нет. Загляните позже.
+                        {{ __('site.jobs.empty') }}
                     </div>
                 @else
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -761,7 +746,7 @@
 
                                 <a href="{{ route('jobs.show', $job->id) }}"
                                    class="block w-full text-center bg-[#8F161C] text-white py-2 rounded-lg text-xs font-semibold uppercase tracking-wide hover:bg-[#5E0F14] transition-colors mt-3">
-                                    Подробнее →
+                                    {{ __('site.jobs.details') }}
                                 </a>
                             </div>
                         @endforeach
@@ -771,12 +756,12 @@
                         @auth
                             <a href="{{ route('jobs.index') }}"
                                class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
-                                Смотреть все вакансии
+                                {{ __('site.jobs.all_mobile') }}
                             </a>
                         @else
                             <a href="{{ route('login') }}"
                                class="inline-block border-2 border-[#8F161C] text-[#8F161C] px-8 py-3 rounded-xl font-semibold text-sm hover:bg-[#8F161C] hover:text-white transition-colors">
-                                Смотреть все вакансии
+                                {{ __('site.jobs.all_mobile') }}
                             </a>
                         @endauth
                     </div>
@@ -788,17 +773,17 @@
         <section id="science" class="py-16 px-4 sm:px-6 lg:px-8" style="background-color: #F6F2EA;">
             <div class="max-w-5xl mx-auto">
                 <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    13 апреля 2026
+                    {{ __('site.science.date') }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-bold mb-4" style="color: #2B2B2B;">
-                    Декада науки
+                    {{ __('site.science.title') }}
                 </h2>
                 <p class="text-sm sm:text-base leading-relaxed mb-6" style="color: #2B2B2B;">
-                    Научно‑практическая программа с участием выпускников и преподавателей KazGASA: актуальные
-                    исследования в области архитектуры, урбанистики и строительства.
+                    {{ __('site.science.intro') }}
                 </p>
 
                 <div class="space-y-3">
+                    @foreach(__('site.science_topics') as $topic)
                     <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
                          style="border-color: #D9D9D9;">
                         <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
@@ -807,45 +792,14 @@
                         </div>
                         <div class="flex-1">
                             <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                                Устойчивая архитектура в аридном климате
+                                {{ $topic['title'] }}
                             </p>
                             <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
-                                Доклад выпускников кафедры архитектуры · 2026
+                                {{ $topic['subtitle'] }}
                             </p>
                         </div>
                     </div>
-
-                    <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
-                         style="border-color: #D9D9D9;">
-                        <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-                             style="background-color: #F6F2EA; color: #8F161C;">
-                            📄
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                                BIM‑технологии в реконструкции исторической застройки
-                            </p>
-                            <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
-                                Исследование выпускников строительного факультета
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-3 rounded-2xl border bg-white px-4 py-3 sm:py-4"
-                         style="border-color: #D9D9D9;">
-                        <div class="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-                             style="background-color: #F6F2EA; color: #8F161C;">
-                            📄
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-sm font-semibold" style="color: #2B2B2B;">
-                                Алматы 2050: сценарии устойчивого развития города
-                            </p>
-                            <p class="text-xs mt-0.5" style="color: #2B2B2B99;">
-                                Совместный проект выпускников и студентов
-                            </p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -858,14 +812,13 @@
         <section id="archive" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
             <div class="max-w-5xl mx-auto" x-data="{ decade: '90s' }">
                 <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    История в фотографиях
+                    {{ __('site.archive.eyebrow') }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-bold mb-4" style="color: #2B2B2B;">
-                    Архив KazGASA Alumni
+                    {{ __('site.archive.title') }}
                 </h2>
                 <p class="text-sm sm:text-base leading-relaxed mb-5" style="color: #2B2B2B;">
-                    Фотографии кампуса, выпусков и знаковых событий разных десятилетий. Верифицированные выпускники
-                    могут прислать свои снимки и пополнить архив.
+                    {{ __('site.archive.intro') }}
                 </p>
 
                 @if(session('archive_success'))
@@ -923,7 +876,7 @@
                                      style="background: linear-gradient(135deg, #5E0F14, #2B2B2B);">🏙️</div>
                             </div>
                             <p class="mt-3 text-sm text-center" style="color: #2B2B2B99;">
-                                Пока нет загруженных фото за этот период.
+                                {{ __('site.archive.empty_decade') }}
                             </p>
                         @else
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
@@ -932,7 +885,7 @@
                                        target="_blank" rel="noopener"
                                        class="group aspect-square rounded-lg overflow-hidden border bg-[#F6F2EA] border-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
                                         <img src="{{ Storage::url($photo->path) }}"
-                                             alt="Архив {{ $label }}"
+                                             alt="{{ __('site.archive.photo_alt', ['decade' => $label]) }}"
                                              class="w-full h-full object-cover group-hover:opacity-95 transition"
                                              loading="lazy"
                                              decoding="async">
@@ -944,7 +897,7 @@
                                     <a href="{{ route('archive.index', ['decade' => $key]) }}"
                                        class="inline-flex min-h-[48px] items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-95"
                                        style="background-color: #8F161C;">
-                                        Посмотреть все (ещё {{ $decadeTotal - \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT }})
+                                        {{ __('site.archive.view_all', ['count' => $decadeTotal - \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT]) }}
                                     </a>
                                 </div>
                             @endif
@@ -959,7 +912,7 @@
                                      style="color: #2B2B2B;">
                                 <span class="inline-flex items-center gap-2">
                                     <span class="text-xl" aria-hidden="true">📷</span>
-                                    <span>Добавить фото в архив</span>
+                                    <span>{{ __('site.archive.add_toggle') }}</span>
                                 </span>
                                 <span class="text-[#8F161C] text-lg group-open:rotate-180 transition-transform">▼</span>
                             </summary>
@@ -968,7 +921,7 @@
                                     @csrf
 
                                     <div>
-                                        <label for="archive-decade" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">Десятилетие</label>
+                                        <label for="archive-decade" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">{{ __('site.archive.decade') }}</label>
                                         <select name="decade" id="archive-decade" required
                                                 class="w-full min-h-[48px] rounded-xl border px-4 text-base sm:text-sm bg-white"
                                                 style="border-color: #D9D9D9; color: #2B2B2B;">
@@ -979,8 +932,8 @@
                                     </div>
 
                                     <div>
-                                        <label for="archive-photo" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">Фотография</label>
-                                        <p class="text-xs mb-2" style="color: #2B2B2B99;">JPEG, PNG или WebP, до 20 МБ</p>
+                                        <label for="archive-photo" class="block text-sm font-semibold mb-2" style="color: #2B2B2B;">{{ __('site.archive.photo_label') }}</label>
+                                        <p class="text-xs mb-2" style="color: #2B2B2B99;">{{ __('site.archive.photo_hint') }}</p>
                                         <input type="file" name="photo" id="archive-photo" required accept="image/jpeg,image/png,image/webp"
                                                class="block w-full min-h-[48px] text-base file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#8F161C] file:text-white cursor-pointer rounded-xl border bg-white px-2 py-2"
                                                style="border-color: #D9D9D9;">
@@ -989,19 +942,18 @@
                                     <button type="submit"
                                             class="w-full sm:w-auto min-h-[52px] inline-flex items-center justify-center px-6 py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-95"
                                             style="background-color: #8F161C;">
-                                        Отправить в архив
+                                        {{ __('site.archive.submit') }}
                                     </button>
                                 </form>
                             </div>
                         </details>
                     @elseif(auth()->check())
                         <p class="text-sm rounded-xl border px-4 py-3" style="border-color: #D9D9D9; color: #2B2B2B99; background: #FAFAFA;">
-                            Загрузка фото доступна после <strong class="text-[#2B2B2B]">верификации</strong> профиля выпускника.
+                            {{ __('site.archive.verified_line_before') }}<strong class="text-[#2B2B2B]">{{ __('site.archive.verified_emphasis') }}</strong>{{ __('site.archive.verified_line_after') }}
                         </p>
                     @else
                         <p class="text-sm rounded-xl border px-4 py-3" style="border-color: #D9D9D9; color: #2B2B2B99; background: #FAFAFA;">
-                            <a href="{{ route('login') }}" class="font-semibold text-[#8F161C] underline underline-offset-2">Войдите</a>
-                            как выпускник, чтобы добавлять снимки после верификации.
+                            <a href="{{ route('login') }}" class="font-semibold text-[#8F161C] underline underline-offset-2">{{ __('site.archive.guest_login') }}</a>{{ __('site.archive.guest_after_login') }}
                         </p>
                     @endif
                 </div>
@@ -1020,25 +972,25 @@
                                 @endif
                                 <span class="font-bold text-white">KazGASA Alumni</span>
                             </a>
-                            <p class="mt-2 text-sm text-white/80">Сообщество выпускников KazGASA</p>
+                            <p class="mt-2 text-sm text-white/80">{{ __('site.footer.tagline') }}</p>
                         </div>
                         <div>
-                            <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">Навигация</h3>
+                            <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">{{ __('site.footer.nav') }}</h3>
                             <ul class="mt-3 space-y-2">
-                                <li><a href="{{ url('/') }}#hero" class="text-sm text-white/80 hover:text-white">Главная</a></li>
-                                <li><a href="{{ url('/') }}#alumni-card" class="text-sm text-white/80 hover:text-white">Карта выпускника</a></li>
-                                <li><a href="{{ route('login') }}" class="text-sm text-white/80 hover:text-white">Вход</a></li>
-                                <li><a href="{{ route('register') }}" class="text-sm text-white/80 hover:text-white">Регистрация</a></li>
+                                <li><a href="{{ url('/') }}#hero" class="text-sm text-white/80 hover:text-white">{{ __('site.nav.home') }}</a></li>
+                                <li><a href="{{ url('/') }}#alumni-card" class="text-sm text-white/80 hover:text-white">{{ __('site.nav.alumni_card') }}</a></li>
+                                <li><a href="{{ route('login') }}" class="text-sm text-white/80 hover:text-white">{{ __('site.nav.login') }}</a></li>
+                                <li><a href="{{ route('register') }}" class="text-sm text-white/80 hover:text-white">{{ __('site.nav.register') }}</a></li>
                             </ul>
                         </div>
                         <div class="sm:col-span-2">
-                            <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">Контакты</h3>
-                            <p class="mt-3 text-sm text-white/80">E-mail: l.lau@kazgasa.kz</p>
-                            <p class="mt-3 text-sm text-white/80">Телефон: +7(778)403 1983</p>
-                            <p class="mt-3 text-sm text-white/80">Адрес: Ул. Рыскулбекова, 28. Каб 301</p>
-                            <p class="mt-3 text-sm text-white/80">Сайт KazGASA: <a href="https://kazgasa.kz/" target ="_blank">kazgasa.kz</a></p>
-                            <p class="mt-3 text-sm text-white/80">Международная Образовательная Корпорация</p>
-                            <p class="mt-1 text-sm text-white/80">г. Алматы, Казахстан</p>
+                            <h3 class="text-sm font-semibold uppercase tracking-wider text-white/90">{{ __('site.footer.contacts') }}</h3>
+                            <p class="mt-3 text-sm text-white/80">{{ __('site.footer.email') }}</p>
+                            <p class="mt-3 text-sm text-white/80">{{ __('site.footer.phone') }}</p>
+                            <p class="mt-3 text-sm text-white/80">{{ __('site.footer.address') }}</p>
+                            <p class="mt-3 text-sm text-white/80">{{ __('site.footer.site') }} <a href="https://kazgasa.kz/" target ="_blank">kazgasa.kz</a></p>
+                            <p class="mt-3 text-sm text-white/80">{{ __('site.footer.corp') }}</p>
+                            <p class="mt-1 text-sm text-white/80">{{ __('site.footer.city') }}</p>
                             <div class="mt-4 flex items-center gap-4">
                                 <a href="https://www.instagram.com/kazgasa_alumni?igsh=MWlyc3o5OGN2eHZ4MA=="
                                    target="_blank" rel="noopener"
@@ -1056,7 +1008,7 @@
                 </div>
             </div>
             <div class="py-4 px-4 sm:px-6 lg:px-8 text-center text-sm text-white/80" style="background-color: #5E0F14;">
-                © {{ date('Y') }} KazGASA Alumni. Все права защищены.
+                © {{ date('Y') }} KazGASA Alumni. {{ __('site.footer.rights') }}
             </div>
         </footer>
     </div>

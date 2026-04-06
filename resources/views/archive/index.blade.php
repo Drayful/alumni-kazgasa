@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title', 'Архив фотографий')
+@section('title', __('site.pages.archive_title'))
 
 @section('content')
     <div class="min-h-screen flex flex-col bg-white">
@@ -8,15 +8,18 @@
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-3">
                 <a href="{{ route('home') }}#archive"
                    class="text-sm font-semibold text-[#8F161C] hover:underline">
-                    ← На главную
+                    {{ __('site.pages.back_home') }}
                 </a>
-                <h1 class="text-lg sm:text-xl font-bold" style="color: #2B2B2B;">Архив KazGASA Alumni</h1>
+                <div class="flex items-center gap-3 flex-wrap">
+                    <h1 class="text-lg sm:text-xl font-bold" style="color: #2B2B2B;">{{ __('site.archive.title') }}</h1>
+                    <x-language-switch />
+                </div>
             </div>
         </header>
 
         <main class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
             <p class="text-sm mb-6" style="color: #2B2B2B99;">
-                Все фотографии выбранного десятилетия. На главной показываются только последние {{ \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT }} снимков.
+                {{ __('site.pages.archive_intro', ['limit' => \App\Models\ArchivePhoto::HOME_PREVIEW_LIMIT]) }}
             </p>
 
             <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory mb-6">
@@ -30,7 +33,7 @@
             </div>
 
             @if($photos->isEmpty())
-                <p class="text-center text-sm py-12" style="color: #2B2B2B99;">В этом десятилетии пока нет фотографий.</p>
+                <p class="text-center text-sm py-12" style="color: #2B2B2B99;">{{ __('site.pages.archive_empty') }}</p>
             @else
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                     @foreach($photos as $photo)
@@ -38,7 +41,7 @@
                            target="_blank" rel="noopener"
                            class="group aspect-square rounded-lg overflow-hidden border bg-[#F6F2EA] border-[#D9D9D9] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2">
                             <img src="{{ Storage::url($photo->path) }}"
-                                 alt="Архив {{ $archiveDecades[$decade] ?? '' }}"
+                                 alt="{{ __('site.archive.photo_alt', ['decade' => $archiveDecades[$decade] ?? '']) }}"
                                  class="w-full h-full object-cover group-hover:opacity-95 transition"
                                  loading="lazy">
                         </a>

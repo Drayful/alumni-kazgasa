@@ -42,6 +42,6 @@ class ArchivePhotoController extends Controller
             'path' => $path,
         ]);
 
-        return redirect()->route('home')->withFragment('archive')->with('archive_success', 'Фото добавлено в архив.');
+        return redirect()->route('home')->withFragment('archive')->with('archive_success', __('site.flash.archive_photo_added'));
     }
 }

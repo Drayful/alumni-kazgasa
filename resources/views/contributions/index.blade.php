@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title', 'Вклад выпускников')
+@section('title', __('site.pages.contributions_title'))
 
 @section('content')
     <div x-data="{
@@ -15,16 +15,17 @@
         class="min-h-screen flex flex-col bg-[#F6F2EA]">
         <div class="w-full h-9 flex items-center justify-end px-4 sm:px-6 lg:px-8" style="background-color: #8F161C;">
             <div class="flex items-center gap-3">
+                <x-language-switch variant="inverse" />
                 @auth
                     <a href="{{ route('dashboard') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Личный кабинет
+                        {{ __('site.nav.dashboard') }}
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Вход
+                        {{ __('site.nav.login') }}
                     </a>
                     <a href="{{ route('register') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
-                        Регистрация
+                        {{ __('site.nav.register') }}
                     </a>
                 @endauth
             </div>
@@ -42,18 +43,19 @@
                         <span class="font-bold text-lg sm:text-xl" style="color: #8F161C;">KazGASA Alumni</span>
                     </a>
 
-                    <div class="hidden lg:flex items-center gap-8">
-                        <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Главная</a>
-                        <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Карта выпускника</a>
-                        <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Вклад выпускников</a>
-                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Встреча</a>
-                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Архив KazGASA</a>
+                    <div class="hidden lg:flex items-center gap-6">
+                        <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
+                        <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
+                        <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
+                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="https://museum.kazgasa.kz/" target="_blank" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
-                            <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">Личный кабинет</a>
+                            <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
                         @endauth
+                        <x-language-switch />
                     </div>
 
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="lg:hidden p-2 rounded-md hover:bg-[#F6F2EA]" aria-label="Меню">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="lg:hidden p-2 rounded-md hover:bg-[#F6F2EA]" aria-label="{{ __('site.nav.menu_aria') }}">
                         <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                         <svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -61,14 +63,17 @@
 
                 <div x-show="mobileMenuOpen" x-transition class="lg:hidden border-t border-[#D9D9D9]">
                     <div class="py-4 flex flex-col gap-2">
-                        <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Главная</a>
-                        <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Карта выпускника</a>
-                        <a href="{{ route('contributions.index') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Вклад выпускников</a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Встреча</a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Архив KazGASA</a>
+                        <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
+                        <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
+                        <a href="{{ route('contributions.index') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
+                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="https://museum.kazgasa.kz/" target="_blank" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
-                            <a href="{{ route('profile.edit') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">Личный кабинет</a>
+                            <a href="{{ route('profile.edit') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
                         @endauth
+                        <div class="px-4 pt-2">
+                            <x-language-switch />
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -77,18 +82,18 @@
         <main class="flex-1 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto space-y-12">
                 <section class="space-y-5">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Вклад выпускников</p>
-                    <h1 class="font-bold text-3xl sm:text-4xl text-[#2B2B2B]">Истории поддержки и развития KazGASA</h1>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.eyebrow') }}</p>
+                    <h1 class="font-bold text-3xl sm:text-4xl text-[#2B2B2B]">{{ __('site.contributions_page.h1') }}</h1>
                     <p class="text-[#2B2B2B]/80 text-sm sm:text-base">
-                        Выпускники участвуют в развитии кафедр и школ: оснащают лаборатории, поддерживают образовательные проекты и помогают студентам с практикой.
+                        {{ __('site.contributions_page.intro') }}
                     </p>
                 </section>
 
                 <section class="space-y-4">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Школа</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа архитектуры</h2>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.arch_title') }}</h2>
                     <p class="text-[#2B2B2B]/80 text-sm">
-                        Нажмите на фотографию, чтобы увеличить.
+                        {{ __('site.contributions_page.zoom_hint') }}
                     </p>
 
                     @php
@@ -197,12 +202,12 @@
                 </section>
 
                 <section class="space-y-6">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Кафедра</p>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.dept') }}</p>
                     <h2 class="font-bold text-2xl text-[#2B2B2B]">«Геодезия и картография, кадастр»</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                             <p class="font-bold text-[#2B2B2B]">Жалилов Лутпулла Лепитович (выпуск 1993)</p>
-                            <p class="text-sm text-gray-500 mt-1">Выпускник кафедры</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ __('site.contributions_page.graduate_of_dept') }}</p>
                             <p class="text-[#2B2B2B] mt-3">
                                 Содействие в оформлении аудитории, передал GPS-оборудование кафедре, а также обеспечивает производственную практику студентов.
                             </p>
@@ -218,8 +223,8 @@
                 </section>
 
                 <section class="space-y-6">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Школа</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа дизайна</h2>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.design_title') }}</h2>
                     <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                         <p class="font-bold text-[#2B2B2B]">Цой Владислав Алексеевич (группа ПД-15)</p>
                         <p class="text-sm text-gray-500 mt-1">Промышленный дизайнер, учредитель ТОО «АВ1», бренд Hitone</p>
@@ -245,8 +250,8 @@
                 </section>
 
                 <section class="space-y-6">
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">Школа</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">Школа строительства</h2>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.construction_title') }}</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
                             <p class="font-bold text-[#2B2B2B]">Оспанов Омар Рахманович</p>
@@ -309,7 +314,7 @@
                         <button type="button"
                                 class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-[#2B2B2B] font-bold hover:bg-[#F6F2EA] transition"
                                 @click="closeLB()"
-                                aria-label="Закрыть">
+                                aria-label="{{ __('site.contributions_page.close') }}">
                             ✕
                         </button>
                     </div>

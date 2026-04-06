@@ -19,8 +19,15 @@ use App\Http\Controllers\SuperAdmin\ProjectController as SuperAdminProjectContro
 use App\Http\Controllers\SuperAdmin\StatsController;
 use App\Http\Controllers\Wallet\AppleWalletController;
 use App\Http\Controllers\Wallet\GoogleWalletController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Route;
+
+Route::permanentRedirect('/locale/kz', '/locale/kk');
+
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])
+    ->name('locale.switch')
+    ->where('locale', 'kk|ru|en');
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 

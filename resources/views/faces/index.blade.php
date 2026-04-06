@@ -1,26 +1,29 @@
 @extends('layouts.home')
 
-@section('title', 'Лица KazGASA')
+@section('title', __('site.pages.faces_title'))
 
 @section('content')
     <div class="min-h-screen" style="background-color: #F6F2EA;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
-                    <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">Гордость университета</p>
+                    <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-2 font-semibold">{{ __('site.faces.eyebrow') }}</p>
                     <h1 class="text-[#2B2B2B] font-bold text-2xl sm:text-3xl">
-                        Лица KazGASA
+                        {{ __('site.faces.title') }}
                     </h1>
                     <p class="text-sm text-gray-600 mt-2 max-w-3xl">
-                        Министры, депутаты, предприниматели, архитекторы — выпускники и представители KazGASA.
+                        {{ __('site.faces.subtitle_page') }}
                     </p>
                 </div>
 
-                <a href="{{ url('/') }}#faces"
-                   class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold border-2 transition"
-                   style="border-color: #8F161C; color: #8F161C; background-color: #FFFFFF;">
-                    ← На главную
-                </a>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <x-language-switch />
+                    <a href="{{ url('/') }}#faces"
+                       class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold border-2 transition"
+                       style="border-color: #8F161C; color: #8F161C; background-color: #FFFFFF;">
+                        {{ __('site.pages.back_home') }}
+                    </a>
+                </div>
             </div>
 
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

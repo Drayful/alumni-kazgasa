@@ -29,7 +29,7 @@ class ProjectApplicationController extends Controller
         ]);
 
         return back()
-            ->with('success', 'Отлично! Мы свяжемся с вами в течение 2 рабочих дней.')
+            ->with('success', __('site.flash.project_application_sent'))
             ->withFragment('projects-form')
             ->withInput(['project_id' => $project->id]);
     }

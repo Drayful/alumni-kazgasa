@@ -16,11 +16,11 @@ class ArchiveGalleryController extends Controller
         }
 
         $archiveDecades = [
-            '80s' => '80‑е',
-            '90s' => '90‑е',
-            '00s' => '00‑е',
-            '10s' => '10‑е',
-            '20s' => '20‑е',
+            '80s' => __('site.archive_decades.80s'),
+            '90s' => __('site.archive_decades.90s'),
+            '00s' => __('site.archive_decades.00s'),
+            '10s' => __('site.archive_decades.10s'),
+            '20s' => __('site.archive_decades.20s'),
         ];
 
         $photos = ArchivePhoto::query()
