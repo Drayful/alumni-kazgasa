@@ -7,7 +7,6 @@
         {{-- 1. TOP BAR --}}
         <div class="w-full h-9 flex items-center justify-end px-4 sm:px-6 lg:px-8" style="background-color: #8F161C;">
             <div class="flex items-center gap-3">
-                <x-language-switch variant="inverse" />
                 @auth
                     <a href="{{ route('dashboard') }}" class="text-xs font-medium uppercase tracking-wider text-white border border-white px-4 py-1.5 rounded hover:bg-white hover:text-[#8F161C] transition-colors">
                         {{ __('site.nav.dashboard') }}
