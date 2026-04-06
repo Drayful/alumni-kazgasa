@@ -8,10 +8,10 @@ return [
 
     'nav' => [
         'home' => 'Home',
-        'alumni_card' => 'Alumni card',
-        'contributions' => 'Alumni contributions',
-        'meetup' => 'Meetup',
-        'archive' => 'KazGASA archive',
+        'alumni_card' => 'Alumni Card',
+        'contributions' => 'Alumni Contributions',
+        'meetup' => 'Reunion',
+        'archive' => 'KazGASA Archive',
         'dashboard' => 'Account',
         'login' => 'Log in',
         'register' => 'Sign up',
@@ -54,8 +54,8 @@ return [
     ],
 
     'hero' => [
-        'line1' => '60 years of architectural education in Kazakhstan — a gathering of every generation.',
-        'line2' => 'One day — a thousand stories. Meet your classmates, see how the campus has changed, and become part of KazGASA history.',
+        'line1' => '60 years of architectural education in Kazakhstan - a reunion of all generations.',
+        'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
         'chair_alt' => 'Aigazy Amirlanovich Kusainov',
         'chair_quote' => 'KazGASA is more than a university. It is where Kazakhstan’s architectural spirit is born. Forty-five years ago, thousands of lives that today build our country began here. Welcome home.',
         'chair_name' => 'Aigazy Amirlanovich Kusainov',
@@ -63,10 +63,10 @@ return [
         'chair_role_2' => 'Chair of the Board of the International Educational Corporation,',
         'chair_role_3' => 'owner of the Verum group of companies',
         'date_label' => '📅 Date',
-        'date_value' => '15 April 2026',
+        'date_value' => 'April 15, 2026',
         'countdown_title' => 'Until the reunion',
-        'cta_program' => 'Reunion programme',
-        'cta_card' => 'Alumni card',
+        'cta_program' => 'Reunion Programme',
+        'cta_card' => 'Alumni Card',
     ],
 
     'countdown' => [
@@ -84,17 +84,17 @@ return [
     ],
 
     'program' => [
-        'date_line' => '15 April 2026',
-        'title' => 'Alumni reunion programme',
+        'date_line' => 'APRIL 15, 2026',
+        'title' => 'Alumni Reunion Programme',
         'subtitle' => 'The current slot is highlighted automatically by time',
-        'download_pdf' => '📄 Download programme (PDF)',
-        'campus_map' => '🗺 Campus map',
+        'download_pdf' => '📄 Download Programme (PDF)',
+        'campus_map' => '🗺 Campus Map',
     ],
 
     'alumni_card' => [
-        'eyebrow' => 'Discounts & benefits',
+        'eyebrow' => 'DISCOUNTS & PRIVILEGES',
         'title' => 'KazGASA alumni card',
-        'body' => 'Show your card to partners and get a discount. Save it to Apple Wallet or Google Pay.',
+        'body' => 'Show your card to partners and receive a discount. Saved in Apple Wallet and Google Pay.',
         'apple' => '🍎 Add to Apple Wallet',
         'google' => 'G Add to Google Pay',
         'fill_profile' => 'Complete your profile to add the card',
@@ -102,8 +102,8 @@ return [
     ],
 
     'partners' => [
-        'eyebrow' => 'Alumni partners',
-        'title' => 'Partners where the alumni card works',
+        'eyebrow' => 'ALUMNI PARTNERS',
+        'title' => 'Partners where the Alumni Card is accepted',
         'empty' => 'The partner list will appear once it is configured in the admin panel.',
         'discount_label' => 'Discount:',
         'understood' => 'Got it',
@@ -119,7 +119,7 @@ return [
     ],
 
     'faces' => [
-        'eyebrow' => 'Pride of the university',
+        'eyebrow' => 'PRIDE OF THE UNIVERSITY',
         'title' => 'Faces of KazGASA',
         'subtitle' => 'Ministers, MPs, entrepreneurs, architects — they started here, within these walls.',
         'subtitle_page' => 'Ministers, MPs, entrepreneurs, architects — alumni and representatives of KazGASA.',
@@ -127,23 +127,23 @@ return [
     ],
 
     'projects' => [
-        'eyebrow' => 'Alumni engagement',
+        'eyebrow' => 'ALUMNI INVOLVEMENT',
         'title' => 'Projects that need you',
-        'intro' => 'We are not simply asking you to “help”. We offer concrete formats — matched to your pace, capacity and goals.',
-        'details' => 'Details',
+        'intro' => 'We are not simply asking for help. We offer specific formats - tailored to your pace, your capabilities and your goals.',
+        'details' => 'Learn More ▼',
         'short' => 'Summary',
         'how' => 'How it works',
         'benefit' => 'What you gain',
-        'path_eyebrow' => 'Partnership path',
-        'path_title' => 'Five steps — and you are in the project',
+        'path_eyebrow' => 'THE PARTNERSHIP PATH',
+        'path_title' => '5 steps - and you\'re in the project',
         'form_eyebrow' => 'Application',
-        'form_title' => 'I want to take part',
+        'form_title' => 'I\'m in',
         'form_name' => 'Name',
         'form_company' => 'Company',
         'form_project' => 'Project of interest',
         'form_project_placeholder' => 'Select a project',
         'form_contact' => 'Contact (phone or email)',
-        'submit' => 'Count me in',
+        'submit' => 'Send request',
     ],
 
     'jobs' => [
