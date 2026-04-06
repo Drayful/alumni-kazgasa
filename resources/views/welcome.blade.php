@@ -282,7 +282,7 @@
                        class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
                         📄 Скачать программу (PDF)
                     </a>
-                    <a href="#"
+                    <a href="https://vrmir3d.com/KazGASA_VR/"
                        class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
                         🗺 Карта кампуса
                     </a>
