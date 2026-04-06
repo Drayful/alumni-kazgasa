@@ -29,28 +29,28 @@ return [
 
     'schedule_blocks' => [
         ['title' => 'Participant Registration', 'place' => 'Main Entrance of KazGASA'],
-        ['title' => 'Opening ceremony', 'place' => 'KazGASA campus'],
-        ['title' => 'Welcome remarks by leadership', 'place' => 'KazGASA campus'],
-        ['title' => 'Digital platform presentation', 'place' => 'KazGASA campus'],
-        ['title' => 'Alumni performances and gifts', 'place' => 'KazGASA campus'],
-        ['title' => 'Faculty tours', 'place' => 'KazGASA buildings'],
-        ['title' => 'Reception and concert programme', 'place' => 'KazGASA campus'],
-        ['title' => 'Closing of the evening', 'place' => 'KazGASA campus'],
+        ['title' => 'Grand Opening Ceremony', 'place' => 'KazGASA Campus'],
+        ['title' => 'Welcome Address by Leadership', 'place' => 'KazGASA Campus'],
+        ['title' => 'Digital Platform Presentation', 'place' => 'KazGASA Campus'],
+        ['title' => 'Alumni Speeches and Gifts', 'place' => 'KazGASA Campus'],
+        ['title' => 'Faculty Tours', 'place' => 'KazGASA Buildings'],
+        ['title' => 'Reception and Concert Programme', 'place' => 'KazGASA Campus'],
+        ['title' => 'End of Evening', 'place' => 'KazGASA Campus'],
     ],
 
     'project_steps' => [
         ['when' => 'Today', 'title' => '1. Choose a project', 'desc' => 'Fill in the form and pick the project that fits you best', 'highlight' => false],
-        ['when' => 'Week 1', 'title' => '2. We confirm interest', 'desc' => 'We get in touch, answer questions and align details', 'highlight' => false],
+        ['when' => 'Week 1', 'title' => '2. We confirm interest', 'desc' => 'We reach out, answer questions and agree on details', 'highlight' => false],
         ['when' => 'Month 2', 'title' => '3. Memorandum', 'desc' => 'We sign a partnership memorandum with no financial obligations', 'highlight' => false],
         ['when' => 'Months 2–3', 'title' => '4. First steps', 'desc' => 'We define your role and launch pilot activities', 'highlight' => false],
-        ['when' => 'Month 5', 'title' => '5. Results', 'desc' => 'Public coverage, students in your projects, first outcomes', 'highlight' => false],
-        ['when' => 'In a year', 'title' => 'Scale', 'desc' => 'Your name in the Association’s history', 'highlight' => true],
+        ['when' => 'Month 5', 'title' => '5. Results', 'desc' => 'Publications about you, students in your projects, first outcomes', 'highlight' => false],
+        ['when' => 'In a year', 'title' => 'Scale', 'desc' => 'Your name in the history of the Association', 'highlight' => true],
     ],
 
     'science_topics' => [
-        ['title' => 'Sustainable architecture in an arid climate', 'subtitle' => 'Report by graduates of the Architecture Department · 2026'],
-        ['title' => 'BIM in the reconstruction of historic buildings', 'subtitle' => 'Research by civil engineering alumni'],
-        ['title' => 'Almaty 2050: scenarios for sustainable urban development', 'subtitle' => 'Joint project of alumni and students'],
+        ['title' => 'Sustainable Architecture in Arid Climates', 'subtitle' => 'Report by graduates of the Architecture Department · 2026'],
+        ['title' => 'BIM Technologies in the Reconstruction of Historical Buildings', 'subtitle' => 'Research by graduates of the Construction Faculty'],
+        ['title' => 'Almaty 2050: Sustainable Urban Development Scenarios', 'subtitle' => 'A joint project by alumni and students'],
     ],
 
     'hero' => [
@@ -93,7 +93,7 @@ return [
 
     'alumni_card' => [
         'eyebrow' => 'DISCOUNTS & PRIVILEGES',
-        'title' => 'KazGASA alumni card',
+        'title' => 'KazGASA Alumni Card',
         'body' => 'Show your card to partners and receive a discount. Saved in Apple Wallet and Google Pay.',
         'apple' => '🍎 Add to Apple Wallet',
         'google' => 'G Add to Google Pay',
@@ -130,7 +130,7 @@ return [
         'eyebrow' => 'ALUMNI INVOLVEMENT',
         'title' => 'Projects that need you',
         'intro' => 'We are not simply asking for help. We offer specific formats - tailored to your pace, your capabilities and your goals.',
-        'details' => 'Learn More ▼',
+        'details' => 'Learn More',
         'short' => 'Summary',
         'how' => 'How it works',
         'benefit' => 'What you gain',
@@ -143,12 +143,12 @@ return [
         'form_project' => 'Project of interest',
         'form_project_placeholder' => 'Select a project',
         'form_contact' => 'Contact (phone or e-mail)',
-        'submit' => 'Send request',
+        'submit' => 'I\'m in',
     ],
 
     'jobs' => [
         'eyebrow' => 'Careers',
-        'title' => 'Jobs for alumni',
+        'title' => 'Job Vacancies for Alumni',
         'all' => 'All vacancies →',
         'empty' => 'No vacancies yet. Please check back later.',
         'details' => 'Details →',
@@ -157,14 +157,14 @@ return [
 
     'science' => [
         'date' => '13 April 2026',
-        'title' => 'Science decade',
-        'intro' => 'A research and practice programme with KazGASA alumni and faculty: current studies in architecture, urbanism and construction.',
+        'title' => 'Science Decade',
+        'intro' => 'A research and practice programme featuring KazGASA alumni and faculty: current studies in architecture, urban planning and construction.',
     ],
 
     'archive' => [
         'eyebrow' => 'History in photographs',
-        'title' => 'KazGASA Alumni archive',
-        'intro' => 'Campus, graduations and landmark moments across the decades. Verified alumni can submit photos to grow the archive.',
+        'title' => 'KazGASA Alumni Archive',
+        'intro' => 'Photos of the campus, graduation ceremonies and landmark events across different decades. Verified alumni can submit their own photos to enrich the archive.',
         'empty_decade' => 'No photos uploaded for this period yet.',
         'view_all' => 'View all (:count more)',
         'photo_alt' => 'Archive :decade',
@@ -203,7 +203,7 @@ return [
     ],
 
     'contributions_page' => [
-        'eyebrow' => 'Alumni contributions',
+        'eyebrow' => 'Alumni Contributions',
         'h1' => 'Stories of support and growth at KazGASA',
         'intro' => 'Alumni help departments and schools grow: they equip labs, support educational projects and help students with practice.',
         'school' => 'School',
