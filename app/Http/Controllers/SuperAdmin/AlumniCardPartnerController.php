@@ -100,19 +100,50 @@ class AlumniCardPartnerController extends Controller
 
     private function validated(Request $request): array
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'discount' => ['required', 'string', 'max:32'],
-            'description' => ['required', 'string'],
+        $rules = [
             'logo_letter' => ['required', 'string', 'max:8'],
-            'popup' => ['required', 'string'],
-            'note' => ['nullable', 'string'],
             'sort_order' => ['required', 'integer'],
             'is_active' => ['nullable'],
-        ]);
+            'translations' => ['required', 'array'],
+            'translations.kk' => ['required', 'array'],
+            'translations.ru' => ['required', 'array'],
+            'translations.en' => ['required', 'array'],
+        ];
+
+        $fields = ['name', 'discount', 'description', 'popup', 'note'];
+        $ruRequired = ['name', 'discount', 'description', 'popup'];
+
+        foreach (['kk', 'ru', 'en'] as $loc) {
+            foreach ($fields as $f) {
+                $req = $loc === 'ru' && in_array($f, $ruRequired, true);
+                if ($f === 'name') {
+                    $rules["translations.$loc.name"] = $req
+                        ? ['required', 'string', 'max:255']
+                        : ['nullable', 'string', 'max:255'];
+                } elseif ($f === 'discount') {
+                    $rules["translations.$loc.discount"] = $req
+                        ? ['required', 'string', 'max:32']
+                        : ['nullable', 'string', 'max:32'];
+                } else {
+                    $rules["translations.$loc.$f"] = $req
+                        ? ['required', 'string']
+                        : ['nullable', 'string'];
+                }
+            }
+        }
+
+        $data = $request->validate($rules);
+
+        $translations = AlumniCardPartner::normalizeTranslationsInput($data['translations'], $fields);
+        $data['translations'] = $translations;
+
+        $data['name'] = $translations['ru']['name'];
+        $data['discount'] = $translations['ru']['discount'];
+        $data['description'] = $translations['ru']['description'];
+        $data['popup'] = $translations['ru']['popup'];
+        $data['note'] = $translations['ru']['note'] !== '' ? $translations['ru']['note'] : null;
 
         $data['is_active'] = $request->boolean('is_active');
-        $data['note'] = $data['note'] ?? null;
 
         return $data;
     }

@@ -362,12 +362,12 @@
                                         {{ $p->logo_letter }}
                                     </div>
                                     <span class="bg-[#8F161C] text-white text-sm px-2 py-0.5 rounded-full">
-                                    {{ $p->discount }}
+                                    {{ $p->localized('discount') }}
                                 </span>
                                 </div>
                                 <div class="mt-4">
-                                    <p class="font-bold text-[#2B2B2B] text-sm">{{ $p->name }}</p>
-                                    <p class="text-sm text-gray-500 mt-2">{{ $p->description }}</p>
+                                    <p class="font-bold text-[#2B2B2B] text-sm">{{ $p->localized('name') }}</p>
+                                    <p class="text-sm text-gray-500 mt-2">{{ $p->localized('description') }}</p>
                                 </div>
                             </div>
 
@@ -379,10 +379,10 @@
                                     <div class="flex items-start justify-between gap-4">
                                         <div>
                                             <p class="text-[#8F161C] font-bold text-xl">
-                                                {{ $p->name }}
+                                                {{ $p->localized('name') }}
                                             </p>
                                             <p class="mt-1 text-sm text-gray-500">
-                                                {{ __('site.partners.discount_label') }} <span class="font-semibold text-[#8F161C]">{{ $p->discount }}</span>
+                                                {{ __('site.partners.discount_label') }} <span class="font-semibold text-[#8F161C]">{{ $p->localized('discount') }}</span>
                                             </p>
                                         </div>
                                         <button @click="open = false"
@@ -392,11 +392,11 @@
                                     </div>
 
                                     <p class="text-sm text-[#2B2B2B] mt-4 whitespace-pre-line">
-                                        {{ $p->popup }}
+                                        {{ $p->localized('popup') }}
                                     </p>
-                                    @if(filled($p->note))
+                                    @if(filled($p->localized('note')))
                                         <p class="text-xs text-gray-400 mt-3">
-                                            {{ $p->note }}
+                                            {{ $p->localized('note') }}
                                         </p>
                                     @endif
 
@@ -556,12 +556,12 @@
                                         <div class="flex items-center gap-3">
                                             <span class="text-2xl leading-none">{{ $p->icon }}</span>
                                             <p class="font-bold text-[#2B2B2B] leading-snug">
-                                                {{ $p->title }}
+                                                {{ $p->localized('title') }}
                                             </p>
                                         </div>
-                                        @if($p->tags)
+                                        @if($p->localized('tags'))
                                             <p class="text-sm text-gray-500 mt-2">
-                                                {{ $p->tags }}
+                                                {{ $p->localized('tags') }}
                                             </p>
                                         @endif
                                     </div>
@@ -574,22 +574,22 @@
                             <div x-show="openId === {{ $p->id }}" x-transition x-cloak class="mt-5 pt-5 border-t border-[#D9D9D9] space-y-4">
                                 <div>
                                     <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.short') }}</p>
-                                    <p class="text-[#2B2B2B] mt-1">{{ $p->short }}</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->localized('short') }}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.how') }}</p>
-                                    <p class="text-[#2B2B2B] mt-1">{{ $p->how_it_works }}</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->localized('how_it_works') }}</p>
                                 </div>
                                 <div>
                                     <p class="text-xs uppercase tracking-widest text-[#8F161C] font-semibold">{{ __('site.projects.benefit') }}</p>
-                                    <p class="text-[#2B2B2B] mt-1">{{ $p->what_you_get }}</p>
+                                    <p class="text-[#2B2B2B] mt-1">{{ $p->localized('what_you_get') }}</p>
                                 </div>
 
                                 <div class="pt-1">
                                     <button type="button"
                                             class="w-full sm:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-3 rounded-xl font-semibold transition text-sm"
                                             @click="choose({{ $p->id }})">
-                                        {{ $p->button_text }}
+                                        {{ $p->localized('button_text') }}
                                     </button>
                                 </div>
                             </div>
@@ -659,7 +659,7 @@
                                         x-model.number="selectedProjectId">
                                     <option value="">{{ __('site.projects.form_project_placeholder') }}</option>
                                     @foreach($projects as $p)
-                                        <option value="{{ $p->id }}">{{ $p->title }}</option>
+                                        <option value="{{ $p->id }}">{{ $p->localized('title') }}</option>
                                     @endforeach
                                 </select>
                                 @error('project_id')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror

@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AlumniCardPartner extends Model
 {
+    use HasTranslations;
+
     protected $fillable = [
         'sort_order',
         'is_active',
@@ -16,12 +19,14 @@ class AlumniCardPartner extends Model
         'logo_letter',
         'popup',
         'note',
+        'translations',
     ];
 
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
+            'translations' => 'array',
         ];
     }
 

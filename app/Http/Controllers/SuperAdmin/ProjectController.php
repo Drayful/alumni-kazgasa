@@ -100,17 +100,40 @@ class ProjectController extends Controller
 
     private function validated(Request $request): array
     {
-        $data = $request->validate([
+        $rules = [
             'icon' => ['required', 'string', 'max:20'],
-            'title' => ['required', 'string', 'max:255'],
-            'tags' => ['nullable', 'string', 'max:255'],
-            'button_text' => ['required', 'string', 'max:255'],
-            'short' => ['required', 'string'],
-            'how_it_works' => ['required', 'string'],
-            'what_you_get' => ['required', 'string'],
             'sort_order' => ['required', 'integer'],
             'is_active' => ['nullable'],
-        ]);
+            'translations' => ['required', 'array'],
+            'translations.kk' => ['required', 'array'],
+            'translations.ru' => ['required', 'array'],
+            'translations.en' => ['required', 'array'],
+        ];
+
+        $fields = ['title', 'tags', 'button_text', 'short', 'how_it_works', 'what_you_get'];
+        $ruRequired = ['title', 'button_text', 'short', 'how_it_works', 'what_you_get'];
+
+        foreach (['kk', 'ru', 'en'] as $loc) {
+            foreach ($fields as $f) {
+                $req = $loc === 'ru' && in_array($f, $ruRequired, true);
+                $shortish = in_array($f, ['title', 'tags', 'button_text'], true);
+                $rules["translations.$loc.$f"] = $shortish
+                    ? ($req ? ['required', 'string', 'max:255'] : ['nullable', 'string', 'max:255'])
+                    : ($req ? ['required', 'string'] : ['nullable', 'string']);
+            }
+        }
+
+        $data = $request->validate($rules);
+
+        $translations = Project::normalizeTranslationsInput($data['translations'], $fields);
+        $data['translations'] = $translations;
+
+        $data['title'] = $translations['ru']['title'];
+        $data['tags'] = $translations['ru']['tags'] !== '' ? $translations['ru']['tags'] : null;
+        $data['button_text'] = $translations['ru']['button_text'];
+        $data['short'] = $translations['ru']['short'];
+        $data['how_it_works'] = $translations['ru']['how_it_works'];
+        $data['what_you_get'] = $translations['ru']['what_you_get'];
 
         $data['is_active'] = (bool) $request->boolean('is_active');
 

@@ -89,6 +89,7 @@
                     </p>
                 </section>
 
+                @php($a = $contributions['architecture_card'] ?? [])
                 <section class="space-y-4">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
                     <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.arch_title') }}</h2>
@@ -96,67 +97,14 @@
                         {{ __('site.contributions_page.zoom_hint') }}
                     </p>
 
-                    @php
-                        $architectureCard = [
-                            'title' => 'Хасенов Манас Игенович · Ахметов Ержан Абдирахманович',
-                            'roles' => [
-                                'Декан ША МОК, ассоц. профессор',
-                                'Ассоц. профессор кафедры ГОП ША',
-                            ],
-                            'items' => [
-                                [
-                                    'title' => 'Именная аудитория №531',
-                                    'initiators' => 'Инициаторы: выпускники групп АС-82–84',
-                                    'description' => 'Аудитория №531 открыта по инициативе выпускников, которые спустя годы решили оставить свой след в Альма-матер. Сегодня это пространство носит их имя и служит напоминанием нынешним студентам: здесь учились те, кто строил нашу страну.',
-                                    'what_done' => [
-                                        'Организован ремонт и обновление аудитории',
-                                        'Установлена мемориальная табличка',
-                                        'Создано комфортное пространство для занятий',
-                                    ],
-                                    'note' => null,
-                                ],
-                                [
-                                    'title' => 'Именная аудитория №539',
-                                    'initiators' => 'В память о: Монтахаеве К.Ж. — выпускнике, оставившем яркий след в жизни университета',
-                                    'description' => 'Аудитория №539 открыта в память о выпускнике, чьи профессиональные и человеческие качества стали примером для многих поколений. Это место — дань уважения и символ преемственности традиций.',
-                                    'what_done' => [
-                                        'Инициировано и организовано открытие именной аудитории',
-                                        'Проведено обновление пространства',
-                                        'Установлена памятная табличка',
-                                    ],
-                                    'note' => null,
-                                ],
-                                [
-                                    'title' => null,
-                                    'pre_initiators_bold' => 'Проведены работы по благоустройству территории',
-                                    'initiators' => 'Инициаторы: выпускники разных лет',
-                                    'description' => 'Выпускники организовали посадку деревьев на территории Международной образовательной корпорации. Каждое дерево — это живой след, который будет расти вместе с университетом и новыми поколениями студентов.',
-                                    'what_done' => [
-                                        'Организована посадка деревьев',
-                                        'Выбраны места для озеленения',
-                                    ],
-                                    'note' => 'Ель 6 шт. (н-1.8м)',
-                                ],
-                            ],
-                            'photos' => [
-                                asset('images/contributions/image7.png'),
-                                asset('images/contributions/image8.png'),
-                                asset('images/contributions/image9.png'),
-                                asset('images/contributions/image10.png'),
-                                asset('images/contributions/image11.png'),
-                               
-                            ],
-                        ];
-                    @endphp
-
                     <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                        <p class="font-bold text-[#2B2B2B]">{{ $architectureCard['title'] }}</p>
+                        <p class="font-bold text-[#2B2B2B]">{{ $a['title'] ?? '' }}</p>
                         <p class="text-sm text-gray-500 mt-1">
-                            {{ implode(' · ', $architectureCard['roles'] ?? []) }}
+                            {{ implode(' · ', $a['roles'] ?? []) }}
                         </p>
 
                         <div class="mt-4 space-y-5 text-[#2B2B2B]">
-                            @foreach(($architectureCard['items'] ?? []) as $item)
+                            @foreach(($a['items'] ?? []) as $item)
                                 <div class="space-y-2">
                                     @if(!empty($item['title']))
                                         <p class="font-semibold">{{ $item['title'] }}</p>
@@ -172,7 +120,7 @@
                                     @endif
                                     @if(!empty($item['what_done']))
                                         <div>
-                                            <p class="font-semibold">Что сделано:</p>
+                                            <p class="font-semibold">{{ ($contributions['labels']['what_done'] ?? 'Что сделано:') }}</p>
                                             <ul class="list-disc list-inside space-y-1 text-[#2B2B2B]/90">
                                                 @foreach($item['what_done'] as $w)
                                                     <li>{{ $w }}</li>
@@ -181,19 +129,19 @@
                                         </div>
                                     @endif
                                     @if(!empty($item['note']))
-                                        <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">Примечание:</span> {{ $item['note'] }}</p>
+                                        <p class="text-sm text-[#2B2B2B]/80"><span class="font-semibold">{{ ($contributions['labels']['note'] ?? 'Примечание:') }}</span> {{ $item['note'] }}</p>
                                     @endif
                                 </div>
                             @endforeach
                         </div>
 
-                        @if(!empty($architectureCard['photos']))
+                        @if(!empty($a['photos']))
                             <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                @foreach($architectureCard['photos'] as $src)
+                                @foreach($a['photos'] as $src)
                                     <button type="button"
                                             class="rounded-xl overflow-hidden border border-[#D9D9D9] bg-[#F6F2EA] focus:outline-none focus:ring-2 focus:ring-[#8F161C] focus:ring-offset-2"
-                                            @click="openLB('{{ $src }}', '{{ $architectureCard['title'] }}')">
-                                        <img src="{{ $src }}" alt="Фото" class="w-full h-36 sm:h-40 object-cover cursor-zoom-in">
+                                            @click="openLB('{{ $src }}', @js($a['title'] ?? ''))">
+                                        <img src="{{ $src }}" alt="{{ $contributions['labels']['photo'] ?? 'Фото' }}" class="w-full h-36 sm:h-40 object-cover cursor-zoom-in">
                                     </button>
                                 @endforeach
                             </div>
@@ -201,106 +149,80 @@
                     </article>
                 </section>
 
+                @php($g = $contributions['geodesy'] ?? [])
                 <section class="space-y-6">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.dept') }}</p>
-                    <h2 class="font-bold text-2xl text-[#2B2B2B]">«Геодезия и картография, кадастр»</h2>
+                    <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ $g['heading'] ?? '' }}</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                            <p class="font-bold text-[#2B2B2B]">Жалилов Лутпулла Лепитович (выпуск 1993)</p>
-                            <p class="text-sm text-gray-500 mt-1">{{ __('site.contributions_page.graduate_of_dept') }}</p>
-                            <p class="text-[#2B2B2B] mt-3">
-                                Содействие в оформлении аудитории, передал GPS-оборудование кафедре, а также обеспечивает производственную практику студентов.
-                            </p>
-                        </article>
-                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                            <p class="font-bold text-[#2B2B2B]">Цуриков Вадим (выпуск 2007)</p>
-                            <p class="text-sm text-gray-500 mt-1">Директор по инновациям SDG Alliance</p>
-                            <p class="text-[#2B2B2B] mt-3">
-                                Организовал посадку деревьев на территории МОК совместно со студентами и преподавателями.
-                            </p>
-                        </article>
+                        @foreach(($g['cards'] ?? []) as $card)
+                            <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
+                                <p class="font-bold text-[#2B2B2B]">{{ $card['name'] ?? '' }}</p>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    {{ $card['subtitle'] ?? __('site.contributions_page.graduate_of_dept') }}
+                                </p>
+                                <p class="text-[#2B2B2B] mt-3">
+                                    {{ $card['body'] ?? '' }}
+                                </p>
+                            </article>
+                        @endforeach
                     </div>
                 </section>
 
+                @php($d = $contributions['design'] ?? [])
                 <section class="space-y-6">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
                     <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.design_title') }}</h2>
                     <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                        <p class="font-bold text-[#2B2B2B]">Цой Владислав Алексеевич (группа ПД-15)</p>
-                        <p class="text-sm text-gray-500 mt-1">Промышленный дизайнер, учредитель ТОО «АВ1», бренд Hitone</p>
+                        <p class="font-bold text-[#2B2B2B]">{{ $d['name'] ?? '' }}</p>
+                        <p class="text-sm text-gray-500 mt-1">{{ $d['subtitle'] ?? '' }}</p>
                         <p class="text-[#2B2B2B] mt-3">
-                            Куратор проекта «Библиотека материалов».
+                            {{ $d['body'] ?? '' }}
                         </p>
                         <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image3.png') }}" alt="Библиотека материалов 1"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image3.png') }}', 'Библиотека материалов 1')">
-                            <img src="{{ asset('images/contributions/image4.png') }}" alt="Библиотека материалов 2"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image4.png') }}', 'Библиотека материалов 2')">
-                            <img src="{{ asset('images/contributions/image1.png') }}" alt="Библиотека материалов 3"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image1.png') }}', 'Библиотека материалов 3')">
-                            <img src="{{ asset('images/contributions/image2.png') }}" alt="Библиотека материалов 4"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image2.png') }}', 'Библиотека материалов 4')">
-                            
+                            @foreach(($d['gallery'] ?? []) as $img)
+                                @php($src = asset('images/contributions/'.($img['file'] ?? '')))
+                                <img src="{{ $src }}" alt="{{ $img['caption'] ?? '' }}"
+                                     class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                     @click="openLB('{{ $src }}', @js($img['caption'] ?? ''))">
+                            @endforeach
                         </div>
                     </article>
                 </section>
 
+                @php($cons = $contributions['construction'] ?? [])
                 <section class="space-y-6">
                     <p class="text-[#8F161C] text-xs uppercase tracking-widest">{{ __('site.contributions_page.school') }}</p>
                     <h2 class="font-bold text-2xl text-[#2B2B2B]">{{ __('site.contributions_page.construction_title') }}</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                            <p class="font-bold text-[#2B2B2B]">Оспанов Омар Рахманович</p>
-                            <p class="text-sm text-gray-500 mt-1">ТОО «CLIMATE EXPERT PARTNERS»</p>
-                            <p class="text-[#2B2B2B] mt-3">
-                                Открытие лаборатории №18 «Оборудование по кондиционированию воздуха» при поддержке компании Daikin.
-        
-                            </p>
-                            <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image6.png') }}" alt="Оборудование по кондиционированию воздуха"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image6.png') }}', 'Оборудование по кондиционированию воздуха')">
-                    
-                        </div>
-                        </article>
-                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition">
-                            <p class="font-bold text-[#2B2B2B]">Баккулов Марат Сатыбалдиевич</p>
-                            <p class="text-sm text-gray-500 mt-1">ТОО «АВЗ»</p>
-                            <p class="text-[#2B2B2B] mt-3">
-                                Открытие лаборатории №3 «Вентиляция воздуха», оснащение оборудованием на сумму 12 000 000 тенге.
-                            </p>
-                            <div class="grid grid-cols-2 gap-3 mt-5">
-                            <img src="{{ asset('images/contributions/image5.png') }}" alt="Вентиляция воздуха"
-                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                 @click="openLB('{{ asset('images/contributions/image5.png') }}', 'Вентиляция воздуха')">
-                    
-                        </div>
-                        </article>
-                        <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition lg:col-span-2">
-                            <p class="font-bold text-[#2B2B2B]">Бесимбаев Ерик Турашович</p>
-                            <p class="text-sm text-gray-500 mt-1">Кандидат технических наук, доцент, ассоциированный профессор
-                            Институт автоматики и информационных технологий</p>
-                            <div class="text-[#2B2B2B] mt-3 space-y-3 text-sm leading-relaxed">
-                                <p>
-                                    Наш университет получил особенный подарок от своего выпускника — уникальную малую архитектурную форму (МАФ), ставшую воплощением духа инженерной мысли. Эта концепция — не просто арт-объект, а визуальный манифест строительной науки.
-                                </p>
-                                <p>В основе МАФ заложены три фундаментальные идеи:</p>
-                                <ul class="list-disc pl-5 space-y-2">
-                                    <li><span class="font-semibold">Наука:</span> орбита, венчающая композицию, символизирует непрерывный поиск знаний и глобальность научных исследований.</li>
-                                    <li><span class="font-semibold">Инженерия:</span> стилизованные формы здания, фундамента и сваи напоминают о неразрывной связи элементов системы «грунт — фундамент — сооружение».</li>
-                                    <li><span class="font-semibold">Устойчивость:</span> гранитная плита в основании служит гарантом надежности всей конструкции.</li>
-                                </ul>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 mt-5 max-w-lg">
-                                <img src="{{ asset('images/contributions/image12.png') }}" alt="МАФ — подарок выпускника Бесимбаева Е. Т."
-                                     class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
-                                     @click="openLB('{{ asset('images/contributions/image12.png') }}', 'МАФ — подарок выпускника Бесимбаева Е. Т.')">
-                            </div>
-                        </article>
+                        @foreach(($cons['cards'] ?? []) as $card)
+                            <article class="bg-white rounded-2xl shadow-sm p-6 border border-transparent hover:border-[#E5C68D] hover:shadow-md transition {{ !empty($card['wide']) ? 'lg:col-span-2' : '' }}">
+                                <p class="font-bold text-[#2B2B2B]">{{ $card['name'] ?? '' }}</p>
+                                <p class="text-sm text-gray-500 mt-1 whitespace-pre-line">{{ $card['subtitle'] ?? '' }}</p>
+                                <div class="text-[#2B2B2B] mt-3 space-y-3 text-sm leading-relaxed">
+                                    @foreach(($card['sections'] ?? []) as $sec)
+                                        @if(($sec['type'] ?? '') === 'p')
+                                            <p>{{ $sec['text'] ?? '' }}</p>
+                                        @elseif(($sec['type'] ?? '') === 'ul')
+                                            <ul class="list-disc pl-5 space-y-2">
+                                                @foreach(($sec['items'] ?? []) as $li)
+                                                    <li><span class="font-semibold">{{ $li['k'] ?? '' }}</span> {{ $li['v'] ?? '' }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                @if(!empty($card['images']))
+                                    <div class="grid grid-cols-2 gap-3 mt-5 {{ !empty($card['wide']) ? 'max-w-lg' : '' }}">
+                                        @foreach($card['images'] as $img)
+                                            @php($src = asset('images/contributions/'.($img['file'] ?? '')))
+                                            <img src="{{ $src }}" alt="{{ $img['alt'] ?? '' }}"
+                                                 class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                                 @click="openLB('{{ $src }}', @js($img['alt'] ?? ''))">
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </article>
+                        @endforeach
                     </div>
                 </section>
             </div>
