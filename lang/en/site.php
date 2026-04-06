@@ -13,8 +13,8 @@ return [
         'meetup' => 'Reunion',
         'archive' => 'KazGASA Archive',
         'dashboard' => 'Account',
-        'login' => 'Log in',
-        'register' => 'Sign up',
+        'login' => 'LOGIN',
+        'register' => 'REGISTER',
         'search_aria' => 'Search',
         'menu_aria' => 'Menu',
     ],
@@ -28,7 +28,7 @@ return [
     ],
 
     'schedule_blocks' => [
-        ['title' => 'Participant registration', 'place' => 'KazGASA main entrance'],
+        ['title' => 'Participant Registration', 'place' => 'Main Entrance of KazGASA'],
         ['title' => 'Opening ceremony', 'place' => 'KazGASA campus'],
         ['title' => 'Welcome remarks by leadership', 'place' => 'KazGASA campus'],
         ['title' => 'Digital platform presentation', 'place' => 'KazGASA campus'],
@@ -48,7 +48,7 @@ return [
     ],
 
     'science_topics' => [
-        ['title' => 'Sustainable architecture in an arid climate', 'subtitle' => 'Talk by architecture alumni · 2026'],
+        ['title' => 'Sustainable architecture in an arid climate', 'subtitle' => 'Report by graduates of the Architecture Department · 2026'],
         ['title' => 'BIM in the reconstruction of historic buildings', 'subtitle' => 'Research by civil engineering alumni'],
         ['title' => 'Almaty 2050: scenarios for sustainable urban development', 'subtitle' => 'Joint project of alumni and students'],
     ],
@@ -56,9 +56,9 @@ return [
     'hero' => [
         'line1' => '60 years of architectural education in Kazakhstan - a reunion of all generations.',
         'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
-        'chair_alt' => 'Aigazy Amirlanovich Kusainov',
+        'chair_alt' => 'Aigazy Amirlanovіch Kusainov',
         'chair_quote' => 'KazGASA is more than a university. It is where Kazakhstan’s architectural spirit is born. Forty-five years ago, thousands of lives that today build our country began here. Welcome home.',
-        'chair_name' => 'Aigazy Amirlanovich Kusainov',
+        'chair_name' => 'Aigazy Amirlanovіch Kusainov',
         'chair_role_1' => 'Chair of the IEC Board of Trustees,',
         'chair_role_2' => 'Chair of the Board of the International Educational Corporation,',
         'chair_role_3' => 'owner of the Verum group of companies',
@@ -107,7 +107,7 @@ return [
         'empty' => 'The partner list will appear once it is configured in the admin panel.',
         'discount_label' => 'Discount:',
         'understood' => 'Got it',
-        'become' => '+ Become a partner',
+        'become' => '+ Become a Partner',
         'modal_title' => 'Propose a partnership',
         'modal_text' => 'We will review your request and contact you within two business days.',
         'name_ph' => 'Your name',
@@ -123,7 +123,7 @@ return [
         'title' => 'Faces of KazGASA',
         'subtitle' => 'Ministers, MPs, entrepreneurs, architects — they started here, within these walls.',
         'subtitle_page' => 'Ministers, MPs, entrepreneurs, architects — alumni and representatives of KazGASA.',
-        'more' => 'Learn more',
+        'more' => 'Learn More',
     ],
 
     'projects' => [
@@ -142,14 +142,14 @@ return [
         'form_company' => 'Company',
         'form_project' => 'Project of interest',
         'form_project_placeholder' => 'Select a project',
-        'form_contact' => 'Contact (phone or email)',
+        'form_contact' => 'Contact (phone or e-mail)',
         'submit' => 'Send request',
     ],
 
     'jobs' => [
         'eyebrow' => 'Careers',
         'title' => 'Jobs for alumni',
-        'all' => 'All jobs →',
+        'all' => 'All vacancies →',
         'empty' => 'No vacancies yet. Please check back later.',
         'details' => 'Details →',
         'all_mobile' => 'Browse all jobs',
@@ -181,12 +181,12 @@ return [
     ],
 
     'footer' => [
-        'tagline' => 'KazGASA alumni community',
+        'tagline' => 'KazGASA Alumni Community',
         'nav' => 'Navigation',
         'contacts' => 'Contacts',
         'email' => 'E-mail: l.lau@kazgasa.kz',
         'phone' => 'Phone: +7(778)403 1983',
-        'address' => 'Address: 28 Ryskulbekov St., office 301',
+        'address' => 'Address: 28 Ryskulbekova St., Office 301',
         'site' => 'KazGASA website:',
         'corp' => 'International Educational Corporation',
         'city' => 'Almaty, Kazakhstan',
@@ -194,7 +194,7 @@ return [
     ],
 
     'pages' => [
-        'contributions_title' => 'Alumni contributions',
+        'contributions_title' => 'Alumni Contributions',
         'archive_title' => 'Photo archive',
         'faces_title' => 'Faces of KazGASA',
         'back_home' => '← Back to home',
