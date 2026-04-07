@@ -131,7 +131,7 @@ return [
         'title' => 'Projects that need you',
         'intro' => 'We are not simply asking for help. We offer specific formats - tailored to your pace, your capabilities and your goals.',
         'details' => 'Learn More',
-        'short' => 'Summary',
+        'short' => 'In brief',
         'how' => 'How it works',
         'benefit' => 'What you gain',
         'path_eyebrow' => 'THE PARTNERSHIP PATH',
