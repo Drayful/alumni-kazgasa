@@ -216,6 +216,7 @@
                                             @php($src = asset('images/contributions/'.($img['file'] ?? '')))
                                             <img src="{{ $src }}" alt="{{ $img['alt'] ?? '' }}"
                                                  class="rounded-xl object-cover w-full h-48 cursor-zoom-in"
+                                                 @if(($img['file'] ?? '') === 'image12.png') style="object-position: 50% 16%;" @endif
                                                  @click="openLB('{{ $src }}', @js($img['alt'] ?? ''))">
                                         @endforeach
                                     </div>
