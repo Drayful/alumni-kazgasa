@@ -10,42 +10,42 @@ return [
     'architecture_card' => [
         'title' => 'Manas Igenovich Kassenov · Yerzhan Abdirakhmanovich Akhmetov',
         'roles' => [
-            'Dean of the School of Architecture, associate professor',
-            'Associate professor, Department of Urban Planning, School of Architecture',
+            'Dean of the School of Architecture, KazGASA, Associate Professor',
+            'Associate Professor, Department of Civil Engineering, School of Architecture',
         ],
         'items' => [
             [
-                'title' => 'Named classroom №531',
-                'initiators' => 'Initiated by: graduates of groups AS-82–84',
-                'description' => 'Classroom №531 was opened on the initiative of alumni who, years later, chose to leave their mark at their alma mater. Today this space bears their name and reminds current students: those who built our country studied here.',
+                'title' => 'Named Classroom No. 531',
+                'initiators' => 'Initiators: graduates of groups АС-82–84',
+                'description' => 'Classroom No. 531 was opened at the initiative of alumni who, years later, decided to leave their mark on their Alma Mater. Today this space bears their name and serves as a reminder to current students: those who built our country once studied here.',
                 'what_done' => [
-                    'Renovation and refurbishment of the classroom',
-                    'Installation of a commemorative plaque',
-                    'A comfortable learning environment was created',
+                    'Repair and renovation of the classroom was carried out',
+                    'A memorial plaque was installed',
+                    'A comfortable learning space was created',
                 ],
                 'note' => null,
             ],
             [
-                'title' => 'Named classroom №539',
-                'initiators' => 'In memory of: K.Zh. Montakhayev — a graduate who left a bright mark on the university',
-                'description' => 'Classroom №539 honours a graduate whose professional and human qualities became an example for many generations. It is a tribute and a symbol of continuity.',
+                'title' => 'Named Classroom No. 539',
+                'initiators' => 'In memory of K.Zh. Montakhayev — a graduate who left a bright mark on the life of the university',
+                'description' => 'Classroom No. 539 was opened in memory of a graduate whose professional and personal qualities became an example for many generations. This place is a tribute of respect and a symbol of the continuity of traditions.',
                 'what_done' => [
-                    'Opening of the named classroom was initiated and organised',
-                    'The space was refurbished',
-                    'A memorial plaque was installed',
+                    'The opening of the named classroom was initiated and organised',
+                    'The space was renovated',
+                    'A commemorative plaque was installed',
                 ],
                 'note' => null,
             ],
             [
                 'title' => null,
-                'pre_initiators_bold' => 'Campus landscaping works',
-                'initiators' => 'Initiated by: alumni from different years',
-                'description' => 'Alumni organised tree planting on the campus of the International Educational Corporation. Each tree is a living legacy growing with the university and new generations of students.',
+                'pre_initiators_bold' => 'Landscaping works were carried out on the grounds',
+                'initiators' => 'Initiators: alumni of various graduation years',
+                'description' => 'Alumni organised the planting of trees on the grounds of the International Educational Corporation. Each tree is a living mark that will grow alongside the university and new generations of students.',
                 'what_done' => [
                     'Tree planting was organised',
-                    'Greening locations were selected',
+                    'Sites for landscaping were selected',
                 ],
-                'note' => 'Spruce 6 pcs. (h~1.8 m)',
+                'note' => 'Note: Spruce trees — 6 pcs. (height 1.8 m)',
             ],
         ],
         'photo_keys' => [
@@ -54,25 +54,25 @@ return [
     ],
 
     'geodesy' => [
-        'heading' => '«Geodesy and cartography, cadastre»',
+        'heading' => '"Geodesy and Cartography, Cadastre"',
         'cards' => [
             [
-                'name' => 'Lutpulla Lepitovich Zhailyov (class of 1993)',
+                'name' => 'Lutpulla Lepitovich Zhalilov (Class of 1993)',
                 'subtitle' => null,
-                'body' => 'Supported classroom fit-out, donated GPS equipment to the department, and arranges student internships.',
+                'body' => 'Assisted with the fit-out of the classroom, donated GPS equipment to the department, and provides industrial placement opportunities for students.',
             ],
             [
                 'name' => 'Vadim Tsurikov (class of 2007)',
-                'subtitle' => 'Director of innovation, SDG Alliance',
-                'body' => 'Organised tree planting on the IEC campus together with students and faculty.',
+                'subtitle' => 'Director of Innovation, SDG Alliance',
+                'body' => 'Organised the planting of trees on the IEC grounds together with students and faculty.',
             ],
         ],
     ],
 
     'design' => [
-        'name' => 'Vladislav Alekseevich Tsoi (group PD-15)',
-        'subtitle' => 'Industrial designer, founder of «AV1» LLP, Hitone brand',
-        'body' => 'Curator of the «Materials library» project.',
+        'name' => 'Vladislav Alekseyevich Tsoy (Group PD-15)',
+        'subtitle' => 'Industrial designer, founder of AV1 LLP, Hitone brand',
+        'body' => 'Curator of the "Materials Library" project.',
         'gallery' => [
             ['file' => 'image3.png', 'caption' => 'Materials library 1'],
             ['file' => 'image4.png', 'caption' => 'Materials library 2'],
@@ -85,9 +85,9 @@ return [
         'cards' => [
             [
                 'name' => 'Omar Rakhmankulovich Ospanov',
-                'subtitle' => '«CLIMATE EXPERT PARTNERS» LLP',
+                'subtitle' => 'Climate Expert Partners LLP',
                 'sections' => [
-                    ['type' => 'p', 'text' => 'Opening of laboratory №18 «Air conditioning equipment» with support from Daikin.'],
+                    ['type' => 'p', 'text' => 'Opening of Laboratory No. 18 "Air Conditioning Equipment" with the support of Daikin.'],
                 ],
                 'images' => [
                     ['file' => 'image6.png', 'alt' => 'Air conditioning equipment'],
@@ -96,9 +96,9 @@ return [
             ],
             [
                 'name' => 'Marat Satybaldiyevich Bakkulov',
-                'subtitle' => '«AVZ» LLP',
+                'subtitle' => 'AVZ LLP',
                 'sections' => [
-                    ['type' => 'p', 'text' => 'Opening of laboratory №3 «Air ventilation», equipped for 12,000,000 KZT.'],
+                    ['type' => 'p', 'text' => 'Opening of Laboratory No. 3 "Air Ventilation", equipped with machinery worth 12,000,000 tenge.'],
                 ],
                 'images' => [
                     ['file' => 'image5.png', 'alt' => 'Air ventilation'],
@@ -106,19 +106,19 @@ return [
                 'wide' => false,
             ],
             [
-                'name' => 'Yerik Turashovich Besimbaev',
-                'subtitle' => "Candidate of Technical Sciences, Associate Professor\nInstitute of Automation and Information Technologies",
+                'name' => 'Yerik Turashovich Besimbayev',
+                'subtitle' => 'Candidate of Technical Sciences, Associate Professor, Institute of Automation and Information Technologies',
                 'sections' => [
-                    ['type' => 'p', 'text' => 'The university received a special gift from its graduate — a unique small architectural form (MAF) embodying the spirit of engineering thought. The concept is not merely an art object but a visual manifesto of construction science.'],
-                    ['type' => 'p', 'text' => 'Three fundamental ideas underpin the MAF:'],
+                    ['type' => 'p', 'text' => 'Our university received a special gift from one of its graduates — a unique small architectural form (SAF) that embodies the spirit of engineering thought. This concept is not merely an art object, but a visual manifesto of construction science.'],
+                    ['type' => 'p', 'text' => 'The SAF is built upon three fundamental ideas:'],
                     ['type' => 'ul', 'items' => [
-                        ['k' => 'Science:', 'v' => 'the orbit crowning the composition symbolises the continuous pursuit of knowledge and the global scale of research.'],
-                        ['k' => 'Engineering:', 'v' => 'stylised forms of the building, foundation and pile recall the inseparable link in the «soil — foundation — structure» system.'],
-                        ['k' => 'Resilience:', 'v' => 'the granite slab at the base guarantees reliability of the whole structure.'],
+                        ['k' => 'Science:', 'v' => 'the orbit crowning the composition symbolises the continuous pursuit of knowledge and the global reach of scientific research.'],
+                        ['k' => 'Engineering:', 'v' => 'the stylised forms of the building, foundation and piles serve as a reminder of the inseparable connection between the elements of the "soil — foundation — structure" system.'],
+                        ['k' => 'Sustainability:', 'v' => 'the granite slab at the base serves as the guarantor of the reliability of the entire structure.'],
                     ]],
                 ],
                 'images' => [
-                    ['file' => 'image12.png', 'alt' => 'MAF — gift from graduate Y.T. Besimbaev'],
+                    ['file' => 'image12.png', 'alt' => 'The SAF is a gift from graduate Ye. T. Besimbayev'],
                 ],
                 'wide' => true,
             ],

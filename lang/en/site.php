@@ -203,17 +203,17 @@ return [
     ],
 
     'contributions_page' => [
-        'eyebrow' => 'Alumni Contributions',
-        'h1' => 'Stories of support and growth at KazGASA',
-        'intro' => 'Alumni help departments and schools grow: they equip labs, support educational projects and help students with practice.',
+        'eyebrow' => 'ALUMNI CONTRIBUTIONS',
+        'h1' => 'Stories of support and development of KazGASA',
+        'intro' => 'Alumni contribute to the development of departments and schools: equipping laboratories, supporting educational projects and helping students with practical training.',
         'school' => 'School',
         'dept' => 'Department',
         'arch_title' => 'School of Architecture',
         'design_title' => 'School of Design',
         'construction_title' => 'School of Construction',
-        'zoom_hint' => 'Click a photo to enlarge it.',
+        'zoom_hint' => 'Click on the photo to enlarge.',
         'close' => 'Close',
-        'graduate_of_dept' => 'Department graduate',
+        'graduate_of_dept' => 'Graduate of the Department',
     ],
 
     'flash' => [
