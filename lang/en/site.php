@@ -57,6 +57,7 @@ return [
         'line1' => '60 years of architectural education in Kazakhstan - a reunion of all generations.',
         'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
         'chair_alt' => 'Aigazy Amirlanovich Kusainov',
+        'chair_kicker' => 'KazGASA is more than just a university',
         // chair_quote: approved copy — do not overwrite when “syncing from Word” unless the client explicitly requests a change.
         'chair_quote' => 'KazGASA is more than just an alma mater. It is a powerful professional community with a 45-year history that has significantly shaped the architectural and construction landscape of Kazakhstan. We take immense pride in our alumni - the visionary professionals whose ideas and dedication build the cities, spaces, and the very future of our nation.'."\n\n".'Welcome back to your roots. Welcome home!',
         'chair_name' => 'Aigazy Amirlanovich Kusainov',

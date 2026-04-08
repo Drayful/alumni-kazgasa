@@ -116,30 +116,34 @@
                         </div>
 
                         {{-- СПРАВА: Цитата --}}
-                        <div class="flex flex-col justify-center items-center text-center md:items-start md:text-left">
-                            {{-- Большие кавычки --}}
-                            <span class="text-[#E5C68D] font-serif leading-none mb-4 text-[60px] md:text-[80px]" style="line-height: 0.8">❝</span>
+                        <div class="w-full flex flex-col justify-center items-center text-center md:items-start md:text-left">
+                            <div class="w-full rounded-2xl border border-[#E5C68D66] bg-white/70 backdrop-blur-sm shadow-sm p-5 md:p-6">
+                                {{-- Kicker + line (как в примере) --}}
+                                <div class="flex items-center gap-4">
+                                    <p class="text-[#B78B3C] italic font-medium text-sm md:text-base">
+                                        {{ __('site.hero.chair_kicker') }}
+                                    </p>
+                                    <div class="h-px flex-1 bg-[#E5C68D]"></div>
+                                </div>
 
-                            {{-- Текст цитаты --}}
-                            <blockquote class="text-black text-lg md:text-xl italic leading-relaxed font-light">
-                                {!! nl2br(e(__('site.hero.chair_quote'))) !!}
-                            </blockquote>
+                                {{-- Текст цитаты --}}
+                                <blockquote class="mt-4 text-black text-lg md:text-xl leading-relaxed font-normal">
+                                    {!! nl2br(e(__('site.hero.chair_quote'))) !!}
+                                </blockquote>
 
-                            {{-- Разделитель --}}
-                            <div class="w-12 h-0.5 bg-[#E5C68D] my-4"></div>
-
-                            {{-- Имя и должность --}}
-                            <div>
-                                <p class="text-[#E5C68D] font-bold text-base">
-                                    {{ __('site.hero.chair_name') }}
-                                </p>
-                                <p class="text-black text-sm mt-1 leading-snug">
-                                    {{ __('site.hero.chair_role_1') }}<br>
-                                    {{ __('site.hero.chair_role_2') }}
-                                    @if(trim((string) __('site.hero.chair_role_3')) !== '')
-                                        <br>{{ __('site.hero.chair_role_3') }}
-                                    @endif
-                                </p>
+                                {{-- Имя и должность --}}
+                                <div class="mt-6">
+                                    <p class="text-[#B78B3C] font-semibold text-base">
+                                        {{ __('site.hero.chair_name') }}
+                                    </p>
+                                    <p class="text-black text-sm mt-2 leading-snug">
+                                        {{ __('site.hero.chair_role_1') }}<br>
+                                        {{ __('site.hero.chair_role_2') }}
+                                        @if(trim((string) __('site.hero.chair_role_3')) !== '')
+                                            <br>{{ __('site.hero.chair_role_3') }}
+                                        @endif
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
