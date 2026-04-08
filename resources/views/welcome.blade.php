@@ -3,7 +3,9 @@
 @section('title', __('site.meta.home_title'))
 
 @section('content')
-    <div x-data="{ mobileMenuOpen: false }" class="min-h-screen flex flex-col">
+    <div x-data="{ mobileMenuOpen: false, eventMapOpen: false }"
+         @keydown.escape.window="eventMapOpen = false"
+         class="min-h-screen flex flex-col">
         {{-- 1. TOP BAR --}}
         <div class="w-full h-9 flex items-center justify-end px-4 sm:px-6 lg:px-8" style="background-color: #8F161C;">
             <div class="flex items-center gap-3">
@@ -120,7 +122,7 @@
 
                             {{-- Текст цитаты --}}
                             <blockquote class="text-white text-lg md:text-xl italic leading-relaxed font-light">
-                                {{ __('site.hero.chair_quote') }}
+                                {!! nl2br(e(__('site.hero.chair_quote'))) !!}
                             </blockquote>
 
                             {{-- Разделитель --}}
@@ -268,7 +270,7 @@
                     </div>
                 </div>
 
-                <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <div class="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
                     <a href="{{ asset('files/program.pdf') }}"
                        download
                        class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
@@ -278,6 +280,11 @@
                        class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
                         {{ __('site.program.campus_map') }}
                     </a>
+                    <button type="button"
+                            @click="eventMapOpen = true"
+                            class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
+                        {{ __('site.program.event_map') }}
+                    </button>
                 </div>
             </div>
         </section>
@@ -1010,6 +1017,27 @@
                 © {{ date('Y') }} KazGASA Alumni. {{ __('site.footer.rights') }}
             </div>
         </footer>
+
+        <div x-cloak x-show="eventMapOpen" class="fixed inset-0 z-[100]" role="dialog" aria-modal="true">
+            <div class="absolute inset-0 bg-black/70" @click="eventMapOpen = false"></div>
+            <div class="absolute inset-0 p-4 sm:p-8 flex items-center justify-center pointer-events-none">
+                <div class="w-full max-w-6xl pointer-events-auto">
+                    <div class="flex items-center justify-end mb-3">
+                        <button type="button"
+                                class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white text-[#2B2B2B] font-bold hover:bg-[#F6F2EA] transition shadow"
+                                @click="eventMapOpen = false"
+                                aria-label="{{ __('site.program.event_map_close') }}">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden border border-[#D9D9D9] shadow-lg max-h-[85vh] overflow-y-auto">
+                        <img src="{{ asset('images/event-map.png') }}"
+                             alt="{{ __('site.program.event_map_alt') }}"
+                             class="w-full h-auto object-contain bg-[#F6F2EA]">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

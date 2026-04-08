@@ -57,7 +57,8 @@ return [
         'line1' => '60 years of architectural education in Kazakhstan - a reunion of all generations.',
         'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
         'chair_alt' => 'Aigazy Amirlanovіch Kusainov',
-        'chair_quote' => 'KazGASA is more than a university. It is where Kazakhstan’s architectural spirit is born. Forty-five years ago, thousands of lives that today build our country began here. Welcome home.',
+        // chair_quote: approved copy — do not overwrite when “syncing from Word” unless the client explicitly requests a change.
+        'chair_quote' => 'KazGASA is more than just an alma mater. It is a powerful professional community with a 45-year history that has significantly shaped the architectural and construction landscape of Kazakhstan. We take immense pride in our alumni - the visionary professionals whose ideas and dedication build the cities, spaces, and the very future of our nation.'."\n\n".'Welcome back to your roots. Welcome home!',
         'chair_name' => 'Aigazy Amirlanovіch Kusainov',
         'chair_role_1' => 'Chair of the IEC Board of Trustees,',
         'chair_role_2' => 'Chair of the Board of the International Educational Corporation,',
@@ -89,6 +90,9 @@ return [
         'subtitle' => 'The current slot is highlighted automatically by time',
         'download_pdf' => '📄 Download Programme (PDF)',
         'campus_map' => '🗺 Campus Map',
+        'event_map' => '🗺 Event map',
+        'event_map_close' => 'Close',
+        'event_map_alt' => 'KazGASA event map',
     ],
 
     'alumni_card' => [
