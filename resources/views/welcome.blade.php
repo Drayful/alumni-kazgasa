@@ -95,10 +95,10 @@
 {{--                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-none">--}}
 {{--                            Слёт выпускников KazGASA--}}
 {{--                        </h1>--}}
-                        <p class="mt-3 text-base sm:text-lg text-[#2B2B2B] max-w-none">
+                        <p class="mt-3 text-base sm:text-lg text-black max-w-none">
                             {{ __('site.hero.line1') }}
                         </p>
-                        <p class="mt-4 text-base sm:text-lg text-[#2B2B2B] max-w-none">
+                        <p class="mt-4 text-base sm:text-lg text-black max-w-none">
                             {{ __('site.hero.line2') }}
                         </p>
                     </div>
@@ -121,7 +121,7 @@
                             <span class="text-[#E5C68D] font-serif leading-none mb-4 text-[60px] md:text-[80px]" style="line-height: 0.8">❝</span>
 
                             {{-- Текст цитаты --}}
-                            <blockquote class="text-[#2B2B2B] text-lg md:text-xl italic leading-relaxed font-light">
+                            <blockquote class="text-black text-lg md:text-xl italic leading-relaxed font-light">
                                 {!! nl2br(e(__('site.hero.chair_quote'))) !!}
                             </blockquote>
 
@@ -133,9 +133,12 @@
                                 <p class="text-[#E5C68D] font-bold text-base">
                                     {{ __('site.hero.chair_name') }}
                                 </p>
-                                <p class="text-[#2B2B2B]/60 text-sm mt-1 leading-snug">
+                                <p class="text-black text-sm mt-1 leading-snug">
                                     {{ __('site.hero.chair_role_1') }}<br>
-                                    {{ __('site.hero.chair_role_2') }}<br>{{ __('site.hero.chair_role_3') }}
+                                    {{ __('site.hero.chair_role_2') }}
+                                    @if(trim((string) __('site.hero.chair_role_3')) !== '')
+                                        <br>{{ __('site.hero.chair_role_3') }}
+                                    @endif
                                 </p>
                             </div>
                         </div>
@@ -290,24 +293,18 @@
         </section>
 
         {{-- 6. КАРТА ВЫПУСКНИКА --}}
-        <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(180deg, #FFFFFF 0%, #F6F2EA 100%);">
+        <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(135deg, #F6F2EA 0%, #FFFFFF 40%, #F6F2EA 100%);">
             @php
                 $alumniProfile = auth()->check() ? auth()->user()->alumniProfile : null;
                 $publicId = $alumniProfile?->public_id;
             @endphp
 
             <div class="max-w-7xl mx-auto">
-                <div class="bg-white/70 backdrop-blur-sm rounded-3xl border border-[#E5C68D33] shadow-sm p-6 sm:p-8">
+                <div class="rounded-3xl p-[1px]" style="background: linear-gradient(135deg, rgba(143,22,28,0.25) 0%, rgba(229,198,141,0.35) 40%, rgba(143,22,28,0.18) 100%);">
+                    <div class="bg-white/85 backdrop-blur-sm rounded-3xl border border-white/60 shadow-lg shadow-[#8F161C]/10 p-6 sm:p-8">
                     <div class="grid lg:grid-cols-2 gap-10 items-center">
-                        {{-- Визуальная карточка (слева) --}}
-                        <div class="flex justify-center lg:justify-start order-1">
-                            <div class="w-full max-w-sm">
-                                <x-alumni-card :alumni-profile="$alumniProfile" />
-                            </div>
-                        </div>
-
-                        {{-- Текст + кнопки (справа) --}}
-                        <div class="order-2">
+                        {{-- Текст + кнопки (слева) --}}
+                        <div class="order-1">
                         <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-3">{{ __('site.alumni_card.eyebrow') }}</p>
                         <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">{{ __('site.alumni_card.title') }}</h2>
                         <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
@@ -341,6 +338,14 @@
                             @endauth
                         </div>
                         </div>
+
+                        {{-- Визуальная карточка (справа) --}}
+                        <div class="flex justify-center lg:justify-end order-2">
+                            <div class="w-full max-w-sm">
+                                <x-alumni-card :alumni-profile="$alumniProfile" />
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

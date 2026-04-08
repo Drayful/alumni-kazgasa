@@ -60,9 +60,9 @@ return [
         // chair_quote: approved copy — do not overwrite when “syncing from Word” unless the client explicitly requests a change.
         'chair_quote' => 'KazGASA is more than just an alma mater. It is a powerful professional community with a 45-year history that has significantly shaped the architectural and construction landscape of Kazakhstan. We take immense pride in our alumni - the visionary professionals whose ideas and dedication build the cities, spaces, and the very future of our nation.'."\n\n".'Welcome back to your roots. Welcome home!',
         'chair_name' => 'Aigazy Amirlanovich Kusainov',
-        'chair_role_1' => 'Chairman of the Supervisory Board of IEC,',
-        'chair_role_2' => 'Chairman of the Board of the International Educational Corporation,',
-        'chair_role_3' => 'owner of the Verum Group of Companies',
+        'chair_role_1' => 'Chairman of the Supervisory Board of the International Educational Corporation (KazGASA, KAU, KazGASA College, Digital College, KazGASA School, KAU School, Charterhouse Almaty School) and',
+        'chair_role_2' => 'Founder of Verum Group, a group of companies operating in construction, mining, and agriculture.',
+        'chair_role_3' => '',
         'date_label' => '📅 DATE',
         'date_value' => 'April 15, 2026',
         'countdown_title' => 'UNTIL THE REUNION',
