@@ -186,12 +186,12 @@ return [
 
     'footer' => [
         'tagline' => 'KazGASA Alumni Community',
-        'nav' => 'Navigation',
-        'contacts' => 'Contacts',
+        'nav' => 'NAVIGATION',
+        'contacts' => 'CONTACTS',
         'email' => 'E-mail: l.lau@kazgasa.kz',
         'phone' => 'Phone: +7(778)403 1983',
         'address' => 'Address: 28 Ryskulbekova St., Office 301',
-        'site' => 'KazGASA website:',
+        'site' => 'KazGASA Website:',
         'corp' => 'International Educational Corporation',
         'city' => 'Almaty, Kazakhstan',
         'rights' => 'All rights reserved.',
