@@ -39,12 +39,12 @@ return [
     ],
 
     'project_steps' => [
-        ['when' => 'Today', 'title' => '1. Choose a project', 'desc' => 'Fill in the form and pick the project that fits you best', 'highlight' => false],
-        ['when' => 'Week 1', 'title' => '2. We confirm interest', 'desc' => 'We reach out, answer questions and agree on details', 'highlight' => false],
-        ['when' => 'Month 2', 'title' => '3. Memorandum', 'desc' => 'We sign a partnership memorandum with no financial obligations', 'highlight' => false],
-        ['when' => 'Months 2–3', 'title' => '4. First steps', 'desc' => 'We define your role and launch pilot activities', 'highlight' => false],
-        ['when' => 'Month 5', 'title' => '5. Results', 'desc' => 'Publications about you, students in your projects, first outcomes', 'highlight' => false],
-        ['when' => 'In a year', 'title' => 'Scale', 'desc' => 'Your name in the history of the Association', 'highlight' => true],
+        ['when' => 'TODAY', 'title' => '1. Choose a project', 'desc' => 'Fill in the form - indicate which project appeals to you most', 'highlight' => false],
+        ['when' => 'WEEK 1', 'title' => '2. We note your interest', 'desc' => 'We reach out, answer questions and agree on details', 'highlight' => false],
+        ['when' => 'MONTH 2', 'title' => '3. Memorandum', 'desc' => 'We sign a partnership memorandum with no financial obligations', 'highlight' => false],
+        ['when' => 'MONTHS 2–3', 'title' => '4. First Steps', 'desc' => 'We define your role and launch pilot activities', 'highlight' => false],
+        ['when' => 'MONTH 5', 'title' => '5. Results', 'desc' => 'Publications about you, students in your projects, first outcomes', 'highlight' => false],
+        ['when' => 'AFTER ONE YEAR', 'title' => 'Scale', 'desc' => 'Your name in the history of the Association', 'highlight' => true],
     ],
 
     'science_topics' => [
@@ -56,30 +56,30 @@ return [
     'hero' => [
         'line1' => '60 years of architectural education in Kazakhstan - a reunion of all generations.',
         'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
-        'chair_alt' => 'Aigazy Amirlanovіch Kusainov',
+        'chair_alt' => 'Aigazy Amirlanovich Kusainov',
         // chair_quote: approved copy — do not overwrite when “syncing from Word” unless the client explicitly requests a change.
         'chair_quote' => 'KazGASA is more than just an alma mater. It is a powerful professional community with a 45-year history that has significantly shaped the architectural and construction landscape of Kazakhstan. We take immense pride in our alumni - the visionary professionals whose ideas and dedication build the cities, spaces, and the very future of our nation.'."\n\n".'Welcome back to your roots. Welcome home!',
-        'chair_name' => 'Aigazy Amirlanovіch Kusainov',
-        'chair_role_1' => 'Chair of the IEC Board of Trustees,',
-        'chair_role_2' => 'Chair of the Board of the International Educational Corporation,',
-        'chair_role_3' => 'owner of the Verum group of companies',
-        'date_label' => '📅 Date',
+        'chair_name' => 'Aigazy Amirlanovich Kusainov',
+        'chair_role_1' => 'Chairman of the Supervisory Board of IEC,',
+        'chair_role_2' => 'Chairman of the Board of the International Educational Corporation,',
+        'chair_role_3' => 'owner of the Verum Group of Companies',
+        'date_label' => '📅 DATE',
         'date_value' => 'April 15, 2026',
-        'countdown_title' => 'Until the reunion',
+        'countdown_title' => 'UNTIL THE REUNION',
         'cta_program' => 'Reunion Programme',
         'cta_card' => 'Alumni Card',
     ],
 
     'countdown' => [
-        'days' => 'days',
-        'hours' => 'hours',
-        'minutes' => 'minutes',
-        'seconds' => 'seconds',
+        'days' => 'DAYS',
+        'hours' => 'HOURS',
+        'minutes' => 'MINUTES',
+        'seconds' => 'SECONDS',
     ],
 
     'stats' => [
-        'graduates' => 'Graduates',
-        'years' => 'Years of history',
+        'graduates' => 'Alumni',
+        'years' => 'Years of History',
         'partners' => 'Partners',
         'events' => 'Events',
     ],
@@ -125,8 +125,8 @@ return [
     'faces' => [
         'eyebrow' => 'PRIDE OF THE UNIVERSITY',
         'title' => 'Faces of KazGASA',
-        'subtitle' => 'Ministers, MPs, entrepreneurs, architects — they started here, within these walls.',
-        'subtitle_page' => 'Ministers, MPs, entrepreneurs, architects — alumni and representatives of KazGASA.',
+        'subtitle' => 'Ministers, deputies, entrepreneurs, architects - they all started right here, within these walls.',
+        'subtitle_page' => 'Ministers, deputies, entrepreneurs, architects - alumni and representatives of KazGASA.',
         'more' => 'Learn More',
     ],
 
@@ -151,7 +151,7 @@ return [
     ],
 
     'jobs' => [
-        'eyebrow' => 'Careers',
+        'eyebrow' => 'CAREER',
         'title' => 'Job Vacancies for Alumni',
         'all' => 'All vacancies →',
         'empty' => 'No vacancies yet. Please check back later.',
@@ -160,13 +160,13 @@ return [
     ],
 
     'science' => [
-        'date' => '13 April 2026',
+        'date' => 'APRIL 13, 2026',
         'title' => 'Science Decade',
         'intro' => 'A research and practice programme featuring KazGASA alumni and faculty: current studies in architecture, urban planning and construction.',
     ],
 
     'archive' => [
-        'eyebrow' => 'History in photographs',
+        'eyebrow' => 'HISTORY IN PHOTOGRAPHS',
         'title' => 'KazGASA Alumni Archive',
         'intro' => 'Photos of the campus, graduation ceremonies and landmark events across different decades. Verified alumni can submit their own photos to enrich the archive.',
         'empty_decade' => 'No photos uploaded for this period yet.',

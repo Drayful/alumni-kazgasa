@@ -62,7 +62,7 @@ return [
                 'body' => 'Assisted with the fit-out of the classroom, donated GPS equipment to the department, and provides industrial placement opportunities for students.',
             ],
             [
-                'name' => 'Vadim Tsurikov (class of 2007)',
+                'name' => 'Vadim Tsurikov (Class of 2007)',
                 'subtitle' => 'Director of Innovation, SDG Alliance',
                 'body' => 'Organised the planting of trees on the IEC grounds together with students and faculty.',
             ],
