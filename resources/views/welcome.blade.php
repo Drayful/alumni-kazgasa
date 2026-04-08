@@ -82,9 +82,9 @@
                 @if(file_exists(public_path('images/hero-bg.jpg')))
                     <img src="{{ asset('images/hero-bg.jpg') }}" alt="" class="w-full h-full object-cover" />
                 @else
-                    <div class="w-full h-full" style="background: linear-gradient(135deg, #1F2A44 0%, #2B2B2B 50%, #5E0F14 100%);"></div>
+                    <div class="w-full h-full" style="background: linear-gradient(135deg, #F3F2EC 0%, #FFFFFF 55%, #F3F2EC 100%);"></div>
                 @endif
-                <div class="absolute inset-0 bg-black/50"></div>
+                <div class="absolute inset-0" style="background: radial-gradient(1200px 600px at 15% 20%, rgba(229,198,141,0.25) 0%, rgba(243,242,236,0.0) 55%), linear-gradient(180deg, rgba(243,242,236,0.90) 0%, rgba(243,242,236,0.65) 60%, rgba(243,242,236,0.85) 100%);"></div>
             </div>
 
             <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 lg:pb-12 flex flex-col gap-8">
@@ -95,10 +95,10 @@
 {{--                        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-none">--}}
 {{--                            Слёт выпускников KazGASA--}}
 {{--                        </h1>--}}
-                        <p class="mt-3 text-base sm:text-lg text-white/95 max-w-none">
+                        <p class="mt-3 text-base sm:text-lg text-[#2B2B2B] max-w-none">
                             {{ __('site.hero.line1') }}
                         </p>
-                        <p class="mt-4 text-base sm:text-lg text-white/95 max-w-none">
+                        <p class="mt-4 text-base sm:text-lg text-[#2B2B2B] max-w-none">
                             {{ __('site.hero.line2') }}
                         </p>
                     </div>
@@ -121,7 +121,7 @@
                             <span class="text-[#E5C68D] font-serif leading-none mb-4 text-[60px] md:text-[80px]" style="line-height: 0.8">❝</span>
 
                             {{-- Текст цитаты --}}
-                            <blockquote class="text-white text-lg md:text-xl italic leading-relaxed font-light">
+                            <blockquote class="text-[#2B2B2B] text-lg md:text-xl italic leading-relaxed font-light">
                                 {!! nl2br(e(__('site.hero.chair_quote'))) !!}
                             </blockquote>
 
@@ -133,7 +133,7 @@
                                 <p class="text-[#E5C68D] font-bold text-base">
                                     {{ __('site.hero.chair_name') }}
                                 </p>
-                                <p class="text-white/60 text-sm mt-1 leading-snug">
+                                <p class="text-[#2B2B2B]/60 text-sm mt-1 leading-snug">
                                     {{ __('site.hero.chair_role_1') }}<br>
                                     {{ __('site.hero.chair_role_2') }}<br>{{ __('site.hero.chair_role_3') }}
                                 </p>
@@ -178,7 +178,7 @@
                             {{ __('site.hero.cta_program') }}
                         </a>
                         <a href="#alumni-card"
-                           class="w-full md:w-auto border-2 border-white/40 text-white hover:border-white hover:bg-white/10 px-8 py-3 rounded-xl font-semibold transition text-sm sm:text-base text-center">
+                           class="w-full md:w-auto border-2 border-[#8F161C]/30 text-[#2B2B2B] hover:border-[#8F161C]/60 hover:bg-white/40 px-8 py-3 rounded-xl font-semibold transition text-sm sm:text-base text-center">
                             {{ __('site.hero.cta_card') }}
                         </a>
                     </div>
@@ -290,23 +290,24 @@
         </section>
 
         {{-- 6. КАРТА ВЫПУСКНИКА --}}
-        <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(180deg, #FFFFFF 0%, #F6F2EA 100%);">
             @php
                 $alumniProfile = auth()->check() ? auth()->user()->alumniProfile : null;
                 $publicId = $alumniProfile?->public_id;
             @endphp
 
             <div class="max-w-7xl mx-auto">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    {{-- Визуальная карточка (слева) --}}
-                    <div class="flex justify-center lg:justify-start">
-                        <div class="w-full max-w-sm">
-                            <x-alumni-card :alumni-profile="$alumniProfile" />
+                <div class="bg-white/70 backdrop-blur-sm rounded-3xl border border-[#E5C68D33] shadow-sm p-6 sm:p-8">
+                    <div class="grid lg:grid-cols-2 gap-10 items-center">
+                        {{-- Визуальная карточка (слева) --}}
+                        <div class="flex justify-center lg:justify-start order-1">
+                            <div class="w-full max-w-sm">
+                                <x-alumni-card :alumni-profile="$alumniProfile" />
+                            </div>
                         </div>
-                    </div>
 
-                    {{-- Текст + кнопки --}}
-                    <div>
+                        {{-- Текст + кнопки (справа) --}}
+                        <div class="order-2">
                         <p class="text-[#8F161C] text-xs uppercase tracking-widest mb-3">{{ __('site.alumni_card.eyebrow') }}</p>
                         <h2 class="text-2xl sm:text-3xl font-bold" style="color: #2B2B2B;">{{ __('site.alumni_card.title') }}</h2>
                         <p class="mt-4 text-base leading-relaxed" style="color: #2B2B2B;">
@@ -338,6 +339,7 @@
                                     {{ __('site.alumni_card.login_for_card') }}
                                 </a>
                             @endauth
+                        </div>
                         </div>
                     </div>
                 </div>
