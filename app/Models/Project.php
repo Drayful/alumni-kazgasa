@@ -12,8 +12,6 @@ class Project extends Model
 
     protected $fillable = [
         'sort_order', 'is_active', 'icon',
-        'title', 'tags', 'button_text',
-        'short', 'how_it_works', 'what_you_get',
         'translations',
     ];
 

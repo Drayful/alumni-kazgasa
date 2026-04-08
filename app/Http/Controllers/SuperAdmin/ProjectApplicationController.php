@@ -14,7 +14,7 @@ class ProjectApplicationController extends Controller
     {
         $projectId = $request->query('project_id');
 
-        $projects = Project::query()->orderBy('sort_order')->orderBy('title')->get();
+        $projects = Project::query()->orderBy('sort_order')->orderBy('id')->get();
 
         $query = ProjectApplication::query()
             ->with('project')

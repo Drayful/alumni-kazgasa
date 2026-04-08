@@ -16,7 +16,7 @@
                     <option value="">Все проекты</option>
                     @foreach($projects as $p)
                         <option value="{{ $p->id }}" {{ (string) $projectId === (string) $p->id ? 'selected' : '' }}>
-                            {{ $p->title }}
+                            {{ $p->localized('title', 'ru') }}
                         </option>
                     @endforeach
                 </select>
@@ -69,7 +69,7 @@
                             {{ $a->company }}
                         </td>
                         <td class="py-3 pr-4 text-[#2B2B2B] break-words">
-                            {{ $a->project?->title ?? '—' }}
+                            {{ $a->project ? $a->project->localized('title', 'ru') : '—' }}
                         </td>
                         <td class="py-3 pr-4 text-[#2B2B2B] break-words">
                             {{ $a->contact }}

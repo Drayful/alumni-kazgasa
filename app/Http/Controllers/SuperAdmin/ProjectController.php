@@ -11,7 +11,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::query()->orderBy('sort_order')->orderBy('title')->get();
+        $projects = Project::query()->orderBy('sort_order')->orderBy('id')->get();
 
         return view('super-admin.projects.index', compact('projects'));
     }
@@ -127,13 +127,6 @@ class ProjectController extends Controller
 
         $translations = Project::normalizeTranslationsInput($data['translations'], $fields);
         $data['translations'] = $translations;
-
-        $data['title'] = $translations['ru']['title'];
-        $data['tags'] = $translations['ru']['tags'] !== '' ? $translations['ru']['tags'] : null;
-        $data['button_text'] = $translations['ru']['button_text'];
-        $data['short'] = $translations['ru']['short'];
-        $data['how_it_works'] = $translations['ru']['how_it_works'];
-        $data['what_you_get'] = $translations['ru']['what_you_get'];
 
         $data['is_active'] = (bool) $request->boolean('is_active');
 

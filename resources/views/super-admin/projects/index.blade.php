@@ -59,8 +59,8 @@
                             </div>
                         </td>
                         <td class="py-3 pr-4 text-2xl">{{ $p->icon }}</td>
-                        <td class="py-3 pr-4 font-medium text-[#2B2B2B] break-words">{{ $p->title }}</td>
-                        <td class="py-3 pr-4 text-[#2B2B2B] break-words">{{ $p->tags }}</td>
+                        <td class="py-3 pr-4 font-medium text-[#2B2B2B] break-words">{{ $p->localized('title', 'ru') }}</td>
+                        <td class="py-3 pr-4 text-[#2B2B2B] break-words">{{ $p->localized('tags', 'ru') }}</td>
                         <td class="py-3 pr-4">
                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border
                                 {{ $p->is_active ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-700 border-gray-200' }}">
