@@ -26,6 +26,13 @@
                            class="mt-1 w-full border border-[#D9D9D9] rounded-xl px-4 py-2.5 text-sm focus:border-[#8F161C]" />
                     @error('sort_order')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
                 </div>
+                <div>
+                    <label class="text-sm font-medium text-[#2B2B2B]">Ссылка (сайт партнёра)</label>
+                    <input name="url" type="url" value="{{ old('url', $partner->url) }}"
+                           placeholder="https://example.com"
+                           class="mt-1 w-full border border-[#D9D9D9] rounded-xl px-4 py-2.5 text-sm focus:border-[#8F161C]" />
+                    @error('url')<p class="text-xs text-[#8F161C] mt-1">{{ $message }}</p>@enderror
+                </div>
             </div>
 
             <div class="space-y-4">

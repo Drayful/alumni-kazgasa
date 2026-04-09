@@ -19,6 +19,7 @@ class AlumniCardPartner extends Model
         'logo_letter',
         'popup',
         'note',
+        'url',
         'translations',
     ];
 

@@ -112,6 +112,7 @@ return [
         'empty' => 'The partner list will appear once it is configured in the admin panel.',
         'discount_label' => 'Discount:',
         'understood' => 'Got it',
+        'go_to_partner' => 'Go to partners',
         'become' => '+ Become a Partner',
         'modal_title' => 'Propose a partnership',
         'modal_text' => 'We will review your request and contact you within two business days.',

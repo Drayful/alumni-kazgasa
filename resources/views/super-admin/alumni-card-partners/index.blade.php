@@ -16,12 +16,13 @@
         </div>
 
         <div class="mt-6 -mx-6 overflow-x-auto">
-            <table class="w-full min-w-[900px] text-sm">
+            <table class="w-full min-w-[980px] text-sm">
                 <thead>
                 <tr class="text-left text-gray-500 border-b">
                     <th class="py-3 px-6 w-24">Порядок</th>
                     <th class="py-3 pr-4 w-16">Лого</th>
                     <th class="py-3 pr-4">Название</th>
+                    <th class="py-3 pr-4 w-20">Ссылка</th>
                     <th class="py-3 pr-4 w-24">Скидка</th>
                     <th class="py-3 pr-4 w-24">Активен</th>
                     <th class="py-3 pr-6">Действия</th>
@@ -53,6 +54,13 @@
                             </span>
                         </td>
                         <td class="py-3 pr-4 font-medium text-gray-800">{{ $p->name }}</td>
+                        <td class="py-3 pr-4">
+                            @if($p->url)
+                                <a href="{{ $p->url }}" target="_blank" class="text-xs font-semibold text-[#8F161C] hover:underline">↗</a>
+                            @else
+                                <span class="text-xs text-gray-300">—</span>
+                            @endif
+                        </td>
                         <td class="py-3 pr-4 text-gray-700">{{ $p->discount }}</td>
                         <td class="py-3 pr-4">
                             <form method="POST" action="{{ route('super-admin.alumni-card-partners.toggle', $p) }}">
@@ -79,7 +87,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="py-8 px-6 text-center text-gray-500">
+                        <td colspan="7" class="py-8 px-6 text-center text-gray-500">
                             Партнёров пока нет.
                             <a href="{{ route('super-admin.alumni-card-partners.create') }}" class="text-[#8F161C] font-semibold ml-1">Добавить</a>
                             или выполните

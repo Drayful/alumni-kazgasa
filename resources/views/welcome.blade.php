@@ -418,10 +418,12 @@
                                     @endif
 
                                     <div class="mt-6">
-                                        <button @click="open = false"
-                                                class="w-full bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
-                                            {{ __('site.partners.understood') }}
-                                        </button>
+                                        <a href="{{ $p->url ?: url('/#partners') }}"
+                                           target="{{ $p->url ? '_blank' : '_self' }}"
+                                           @click="open = false"
+                                           class="w-full inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white py-2.5 rounded-xl font-medium">
+                                            {{ __('site.partners.go_to_partner') }}
+                                        </a>
                                     </div>
                                 </div>
                             </div>

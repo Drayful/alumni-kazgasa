@@ -104,6 +104,7 @@ class AlumniCardPartnerController extends Controller
             'logo_letter' => ['required', 'string', 'max:8'],
             'sort_order' => ['required', 'integer'],
             'is_active' => ['nullable'],
+            'url' => ['nullable', 'url', 'max:2048'],
             'translations' => ['required', 'array'],
             'translations.kk' => ['required', 'array'],
             'translations.ru' => ['required', 'array'],
