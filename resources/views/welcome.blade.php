@@ -820,6 +820,15 @@
                     </div>
                     @endforeach
                 </div>
+
+                <div class="mt-8 flex justify-center">
+                    <a href="{{ asset('Ғылым декадасының бағдарламасы 2026.pdf') }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl text-sm font-semibold transition shadow-md shadow-[#8F161C]/20">
+                        {{ __('site.science.program_button') }}
+                    </a>
+                </div>
             </div>
         </section>
 

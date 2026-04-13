@@ -164,7 +164,8 @@ return [
     'science' => [
         'date' => 'APRIL 13, 2026',
         'title' => 'Science Decade',
-        'intro' => 'A research and practice programme featuring KazGASA alumni and faculty: current studies in architecture, urban planning and construction.',
+        'intro' => 'In honor of Science Day (April 12) and the 45th Anniversary of the Kazakh Leading Academy of Architecture and Civil Engineering (KazGASA), the Science Decade – 2026 is being held from April 1 to April 16, 2026. The event aims to stimulate scientific activity among faculty, students, and young researchers, popularize science within the educational environment, and foster scientific cooperation.',
+        'program_button' => 'Programme',
     ],
 
     'archive' => [
