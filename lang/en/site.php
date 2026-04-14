@@ -58,11 +58,10 @@ return [
         'line2' => 'One day - thousands of stories. Come meet your former classmates, see the changes within these familiar walls, and become part of KazGASA history.',
         'chair_alt' => 'Aigazy Amirlanovich Kusainov',
         'chair_kicker' => 'KazGASA is more than just a university',
-        // chair_quote: approved copy — do not overwrite when “syncing from Word” unless the client explicitly requests a change.
-        'chair_quote' => 'KazGASA is more than just an alma mater. It is a powerful professional community with a 45-year history that has significantly shaped the architectural and construction landscape of Kazakhstan. We take immense pride in our alumni - the visionary professionals whose ideas and dedication build the cities, spaces, and the very future of our nation.'."\n\n".'Welcome back to your roots. Welcome home!',
+        'chair_quote' => 'KazGASA is more than just a university. It is where the architectural soul of Kazakhstan is born. 45 years ago, the destinies of thousands began right here - people who are building our country today. Welcome home.',
         'chair_name' => 'Aigazy Amirlanovich Kusainov',
-        'chair_role_1' => 'Chairman of the Supervisory Board of the International Educational Corporation (KazGASA, KAU, KazGASA College, Digital College, KazGASA School, KAU School, Charterhouse Almaty School) and',
-        'chair_role_2' => 'Founder of Verum Group, a group of companies operating in construction, mining, and agriculture.',
+        'chair_role_1' => 'Chairman of the Supervisory Board of IEC, Chairman of the Board of the International Educational Corporation, owner of the Verum Group of Companies',
+        'chair_role_2' => '',
         'chair_role_3' => '',
         'date_label' => '📅 DATE',
         'date_value' => 'April 15, 2026',
@@ -164,7 +163,7 @@ return [
     'science' => [
         'date' => 'APRIL 13, 2026',
         'title' => 'Science Decade',
-        'intro' => 'In honor of Science Day (April 12) and the 45th Anniversary of the Kazakh Leading Academy of Architecture and Civil Engineering (KazGASA), the Science Decade – 2026 is being held from April 1 to April 16, 2026. The event aims to stimulate scientific activity among faculty, students, and young researchers, popularize science within the educational environment, and foster scientific cooperation.',
+        'intro' => 'A research and practice programme featuring KazGASA alumni and faculty: current studies in architecture, urban planning and construction.',
         'program_button' => 'Programme',
     ],
 
