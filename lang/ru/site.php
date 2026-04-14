@@ -90,6 +90,12 @@ return [
         'partners' => 'Партнёров',
         'events' => 'Мероприятий',
     ],
+    'stats_values' => [
+        'graduates' => '30 000+',
+        'years' => '45+',
+        'partners' => '50+',
+        'events' => '100+',
+    ],
 
     'program' => [
         'date_line' => '15 АПРЕЛЯ 2026',
@@ -148,7 +154,7 @@ return [
         'benefit' => 'Что это даёт вам',
         'path_eyebrow' => 'ПУТЬ ПАРТНЁРСТВА',
         'path_title' => '5 шагов - и вы в проекте',
-        'form_eyebrow' => 'Заявка',
+        'form_eyebrow' => 'ЗАЯВКА',
         'form_title' => 'Участвую',
         'form_name' => 'Имя',
         'form_company' => 'Компания',

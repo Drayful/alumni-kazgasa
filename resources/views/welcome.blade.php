@@ -198,19 +198,19 @@
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     <div class="text-center">
-                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">30000+</div>
+                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">{{ __('site.stats_values.graduates') }}</div>
                         <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.graduates') }}</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">45+</div>
+                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">{{ __('site.stats_values.years') }}</div>
                         <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.years') }}</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">50+</div>
+                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">{{ __('site.stats_values.partners') }}</div>
                         <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.partners') }}</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">100+</div>
+                        <div class="text-3xl sm:text-4xl font-bold" style="color: #8F161C;">{{ __('site.stats_values.events') }}</div>
                         <div class="mt-1 text-sm sm:text-base font-medium" style="color: #2B2B2B;">{{ __('site.stats.events') }}</div>
                     </div>
                 </div>

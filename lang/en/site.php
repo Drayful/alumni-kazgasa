@@ -83,6 +83,12 @@ return [
         'partners' => 'Partners',
         'events' => 'Events',
     ],
+    'stats_values' => [
+        'graduates' => '30,000+',
+        'years' => '45+',
+        'partners' => '50+',
+        'events' => '100+',
+    ],
 
     'program' => [
         'date_line' => 'APRIL 15, 2026',
@@ -141,7 +147,7 @@ return [
         'benefit' => 'What you gain',
         'path_eyebrow' => 'THE PARTNERSHIP PATH',
         'path_title' => '5 steps - and you\'re in the project',
-        'form_eyebrow' => 'Application',
+        'form_eyebrow' => 'APPLICATION',
         'form_title' => 'I\'m in',
         'form_name' => 'Name',
         'form_company' => 'Company',
