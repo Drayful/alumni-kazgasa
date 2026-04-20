@@ -4,11 +4,22 @@
 
 @section('content')
     <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
-        <h2 class="text-[#5E0F14] font-bold text-xl mb-2">Пользователи</h2>
-        <p class="text-sm text-gray-600">
-            Здесь вы можете просматривать пользователей и вручную подтверждать статус выпускника,
-            даже если профиль не пришёл из iPortal или GRADUATES.
-        </p>
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 class="text-[#5E0F14] font-bold text-xl mb-2">Пользователи</h2>
+                <p class="text-sm text-gray-600">
+                    Здесь вы можете просматривать пользователей и вручную подтверждать статус выпускника,
+                    даже если профиль не пришёл из iPortal или GRADUATES.
+                </p>
+            </div>
+
+            <div class="shrink-0">
+                <a href="{{ route('super-admin.users.export') }}"
+                   class="inline-flex items-center gap-2 bg-[#8F161C] hover:bg-[#5E0F14] text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    Скачать Excel
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Exports\SuperAdmin\UsersExport;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -18,6 +20,13 @@ class UserController extends Controller
             ->paginate(20);
 
         return view('super-admin.users.index', compact('users'));
+    }
+
+    public function export()
+    {
+        $fileName = 'users_' . now()->format('Y-m-d_H-i') . '.xlsx';
+
+        return Excel::download(new UsersExport(), $fileName);
     }
 
     /**

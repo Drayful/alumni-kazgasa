@@ -127,6 +127,8 @@ Route::prefix('super-admin')
         Route::get('/', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        Route::get('users/export', [SuperAdminUserController::class, 'export'])
+            ->name('users.export');
         Route::resource('users', SuperAdminUserController::class);
         Route::patch('users/{user}/status', [SuperAdminUserController::class, 'updateStatus'])
             ->name('users.status');
