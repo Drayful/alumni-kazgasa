@@ -6,10 +6,12 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class UsersExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize
+class UsersExport implements FromQuery, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize
 {
     public function query(): Builder
     {
@@ -46,12 +48,20 @@ class UsersExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSiz
             $row->name,
             $row->email,
             $row->phone,
-            $profile?->iin,
+            $profile?->iin === null ? null : (string) $profile->iin,
             $profile?->graduation_year,
             $profile?->school,
             $profile?->faculty_name,
             $status,
             optional($row->created_at)->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        // ИИН (12 цифр) нужно хранить как текст, иначе Excel может менять отображение числа.
+        return [
+            'E' => NumberFormat::FORMAT_TEXT,
         ];
     }
 }
