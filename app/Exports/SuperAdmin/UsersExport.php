@@ -42,13 +42,16 @@ class UsersExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
         $profile = $row->alumniProfile;
 
         $status = $profile?->verification_status ?? 'pending';
+        $iin = $profile?->iin;
 
         return [
             $row->id,
             $row->name,
             $row->email,
             $row->phone,
-            $profile?->iin === null ? null : (string) $profile->iin,
+            // Апостроф принудительно заставляет Excel трактовать значение как текст
+            // и не переводить 12-значный ИИН в научную нотацию (8,30424E+11).
+            $iin === null ? null : "'" . (string) $iin,
             $profile?->graduation_year,
             $profile?->school,
             $profile?->faculty_name,
