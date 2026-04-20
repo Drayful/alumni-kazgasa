@@ -18,6 +18,7 @@
                     <th class="px-4 py-3 text-left font-semibold">ID</th>
                     <th class="px-4 py-3 text-left font-semibold">Имя</th>
                     <th class="px-4 py-3 text-left font-semibold">Email</th>
+                    <th class="px-4 py-3 text-left font-semibold">Телефон</th>
                     <th class="px-4 py-3 text-left font-semibold">ИИН</th>
                     <th class="px-4 py-3 text-left font-semibold">Год выпуска</th>
                     <th class="px-4 py-3 text-left font-semibold">Школа / факультет</th>
@@ -31,6 +32,7 @@
                         <td class="px-4 py-3 text-gray-500">{{ $user->id }}</td>
                         <td class="px-4 py-3 font-medium text-[#2B2B2B]">{{ $user->name }}</td>
                         <td class="px-4 py-3 text-gray-600">{{ $user->email }}</td>
+                        <td class="px-4 py-3 text-gray-600">{{ $user->phone ?? '—' }}</td>
                         <td class="px-4 py-3 text-gray-600">
                             {{ $user->alumniProfile?->iin ?? '—' }}
                         </td>
@@ -79,7 +81,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center py-8 text-gray-400">
+                        <td colspan="9" class="text-center py-8 text-gray-400">
                             Пользователи не найдены.
                         </td>
                     </tr>

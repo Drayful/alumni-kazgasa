@@ -16,6 +16,10 @@
                         <span class="font-medium text-[#2B2B2B]">{{ $user->email }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-100">
+                        <span class="text-xs text-gray-400 uppercase tracking-wide">Телефон</span>
+                        <span class="font-medium text-[#2B2B2B]">{{ $user->phone ?? '—' }}</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b border-gray-100">
                         <span class="text-xs text-gray-400 uppercase tracking-wide">ID</span>
                         <span class="font-medium text-[#2B2B2B]">{{ $user->id }}</span>
                     </div>
