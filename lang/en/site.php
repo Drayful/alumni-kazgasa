@@ -105,7 +105,7 @@ return [
     'alumni_card' => [
         'eyebrow' => 'DISCOUNTS & PRIVILEGES',
         'title' => 'KazGASA Alumni Card',
-        'body' => 'The KazGASA Alumni Card gives you exclusive discounts from partners and access to special community privileges.',
+        'body' => 'The KazGASA Alumni Card gives you exclusive discounts from partners and access to special community privileges. Show your card to partners and receive a discount. Saved in Apple Wallet and Google Pay.',
         'apple' => '🍎 Add to Apple Wallet',
         'google' => 'G Add to Google Pay',
         'fill_profile' => 'Complete your profile to add the card',
