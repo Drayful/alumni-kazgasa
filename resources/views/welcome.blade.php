@@ -88,7 +88,7 @@
             </div>
 
             <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 lg:pb-12 flex flex-col gap-8">
-                <div class="flex flex-col justify-center space-y-6">
+                <div class="flex flex-col justify-center space-y-4">
 
                     {{-- HERO TEXT --}}
                     <div>

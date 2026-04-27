@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ArchivePhoto extends Model
 {
-    public const DECADES = ['80s', '90s', '00s', '10s', '20s'];
+    public const DECADES = ['apr15', '80s', '90s', '00s', '10s', '20s'];
 
     /** Максимум превью на главной странице (на одно десятилетие). */
     public const HOME_PREVIEW_LIMIT = 6;
@@ -25,13 +25,11 @@ class ArchivePhoto extends Model
 
     public static function decadeLabel(string $key): string
     {
-        return match ($key) {
-            '80s' => '80‑е',
-            '90s' => '90‑е',
-            '00s' => '00‑е',
-            '10s' => '10‑е',
-            '20s' => '20‑е',
-            default => $key,
-        };
+        $translated = __('site.archive_decades.'.$key);
+        if (is_string($translated) && $translated !== 'site.archive_decades.'.$key) {
+            return $translated;
+        }
+
+        return $key;
     }
 }

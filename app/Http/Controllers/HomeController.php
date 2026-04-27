@@ -11,6 +11,7 @@ class HomeController extends Controller
     public function welcome(): View
     {
         $archiveDecades = [
+            'apr15' => __('site.archive_decades.apr15'),
             '80s' => __('site.archive_decades.80s'),
             '90s' => __('site.archive_decades.90s'),
             '00s' => __('site.archive_decades.00s'),
