@@ -77,7 +77,7 @@
         </header>
 
         {{-- 3. HERO + ОБРАТНЫЙ ОТСЧЁТ --}}
-        <section id="hero" class="relative min-h-[90vh] flex items-end lg:items-center">
+        <section id="hero" class="relative min-h-[70vh] lg:min-h-[80vh] flex items-end lg:items-center">
             <div class="absolute inset-0">
                 @if(file_exists(public_path('images/hero-bg.jpg')))
                     <img src="{{ asset('images/hero-bg.jpg') }}" alt="" class="w-full h-full object-cover" />
