@@ -41,7 +41,7 @@
                         <a href="{{ url('/') }}#hero" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
                         <a href="{{ url('/') }}#alumni-card" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
                         <a href="{{ route('contributions.index') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
-                        <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="{{ url('/') }}#projects" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
                         <a href="https://museum.kazgasa.kz/" target="_blank" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
                             <a href="{{ route('profile.edit') }}" class="text-sm font-medium hover:opacity-80" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
@@ -63,7 +63,7 @@
                         <a href="{{ url('/') }}#hero" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.home') }}</a>
                         <a href="{{ url('/') }}#alumni-card" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.alumni_card') }}</a>
                         <a href="{{ route('contributions.index') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.contributions') }}</a>
-                        <a href="#" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
+                        <a href="{{ url('/') }}#projects" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.meetup') }}</a>
                         <a href="https://museum.kazgasa.kz/" target="_blank" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.archive') }}</a>
                         @auth
                             <a href="{{ route('profile.edit') }}" class="px-4 py-2 text-sm font-medium" style="color: #2B2B2B;">{{ __('site.nav.dashboard') }}</a>
@@ -149,38 +149,38 @@
                     </div>
 
                     {{-- ДАТА + ТАЙМЕР (обратный отсчёт до 15 апреля) --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">
-                            <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">{{ __('site.hero.date_label') }}</p>
-                            <p class="text-[#2B2B2B] font-bold text-sm mt-1">{{ __('site.hero.date_value') }}</p>
-                        </div>
-
-                        <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C] sm:col-span-2">
-                            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color: #8F161C;">
-                                {{ __('site.hero.countdown_title') }}
-                            </p>
-                            <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>
-                                @foreach([
-                                    __('site.countdown.days'),
-                                    __('site.countdown.hours'),
-                                    __('site.countdown.minutes'),
-                                    __('site.countdown.seconds'),
-                                ] as $label)
-                                    <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"
-                                         style="border-color: #E5C68D33; background-color: #F6F2EA;">
-                                        <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>
-                                        <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">
-                                        {{ $label }}
-                                    </span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+                    {{--                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">--}}
+                    {{--                        <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C]">--}}
+                    {{--                            <p class="text-xs text-[#8F161C] uppercase tracking-wide font-medium">{{ __('site.hero.date_label') }}</p>--}}
+                    {{--                            <p class="text-[#2B2B2B] font-bold text-sm mt-1">{{ __('site.hero.date_value') }}</p>--}}
+                    {{--                        </div>--}}
+                    {{----}}
+                    {{--                        <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-[#8F161C] sm:col-span-2">--}}
+                    {{--                            <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-3" style="color: #8F161C;">--}}
+                    {{--                                {{ __('site.hero.countdown_title') }}--}}
+                    {{--                            </p>--}}
+                    {{--                            <div class="grid grid-cols-4 gap-2 sm:gap-3" data-countdown-root>--}}
+                    {{--                                @foreach([--}}
+                    {{--                                    __('site.countdown.days'),--}}
+                    {{--                                    __('site.countdown.hours'),--}}
+                    {{--                                    __('site.countdown.minutes'),--}}
+                    {{--                                    __('site.countdown.seconds'),--}}
+                    {{--                                ] as $label)--}}
+                    {{--                                    <div class="flex flex-col items-center justify-center rounded-xl border px-2 py-2 sm:py-3"--}}
+                    {{--                                         style="border-color: #E5C68D33; background-color: #F6F2EA;">--}}
+                    {{--                                        <span class="font-bold text-lg sm:text-2xl text-[#8F161C]" data-countdown-value>00</span>--}}
+                    {{--                                        <span class="text-[10px] uppercase tracking-wide text-[#2B2B2B]">--}}
+                    {{--                                        {{ $label }}--}}
+                    {{--                                    </span>--}}
+                    {{--                                    </div>--}}
+                    {{--                                @endforeach--}}
+                    {{--                            </div>--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
 
                     {{-- CTA --}}
                     <div class="flex flex-col md:flex-row gap-4 w-full items-stretch md:items-start justify-center md:justify-start">
-                        <a href="#program"
+                        <a href="#projects"
                            class="w-full md:w-auto bg-[#8F161C] hover:bg-[#5E0F14] text-white px-8 py-3 rounded-xl font-semibold transition shadow-lg shadow-[#8F161C]/30 text-sm sm:text-base text-center">
                             {{ __('site.hero.cta_program') }}
                         </a>
@@ -218,83 +218,83 @@
         </section>
 
         {{-- 5. ПРОГРАММА 15 АПРЕЛЯ — СЛЁТ ВЫПУСКНИКОВ --}}
-        <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-            <div class="max-w-5xl mx-auto">
-                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">
-                    {{ __('site.program.date_line') }}
-                </p>
-                <h2 class="text-2xl sm:text-3xl font-bold mb-2" style="color: #2B2B2B;">
-                    {{ __('site.program.title') }}
-                </h2>
-                <p class="text-sm text-gray-500 mb-8">
-                    {{ __('site.program.subtitle') }}
-                </p>
-
-                <div x-data="{
-                    now: new Date(),
-                    isActive(start, end) {
-                        const today = this.now.toISOString().slice(0, 10);
-                        const eventDate = '2026-04-15';
-                        if (today !== eventDate) return false;
-                        const cur = this.now.getHours() * 60 + this.now.getMinutes();
-                        const [sh, sm] = start.split(':').map(Number);
-                        const [eh, em] = end.split(':').map(Number);
-                        return cur >= (sh * 60 + sm) && cur < (eh * 60 + em);
-                    }
-                }"
-                     x-init="setInterval(() => { now = new Date() }, 30000)"
-                     class="relative border-l-2 border-[#E5C68D] ml-2 sm:ml-6">
-
-                    <div id="program-timeline">
-                        @foreach($schedule as $item)
-                            <div class="relative pl-8 pb-8">
-                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full
-                                         bg-[#8F161C] border-2 border-[#E5C68D]"
-                                  :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'ring-4 ring-[#8F161C]/30' : ''">
-                            </span>
-
-                                <div class="mt-0"
-                                     :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ?
-                                    'bg-[#8F161C] text-white rounded-xl p-4 shadow-lg' :
-                                    'bg-white rounded-xl p-4 shadow-sm'">
-                                    <div class="flex items-baseline justify-between gap-4">
-                                    <span class="text-[#E5C68D] font-bold text-sm"
-                                          :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/80' : 'text-[#E5C68D]'">
-                                        {{ $item['time'] }}
-                                    </span>
-                                    </div>
-                                    <div class="font-semibold"
-                                         :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white' : 'text-[#2B2B2B]'">
-                                        {{ $item['title'] }}
-                                    </div>
-                                    <div class="text-sm"
-                                         :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/70' : 'text-gray-500'">
-                                        {{ $item['place'] }}
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-                    <a href="{{ asset('files/program.pdf') }}"
-                       download
-                       class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
-                        {{ __('site.program.download_pdf') }}
-                    </a>
-                    <a href="https://vrmir3d.com/KazGASA_VR/"
-                       class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
-                        {{ __('site.program.campus_map') }}
-                    </a>
-                    <button type="button"
-                            @click="eventMapOpen = true"
-                            class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
-                        {{ __('site.program.event_map') }}
-                    </button>
-                </div>
-            </div>
-        </section>
+{{--        <section id="program" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">--}}
+{{--            <div class="max-w-5xl mx-auto">--}}
+{{--                <p class="text-[11px] font-semibold tracking-[0.18em] uppercase mb-2" style="color: #8F161C;">--}}
+{{--                    {{ __('site.program.date_line') }}--}}
+{{--                </p>--}}
+{{--                <h2 class="text-2xl sm:text-3xl font-bold mb-2" style="color: #2B2B2B;">--}}
+{{--                    {{ __('site.program.title') }}--}}
+{{--                </h2>--}}
+{{--                <p class="text-sm text-gray-500 mb-8">--}}
+{{--                    {{ __('site.program.subtitle') }}--}}
+{{--                </p>--}}
+{{----}}
+{{--                <div x-data="{--}}
+{{--                    now: new Date(),--}}
+{{--                    isActive(start, end) {--}}
+{{--                        const today = this.now.toISOString().slice(0, 10);--}}
+{{--                        const eventDate = '2026-04-15';--}}
+{{--                        if (today !== eventDate) return false;--}}
+{{--                        const cur = this.now.getHours() * 60 + this.now.getMinutes();--}}
+{{--                        const [sh, sm] = start.split(':').map(Number);--}}
+{{--                        const [eh, em] = end.split(':').map(Number);--}}
+{{--                        return cur >= (sh * 60 + sm) && cur < (eh * 60 + em);--}}
+{{--                    }--}}
+{{--                }"--}}
+{{--                     x-init="setInterval(() => { now = new Date() }, 30000)"--}}
+{{--                     class="relative border-l-2 border-[#E5C68D] ml-2 sm:ml-6">--}}
+{{----}}
+{{--                    <div id="program-timeline">--}}
+{{--                        @foreach($schedule as $item)--}}
+{{--                            <div class="relative pl-8 pb-8">--}}
+{{--                            <span class="absolute -left-[9px] top-1 w-4 h-4 rounded-full--}}
+{{--                                         bg-[#8F161C] border-2 border-[#E5C68D]"--}}
+{{--                                  :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'ring-4 ring-[#8F161C]/30' : ''">--}}
+{{--                            </span>--}}
+{{----}}
+{{--                                <div class="mt-0"--}}
+{{--                                     :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ?--}}
+{{--                                    'bg-[#8F161C] text-white rounded-xl p-4 shadow-lg' :--}}
+{{--                                    'bg-white rounded-xl p-4 shadow-sm'">--}}
+{{--                                    <div class="flex items-baseline justify-between gap-4">--}}
+{{--                                    <span class="text-[#E5C68D] font-bold text-sm"--}}
+{{--                                          :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/80' : 'text-[#E5C68D]'">--}}
+{{--                                        {{ $item['time'] }}--}}
+{{--                                    </span>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="font-semibold"--}}
+{{--                                         :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white' : 'text-[#2B2B2B]'">--}}
+{{--                                        {{ $item['title'] }}--}}
+{{--                                    </div>--}}
+{{--                                    <div class="text-sm"--}}
+{{--                                         :class="isActive('{{ $item['start'] }}','{{ $item['end'] }}') ? 'text-white/70' : 'text-gray-500'">--}}
+{{--                                        {{ $item['place'] }}--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{----}}
+{{--                <div class="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">--}}
+{{--                    <a href="{{ asset('files/program.pdf') }}"--}}
+{{--                       download--}}
+{{--                       class="inline-flex items-center justify-center bg-[#8F161C] hover:bg-[#5E0F14] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">--}}
+{{--                        {{ __('site.program.download_pdf') }}--}}
+{{--                    </a>--}}
+{{--                    <a href="https://vrmir3d.com/KazGASA_VR/"--}}
+{{--                       class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">--}}
+{{--                        {{ __('site.program.campus_map') }}--}}
+{{--                    </a>--}}
+{{--                    <button type="button"--}}
+{{--                            @click="eventMapOpen = true"--}}
+{{--                            class="inline-flex items-center justify-center border border-[#8F161C] text-[#8F161C] hover:bg-[#8F161C] hover:text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">--}}
+{{--                        {{ __('site.program.event_map') }}--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </section>--}}
 
         {{-- 6. КАРТА ВЫПУСКНИКА --}}
         <section id="alumni-card" class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(135deg, #F6F2EA 0%, #FFFFFF 40%, #F6F2EA 100%);">
@@ -1066,37 +1066,37 @@
 @push('scripts')
     <script>
         (function () {
-            // Обратный отсчёт до 15 апреля 2026 (Алматы, GMT+6)
-            const target = new Date('2026-04-15T00:00:00+06:00').getTime();
-            const root = document.querySelector('[data-countdown-root]');
-            const values = root ? root.querySelectorAll('[data-countdown-value]') : null;
-
-            function updateCountdown() {
-                if (!values || values.length !== 4) return;
-                const now = Date.now();
-                let diff = target - now;
-                if (diff <= 0) {
-                    ['00', '00', '00', '00'].forEach((val, i) => values[i].textContent = val);
-                    return;
-                }
-                const day = 1000 * 60 * 60 * 24;
-                const hour = 1000 * 60 * 60;
-                const minute = 1000 * 60;
-
-                const days = Math.floor(diff / day);
-                diff -= days * day;
-                const hours = Math.floor(diff / hour);
-                diff -= hours * hour;
-                const minutes = Math.floor(diff / minute);
-                diff -= minutes * minute;
-                const seconds = Math.floor(diff / 1000);
-
-                const nums = [days, hours, minutes, seconds].map(n => String(n).padStart(2, '0'));
-                nums.forEach((val, i) => values[i].textContent = val);
-            }
-
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+            // (закомментировано) Обратный отсчёт до 15 апреля 2026 (Алматы, GMT+6)
+            // const target = new Date('2026-04-15T00:00:00+06:00').getTime();
+            // const root = document.querySelector('[data-countdown-root]');
+            // const values = root ? root.querySelectorAll('[data-countdown-value]') : null;
+            //
+            // function updateCountdown() {
+            //     if (!values || values.length !== 4) return;
+            //     const now = Date.now();
+            //     let diff = target - now;
+            //     if (diff <= 0) {
+            //         ['00', '00', '00', '00'].forEach((val, i) => values[i].textContent = val);
+            //         return;
+            //     }
+            //     const day = 1000 * 60 * 60 * 24;
+            //     const hour = 1000 * 60 * 60;
+            //     const minute = 1000 * 60;
+            //
+            //     const days = Math.floor(diff / day);
+            //     diff -= days * day;
+            //     const hours = Math.floor(diff / hour);
+            //     diff -= hours * hour;
+            //     const minutes = Math.floor(diff / minute);
+            //     diff -= minutes * minute;
+            //     const seconds = Math.floor(diff / 1000);
+            //
+            //     const nums = [days, hours, minutes, seconds].map(n => String(n).padStart(2, '0'));
+            //     nums.forEach((val, i) => values[i].textContent = val);
+            // }
+            //
+            // updateCountdown();
+            // setInterval(updateCountdown, 1000);
 
             // Подсветка текущего слота программы 15 апреля 2026
             const slotNodes = document.querySelectorAll('#program-timeline [data-slot]');

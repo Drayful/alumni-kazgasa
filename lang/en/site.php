@@ -10,7 +10,7 @@ return [
         'home' => 'Home',
         'alumni_card' => 'Alumni Card',
         'contributions' => 'Alumni Contributions',
-        'meetup' => 'Reunion',
+        'meetup' => 'Projects',
         'archive' => 'KazGASA Archive',
         'dashboard' => 'Account',
         'login' => 'LOGIN',
@@ -20,6 +20,7 @@ return [
     ],
 
     'archive_decades' => [
+        'apr15' => '15 april',
         '80s' => '1980s',
         '90s' => '1990s',
         '00s' => '2000s',
@@ -104,7 +105,7 @@ return [
     'alumni_card' => [
         'eyebrow' => 'DISCOUNTS & PRIVILEGES',
         'title' => 'KazGASA Alumni Card',
-        'body' => 'Show your card to partners and receive a discount. Saved in Apple Wallet and Google Pay.',
+        'body' => 'The KazGASA Alumni Card gives you exclusive discounts from partners and access to special community privileges.',
         'apple' => '🍎 Add to Apple Wallet',
         'google' => 'G Add to Google Pay',
         'fill_profile' => 'Complete your profile to add the card',
