@@ -66,6 +66,11 @@
             $selectedGraduationYear = (int) old('graduation_year', $alumniProfile->graduation_year);
             $legacyPrograms = $portalOptions['legacy_programs'] ?? collect();
             $usesLegacyCatalog = $selectedGraduationYear >= 1957 && $selectedGraduationYear <= 1991;
+            $selectedLegacyProgramId = old('legacy_education_program_id', $alumniProfile->legacy_education_program_id);
+            $manualOpName = old('manual_edu_op_name', $alumniProfile->manual_edu_op_name ?: (empty($alumniProfile->edu_op) ? $alumniProfile->edu_op_name : null));
+            $manualGopName = old('manual_edu_program_name', $alumniProfile->manual_edu_program_name ?: (empty($alumniProfile->edu_program) ? $alumniProfile->edu_program_name : null));
+            $manualGroupName = old('manual_study_group_name', $alumniProfile->manual_study_group_name ?: (empty($alumniProfile->study_group) ? $alumniProfile->study_group_name : null));
+            $hasManualEducation = $manualOpName || $manualGopName || $manualGroupName;
         @endphp
 
         <div class="space-y-4">
@@ -74,6 +79,9 @@
                     <x-input-label for="legacy_education_program_id" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                     <select id="legacy_education_program_id" name="legacy_education_program_id" class="js-legacy-program-select mt-1 block w-full" data-selected="{{ old('legacy_education_program_id', $alumniProfile->legacy_education_program_id) }}">
                         <option value="">Выберите ОП</option>
+                        @if(empty($selectedLegacyProgramId) && $manualOpName)
+                            <option value="" selected>{{ $manualOpName }} (вручную)</option>
+                        @endif
                         @foreach($legacyPrograms as $program)
                             <option value="{{ $program->id }}" data-year="{{ $program->graduation_year }}" data-gop="{{ $program->group_of_programs }}" {{ (string) old('legacy_education_program_id', $alumniProfile->legacy_education_program_id) === (string) $program->id ? 'selected' : '' }}>
                                 {{ $program->name }}
@@ -92,6 +100,9 @@
                 <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_program_name" name="edu_program" class="js-portal-select js-gop-select mt-1 block w-full">
                     <option value="">Выберите ГОП</option>
+                    @if(empty(old('edu_program', $alumniProfile->edu_program)) && $manualGopName)
+                        <option value="" selected>{{ $manualGopName }} (вручную)</option>
+                    @endif
                     @foreach(($portalOptions['gops'] ?? collect()) as $gop)
                         <option value="{{ $gop->id }}" {{ (string) old('edu_program', $alumniProfile->edu_program) === (string) $gop->id ? 'selected' : '' }}>
                             {{ $gop->name_ru }}
@@ -104,6 +115,9 @@
                 <x-input-label for="alumni_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_op_name" name="edu_op" class="js-portal-select js-op-select mt-1 block w-full">
                     <option value="">Выберите ОП</option>
+                    @if(empty(old('edu_op', $alumniProfile->edu_op)) && $manualOpName)
+                        <option value="" selected>{{ $manualOpName }} (вручную)</option>
+                    @endif
                     @foreach(($portalOptions['ops'] ?? collect()) as $op)
                         <option value="{{ $op->id }}" data-gop-id="{{ $op->group_op_id }}" {{ (string) old('edu_op', $alumniProfile->edu_op) === (string) $op->id ? 'selected' : '' }}>
                             {{ $op->name_ru }}
@@ -117,6 +131,9 @@
                 <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_study_group_name" name="study_group" class="js-portal-select js-group-select mt-1 block w-full">
                     <option value="">Выберите группу</option>
+                    @if(empty(old('study_group', $alumniProfile->study_group)) && $manualGroupName)
+                        <option value="" selected>{{ $manualGroupName }} (вручную)</option>
+                    @endif
                     @foreach(($portalOptions['groups'] ?? collect()) as $group)
                         <option value="{{ $group->id }}" data-op-id="{{ $group->edu_op }}" {{ (string) old('study_group', $alumniProfile->study_group) === (string) $group->id ? 'selected' : '' }}>
                             {{ $group->name }}
@@ -125,25 +142,25 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('study_group')" />
             </div>
-            <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" id="manual-education-details">
+            <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" id="manual-education-details" {{ $hasManualEducation || old('manual_education_fields') ? 'open' : '' }}>
                 <summary class="cursor-pointer font-medium text-[#2B2B2B]">Не нашли свои ОП, ГОП или группу?</summary>
                 <label class="mt-3 flex items-center gap-2 text-sm text-[#2B2B2B]" for="manual_education_fields">
-                    <input id="manual_education_fields" name="manual_education_fields" type="checkbox" value="1" {{ old('manual_education_fields') ? 'checked' : '' }}>
+                    <input id="manual_education_fields" name="manual_education_fields" type="checkbox" value="1" {{ $hasManualEducation || old('manual_education_fields') ? 'checked' : '' }}>
                     Внести ОП, ГОП и группу вручную
                 </label>
                 <p class="mt-2 text-xs text-gray-500">При включении ручные значения сохраняются вместо данных из списков iPortal.</p>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-3">
                     <div>
                         <x-input-label for="manual_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                        <x-text-input id="manual_edu_op_name" name="edu_op_name" type="text" class="block w-full" :value="old('edu_op_name', $alumniProfile->edu_op_name)" />
+                        <x-text-input id="manual_edu_op_name" name="manual_edu_op_name" type="text" class="block w-full" :value="$manualOpName" />
                     </div>
                     <div>
                         <x-input-label for="manual_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                        <x-text-input id="manual_edu_program_name" name="edu_program_name" type="text" class="block w-full" :value="old('edu_program_name', $alumniProfile->edu_program_name)" />
+                        <x-text-input id="manual_edu_program_name" name="manual_edu_program_name" type="text" class="block w-full" :value="$manualGopName" />
                     </div>
                     <div>
                         <x-input-label for="manual_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
-                        <x-text-input id="manual_study_group_name" name="study_group_name" type="text" class="block w-full" :value="old('study_group_name', $alumniProfile->study_group_name)" />
+                        <x-text-input id="manual_study_group_name" name="manual_study_group_name" type="text" class="block w-full" :value="$manualGroupName" />
                     </div>
                 </div>
             </details>

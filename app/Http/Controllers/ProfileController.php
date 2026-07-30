@@ -53,12 +53,29 @@ class ProfileController extends Controller
     public function updateAlumni(AlumniProfileUpdateRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        $profile = $request->user()->alumniProfile;
+        $manualFieldsEnabled = $request->boolean('manual_education_fields');
+        $manualUpdates = [];
 
-        if ($request->boolean('manual_education_fields')) {
-            $data['study_group'] = null;
-            $data['edu_op'] = null;
-            $data['edu_program'] = null;
-            $data['legacy_education_program_id'] = null;
+        if ($manualFieldsEnabled) {
+            foreach ([
+                'manual_edu_op_name' => ['edu_op', 'edu_op_name', true],
+                'manual_edu_program_name' => ['edu_program', 'edu_program_name', false],
+                'manual_study_group_name' => ['study_group', 'study_group_name', false],
+            ] as $manualField => [$idField, $nameField, $alsoClearLegacyProgram]) {
+                $manualValue = $data[$manualField] ?? null;
+                $wasManuallySet = ! empty($profile->{$manualField});
+
+                if ($manualValue !== null || $wasManuallySet) {
+                    // A value entered manually has no iPortal relation by definition.
+                    $data[$idField] = null;
+                    $data[$nameField] = null;
+                    if ($alsoClearLegacyProgram) {
+                        $data['legacy_education_program_id'] = null;
+                    }
+                    $manualUpdates[$manualField] = $manualValue;
+                }
+            }
         }
 
         $legacyEducationData = app(LegacyEducationProgramService::class)->resolve(
@@ -79,17 +96,15 @@ class ProfileController extends Controller
             'edu_op_name' => 'edu_op',
             'edu_program_name' => 'edu_program',
         ] as $nameField => $idField) {
-            if ($request->boolean('manual_education_fields')) {
-                $names[$nameField] = $data[$nameField] ?? null;
-            } elseif (empty($data[$idField]) && ! empty($data[$nameField])) {
+            if (empty($data[$idField]) && ! empty($data[$nameField])) {
                 $names[$nameField] = $data[$nameField];
-            } elseif (empty($data[$idField]) && ! empty($request->user()->alumniProfile->{$nameField})) {
+            } elseif (empty($data[$idField]) && ! empty($profile->{$nameField})) {
                 // A manual value is not rendered while a select has choices; retain it on unrelated updates.
-                $names[$nameField] = $request->user()->alumniProfile->{$nameField};
+                $names[$nameField] = $profile->{$nameField};
             }
         }
 
-        $request->user()->alumniProfile->update(array_merge($data, $names, $legacyEducationData));
+        $profile->update(array_merge($data, $names, $legacyEducationData, $manualUpdates));
 
         return Redirect::route('profile.edit')->with('status', 'alumni-profile-updated');
     }
