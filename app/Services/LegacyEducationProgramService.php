@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 class LegacyEducationProgramService
 {
     public const PGS = 'Промышленное и гражданское строительство';
+    public const PGS_ARCHITECTURE_SANITARY = 'Промышленное и гражданское строительство, Архитектура и Санитарно-технический';
 
     private const FIRST_HISTORICAL_YEAR = 1957;
     private const LAST_HISTORICAL_YEAR = 1991;
@@ -42,8 +43,10 @@ class LegacyEducationProgramService
 
         $groupOfPrograms = null;
 
-        if ($this->usesLockedHistoricalGroup($graduationYear) && $graduationYear <= 1979) {
-            $groupOfPrograms = self::PGS;
+        if ($this->usesLockedHistoricalGroup($graduationYear)) {
+            $groupOfPrograms = $graduationYear <= 1979
+                ? self::PGS
+                : self::PGS_ARCHITECTURE_SANITARY;
         } elseif ($program) {
             $groupOfPrograms = $program->group_of_programs;
         }

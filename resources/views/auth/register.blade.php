@@ -244,6 +244,8 @@
                         const selected = programSelect.options[programSelect.selectedIndex];
                         if (year >= 1957 && year <= 1979) {
                             groupDisplay.value = 'Промышленное и гражданское строительство';
+                        } else if (year >= 1980 && year <= 1991) {
+                            groupDisplay.value = 'Промышленное и гражданское строительство, Архитектура и Санитарно-технический';
                         } else if (selected && selected.dataset.gop) {
                             groupDisplay.value = selected.dataset.gop;
                         } else {

@@ -71,10 +71,10 @@
             $showManualOp = $usesLegacyCatalog
                 ? ! $hasLegacyProgramsForYear
                 : ($portalOptions['ops'] ?? collect())->isEmpty();
-            $showManualGop = $usesLegacyCatalog
-                ? $selectedGraduationYear >= 1980 && ! $hasLegacyProgramsForYear
-                : ($portalOptions['gops'] ?? collect())->isEmpty();
-            $showManualGroup = ($portalOptions['groups'] ?? collect())->isEmpty();
+            $showManualGop = ! $usesLegacyCatalog && ($portalOptions['gops'] ?? collect())->isEmpty();
+            $hasProfileGroup = old('study_group', $alumniProfile->study_group)
+                || old('study_group_name', $alumniProfile->study_group_name);
+            $showManualGroup = ($portalOptions['groups'] ?? collect())->isEmpty() || ! $hasProfileGroup;
         @endphp
 
         <div class="space-y-4">
@@ -336,7 +336,9 @@
                     const $selected = $legacyProgram.find('option:selected');
                     const group = year >= 1957 && year <= 1979
                         ? 'Промышленное и гражданское строительство'
-                        : ($selected.data('gop') || '');
+                        : (year >= 1980 && year <= 1991
+                            ? 'Промышленное и гражданское строительство, Архитектура и Санитарно-технический'
+                            : ($selected.data('gop') || ''));
                     $('#legacy_group_of_programs_display').val(group);
                     $legacyProgram.trigger('change.select2');
                 }
