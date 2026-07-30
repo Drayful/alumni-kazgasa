@@ -56,8 +56,15 @@ class ProfileController extends Controller
         $profile = $request->user()->alumniProfile;
         $manualFieldsEnabled = $request->boolean('manual_education_fields');
         $manualUpdates = [];
+        $manualNameFields = [];
 
-        if ($manualFieldsEnabled) {
+        if (! $manualFieldsEnabled) {
+            $manualUpdates = [
+                'manual_edu_op_name' => null,
+                'manual_edu_program_name' => null,
+                'manual_study_group_name' => null,
+            ];
+        } else {
             foreach ([
                 'manual_edu_op_name' => ['edu_op', 'edu_op_name', true],
                 'manual_edu_program_name' => ['edu_program', 'edu_program_name', false],
@@ -74,6 +81,7 @@ class ProfileController extends Controller
                         $data['legacy_education_program_id'] = null;
                     }
                     $manualUpdates[$manualField] = $manualValue;
+                    $manualNameFields[$nameField] = true;
                 }
             }
         }
@@ -96,7 +104,10 @@ class ProfileController extends Controller
             'edu_op_name' => 'edu_op',
             'edu_program_name' => 'edu_program',
         ] as $nameField => $idField) {
-            if (empty($data[$idField]) && ! empty($data[$nameField])) {
+            if (isset($manualNameFields[$nameField])) {
+                // Keep iPortal display columns empty when the manual value is the source of truth.
+                $names[$nameField] = null;
+            } elseif (empty($data[$idField]) && ! empty($data[$nameField])) {
                 $names[$nameField] = $data[$nameField];
             } elseif (empty($data[$idField]) && ! empty($profile->{$nameField})) {
                 // A manual value is not rendered while a select has choices; retain it on unrelated updates.

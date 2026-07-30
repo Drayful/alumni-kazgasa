@@ -145,6 +145,7 @@
             <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" id="manual-education-details" {{ $hasManualEducation || old('manual_education_fields') ? 'open' : '' }}>
                 <summary class="cursor-pointer font-medium text-[#2B2B2B]">Не нашли свои ОП, ГОП или группу?</summary>
                 <label class="mt-3 flex items-center gap-2 text-sm text-[#2B2B2B]" for="manual_education_fields">
+                    <input type="hidden" name="manual_education_fields" value="0">
                     <input id="manual_education_fields" name="manual_education_fields" type="checkbox" value="1" {{ $hasManualEducation || old('manual_education_fields') ? 'checked' : '' }}>
                     Внести ОП, ГОП и группу вручную
                 </label>
