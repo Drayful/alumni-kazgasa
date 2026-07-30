@@ -64,6 +64,19 @@ class ProfileController extends Controller
                 'manual_edu_program_name' => null,
                 'manual_study_group_name' => null,
             ];
+
+            // When the manual mode is explicitly disabled, the old display names
+            // must not keep masquerading as manually entered values on the next load.
+            foreach ([
+                'edu_op_name' => 'edu_op',
+                'edu_program_name' => 'edu_program',
+                'study_group_name' => 'study_group',
+            ] as $nameField => $idField) {
+                if (empty($data[$idField])) {
+                    $data[$nameField] = null;
+                    $manualNameFields[$nameField] = true;
+                }
+            }
         } else {
             foreach ([
                 'manual_edu_op_name' => ['edu_op', 'edu_op_name', true],

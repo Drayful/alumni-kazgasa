@@ -70,7 +70,9 @@
             $manualOpName = old('manual_edu_op_name', $alumniProfile->manual_edu_op_name ?: (empty($alumniProfile->edu_op) ? $alumniProfile->edu_op_name : null));
             $manualGopName = old('manual_edu_program_name', $alumniProfile->manual_edu_program_name ?: (empty($alumniProfile->edu_program) ? $alumniProfile->edu_program_name : null));
             $manualGroupName = old('manual_study_group_name', $alumniProfile->manual_study_group_name ?: (empty($alumniProfile->study_group) ? $alumniProfile->study_group_name : null));
-            $hasManualEducation = $manualOpName || $manualGopName || $manualGroupName;
+            $hasManualEducation = ! empty($alumniProfile->manual_edu_op_name)
+                || ! empty($alumniProfile->manual_edu_program_name)
+                || ! empty($alumniProfile->manual_study_group_name);
         @endphp
 
         <div class="space-y-4">
