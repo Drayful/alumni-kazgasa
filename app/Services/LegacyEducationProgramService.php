@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\LegacyEducationProgram;
-use Illuminate\Validation\ValidationException;
 
 class LegacyEducationProgramService
 {
@@ -27,25 +26,11 @@ class LegacyEducationProgramService
         }
 
         $program = null;
-        $hasProgramsForYear = LegacyEducationProgram::query()
-            ->where('graduation_year', $graduationYear)
-            ->exists();
-
         if ($programId !== null) {
             $program = LegacyEducationProgram::query()
                 ->whereKey($programId)
                 ->where('graduation_year', $graduationYear)
                 ->first();
-
-            if (! $program) {
-                throw ValidationException::withMessages([
-                    'legacy_education_program_id' => 'Выберите ОП из списка для указанного года выпуска.',
-                ]);
-            }
-        } elseif ($hasProgramsForYear) {
-            throw ValidationException::withMessages([
-                'legacy_education_program_id' => 'Выберите ОП из списка.',
-            ]);
         }
 
         $groupOfPrograms = null;
