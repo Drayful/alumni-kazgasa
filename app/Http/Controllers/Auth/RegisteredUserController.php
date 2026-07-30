@@ -23,6 +23,7 @@ class RegisteredUserController extends Controller
     {
         return view('auth.register', [
             'legacyPrograms' => LegacyEducationProgram::query()
+                ->whereBetween('graduation_year', [1957, 1991])
                 ->orderBy('graduation_year')
                 ->orderBy('sort_order')
                 ->get(['id', 'graduation_year', 'name', 'group_of_programs']),

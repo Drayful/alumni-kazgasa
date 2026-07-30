@@ -65,16 +65,7 @@
         @php
             $selectedGraduationYear = (int) old('graduation_year', $alumniProfile->graduation_year);
             $legacyPrograms = $portalOptions['legacy_programs'] ?? collect();
-            $usesLegacyCatalog = $selectedGraduationYear >= 1957 && $selectedGraduationYear <= 1991
-                || $legacyPrograms->contains('graduation_year', $selectedGraduationYear);
-            $hasLegacyProgramsForYear = $legacyPrograms->contains('graduation_year', $selectedGraduationYear);
-            $showManualOp = $usesLegacyCatalog
-                ? ! $hasLegacyProgramsForYear
-                : ($portalOptions['ops'] ?? collect())->isEmpty();
-            $showManualGop = ! $usesLegacyCatalog && ($portalOptions['gops'] ?? collect())->isEmpty();
-            $hasProfileGroup = old('study_group', $alumniProfile->study_group)
-                || old('study_group_name', $alumniProfile->study_group_name);
-            $showManualGroup = ($portalOptions['groups'] ?? collect())->isEmpty() || ! $hasProfileGroup;
+            $usesLegacyCatalog = $selectedGraduationYear >= 1957 && $selectedGraduationYear <= 1991;
         @endphp
 
         <div class="space-y-4">
@@ -134,32 +125,28 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('study_group')" />
             </div>
-            @if($showManualOp || $showManualGop || $showManualGroup)
-            <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" open>
-                <summary class="cursor-pointer font-medium text-[#2B2B2B]">Внести отсутствующие данные вручную</summary>
-                <p class="mt-2 text-xs text-gray-500">Поле показано, потому что для него нет доступных вариантов в списке.</p>
+            <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" id="manual-education-details">
+                <summary class="cursor-pointer font-medium text-[#2B2B2B]">Не нашли свои ОП, ГОП или группу?</summary>
+                <label class="mt-3 flex items-center gap-2 text-sm text-[#2B2B2B]" for="manual_education_fields">
+                    <input id="manual_education_fields" name="manual_education_fields" type="checkbox" value="1" {{ old('manual_education_fields') ? 'checked' : '' }}>
+                    Внести ОП, ГОП и группу вручную
+                </label>
+                <p class="mt-2 text-xs text-gray-500">При включении ручные значения сохраняются вместо данных из списков iPortal.</p>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-3">
-                    @if($showManualOp)
                     <div>
                         <x-input-label for="manual_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                         <x-text-input id="manual_edu_op_name" name="edu_op_name" type="text" class="block w-full" :value="old('edu_op_name', $alumniProfile->edu_op_name)" />
                     </div>
-                    @endif
-                    @if($showManualGop)
                     <div>
                         <x-input-label for="manual_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                         <x-text-input id="manual_edu_program_name" name="edu_program_name" type="text" class="block w-full" :value="old('edu_program_name', $alumniProfile->edu_program_name)" />
                     </div>
-                    @endif
-                    @if($showManualGroup)
                     <div>
                         <x-input-label for="manual_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                         <x-text-input id="manual_study_group_name" name="study_group_name" type="text" class="block w-full" :value="old('study_group_name', $alumniProfile->study_group_name)" />
                     </div>
-                    @endif
                 </div>
             </details>
-            @endif
         </div>
 
         <div class="flex items-center gap-4 pt-2">
@@ -259,6 +246,9 @@
                 const $group = $('.js-group-select');
                 const $legacyProgram = $('.js-legacy-program-select');
                 const $graduationYear = $('#alumni_graduation_year');
+                const $manualEducationToggle = $('#manual_education_fields');
+                const $manualEducationDetails = $('#manual-education-details');
+                const $manualEducationInputs = $manualEducationDetails.find('input[type="text"]');
 
                 $all.select2({
                     width: '100%',
@@ -346,10 +336,19 @@
                 $legacyProgram.on('change', syncLegacyProgram);
                 $graduationYear.on('change input', syncLegacyProgram);
 
+                function syncManualEducationFields() {
+                    const enabled = $manualEducationToggle.is(':checked');
+                    $manualEducationInputs.prop('disabled', !enabled);
+                    $manualEducationDetails.toggleClass('bg-[#F9F7F3]', !enabled);
+                }
+
+                $manualEducationToggle.on('change', syncManualEducationFields);
+
                 // Первичная синхронизация для уже сохраненных значений.
                 rebuildOpsByGop($gop.val());
                 rebuildGroupsByOp($op.val());
                 syncLegacyProgram();
+                syncManualEducationFields();
             });
         </script>
     @endonce

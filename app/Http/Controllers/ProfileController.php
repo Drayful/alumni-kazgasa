@@ -53,6 +53,14 @@ class ProfileController extends Controller
     public function updateAlumni(AlumniProfileUpdateRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
+        if ($request->boolean('manual_education_fields')) {
+            $data['study_group'] = null;
+            $data['edu_op'] = null;
+            $data['edu_program'] = null;
+            $data['legacy_education_program_id'] = null;
+        }
+
         $legacyEducationData = app(LegacyEducationProgramService::class)->resolve(
             (int) $data['graduation_year'],
             isset($data['legacy_education_program_id']) ? (int) $data['legacy_education_program_id'] : null,
@@ -71,7 +79,9 @@ class ProfileController extends Controller
             'edu_op_name' => 'edu_op',
             'edu_program_name' => 'edu_program',
         ] as $nameField => $idField) {
-            if (empty($data[$idField]) && ! empty($data[$nameField])) {
+            if ($request->boolean('manual_education_fields')) {
+                $names[$nameField] = $data[$nameField] ?? null;
+            } elseif (empty($data[$idField]) && ! empty($data[$nameField])) {
                 $names[$nameField] = $data[$nameField];
             } elseif (empty($data[$idField]) && ! empty($request->user()->alumniProfile->{$nameField})) {
                 // A manual value is not rendered while a select has choices; retain it on unrelated updates.
@@ -87,6 +97,7 @@ class ProfileController extends Controller
     private function loadPortalOptions(): array
     {
         $legacyPrograms = LegacyEducationProgram::query()
+            ->whereBetween('graduation_year', [1957, 1991])
             ->orderBy('graduation_year')
             ->orderBy('sort_order')
             ->get(['id', 'graduation_year', 'name', 'group_of_programs']);

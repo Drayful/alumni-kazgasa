@@ -29,6 +29,7 @@ class AlumniProfileUpdateRequest extends FormRequest
             'edu_program' => ['nullable', 'integer'],
             'edu_program_name' => ['nullable', 'string', 'max:255'],
             'legacy_education_program_id' => ['nullable', 'integer', 'exists:legacy_education_programs,id'],
+            'manual_education_fields' => ['nullable', 'boolean'],
         ];
     }
 

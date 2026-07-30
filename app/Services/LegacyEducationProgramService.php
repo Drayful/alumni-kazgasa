@@ -19,6 +19,13 @@ class LegacyEducationProgramService
      */
     public function resolve(int $graduationYear, ?int $programId): array
     {
+        if (! $this->usesLockedHistoricalGroup($graduationYear)) {
+            return [
+                'legacy_education_program_id' => null,
+                'legacy_group_of_programs' => null,
+            ];
+        }
+
         $program = null;
         $hasProgramsForYear = LegacyEducationProgram::query()
             ->where('graduation_year', $graduationYear)
@@ -43,13 +50,9 @@ class LegacyEducationProgramService
 
         $groupOfPrograms = null;
 
-        if ($this->usesLockedHistoricalGroup($graduationYear)) {
-            $groupOfPrograms = $graduationYear <= 1979
-                ? self::PGS
-                : self::PGS_ARCHITECTURE_SANITARY;
-        } elseif ($program) {
-            $groupOfPrograms = $program->group_of_programs;
-        }
+        $groupOfPrograms = $graduationYear <= 1979
+            ? self::PGS
+            : self::PGS_ARCHITECTURE_SANITARY;
 
         return [
             'legacy_education_program_id' => $program?->id,
