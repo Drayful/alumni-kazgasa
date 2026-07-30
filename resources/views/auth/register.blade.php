@@ -112,11 +112,35 @@
                                     class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150 appearance-none bg-no-repeat bg-[length:1rem] bg-[right_0.5rem_center]"
                                     style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3E%3Cpath stroke=%27%232B2B2B%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3E%3C/svg%3E');">
                                 <option value="">Выберите год</option>
-                                @for($year = date('Y'); $year >= 1990; $year--)
+                                @for($year = date('Y'); $year >= 1957; $year--)
                                     <option value="{{ $year }}" {{ old('graduation_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                 @endfor
                             </select>
                             @error('graduation_year')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="legacy_education_program_id" class="block text-sm font-medium text-[#2B2B2B] mb-1">ОП</label>
+                            <select id="legacy_education_program_id" name="legacy_education_program_id"
+                                    data-selected="{{ old('legacy_education_program_id') }}"
+                                    class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] transition duration-150 disabled:bg-gray-100 disabled:text-gray-500">
+                                <option value="">Сначала выберите год выпуска</option>
+                                @foreach($legacyPrograms as $program)
+                                    <option value="{{ $program->id }}" data-year="{{ $program->graduation_year }}" data-gop="{{ $program->group_of_programs }}">
+                                        {{ $program->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p id="legacy_education_program_hint" class="text-xs text-gray-500 mt-1"></p>
+                            @error('legacy_education_program_id')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label for="legacy_group_of_programs_display" class="block text-sm font-medium text-[#2B2B2B] mb-1">ГОП</label>
+                            <input id="legacy_group_of_programs_display" type="text" readonly
+                                   class="block w-full rounded-lg border border-[#D9D9D9] px-4 py-3 bg-gray-100 text-[#2B2B2B]"
+                                   placeholder="Определяется автоматически" />
+                            <p class="text-xs text-gray-500 mt-1">ГОП определяется по году выпуска и выбранной ОП; изменить её вручную нельзя.</p>
                         </div>
                     </div>
                     <div class="mt-4">
@@ -186,6 +210,56 @@
                     ЗАРЕГИСТРИРОВАТЬСЯ
                 </button>
             </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const yearSelect = document.getElementById('graduation_year');
+                    const programSelect = document.getElementById('legacy_education_program_id');
+                    const groupDisplay = document.getElementById('legacy_group_of_programs_display');
+                    const hint = document.getElementById('legacy_education_program_hint');
+                    const selectedProgramId = programSelect.dataset.selected;
+                    const allOptions = Array.from(programSelect.options).slice(1).map(function (option) {
+                        return option.cloneNode(true);
+                    });
+
+                    function syncHistoricalEducation() {
+                        const year = Number(yearSelect.value);
+                        const previousValue = programSelect.value || selectedProgramId;
+                        const matching = allOptions.filter(function (option) {
+                            return Number(option.dataset.year) === year;
+                        });
+
+                        programSelect.replaceChildren(new Option(
+                            matching.length ? 'Выберите ОП' : 'Для этого года список ОП пока не добавлен',
+                            ''
+                        ));
+                        matching.forEach(function (option) { programSelect.add(option); });
+                        programSelect.disabled = matching.length === 0;
+                        programSelect.required = matching.length > 0;
+
+                        if (matching.some(function (option) { return option.value === previousValue; })) {
+                            programSelect.value = previousValue;
+                        }
+
+                        const selected = programSelect.options[programSelect.selectedIndex];
+                        if (year >= 1957 && year <= 1979) {
+                            groupDisplay.value = 'Промышленное и гражданское строительство';
+                        } else if (selected && selected.dataset.gop) {
+                            groupDisplay.value = selected.dataset.gop;
+                        } else {
+                            groupDisplay.value = '';
+                        }
+
+                        hint.textContent = matching.length
+                            ? 'Доступны ОП из архивного списка за ' + year + ' год.'
+                            : (year ? 'Для этого года архивный список ОП пока не добавлен.' : '');
+                    }
+
+                    yearSelect.addEventListener('change', syncHistoricalEducation);
+                    programSelect.addEventListener('change', syncHistoricalEducation);
+                    syncHistoricalEducation();
+                });
+            </script>
 
             <p class="mt-6 text-center text-sm text-gray-600">
                 Уже есть аккаунт?

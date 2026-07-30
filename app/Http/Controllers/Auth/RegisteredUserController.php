@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\AlumniProfile;
+use App\Models\LegacyEducationProgram;
+use App\Services\LegacyEducationProgramService;
 use App\Support\PhoneNormalizer;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +21,12 @@ class RegisteredUserController extends Controller
 {
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', [
+            'legacyPrograms' => LegacyEducationProgram::query()
+                ->orderBy('graduation_year')
+                ->orderBy('sort_order')
+                ->get(['id', 'graduation_year', 'name', 'group_of_programs']),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -31,7 +38,8 @@ class RegisteredUserController extends Controller
             'middle_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'phone' => ['required', 'string', 'max:30'],
-            'graduation_year' => ['required', 'integer', 'min:1990', 'max:' . date('Y')],
+            'graduation_year' => ['required', 'integer', 'min:1957', 'max:' . date('Y')],
+            'legacy_education_program_id' => ['nullable', 'integer', 'exists:legacy_education_programs,id'],
             'school' => ['required', 'in:ШИ,ША,ШС,ШД,КАУ'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
@@ -55,6 +63,11 @@ class RegisteredUserController extends Controller
                 'phone' => 'Пользователь с таким номером уже зарегистрирован',
             ])->withInput();
         }
+
+        $legacyEducationData = app(LegacyEducationProgramService::class)->resolve(
+            (int) $request->graduation_year,
+            $request->integer('legacy_education_program_id') ?: null,
+        );
 
         DB::beginTransaction();
 
@@ -90,6 +103,7 @@ class RegisteredUserController extends Controller
                 'faculty_name' => $portalData['faculty_name'] ?? null,
                 'edu_op' => $portalData['edu_op'] ?? null,
                 'edu_op_name' => $portalData['edu_op_name'] ?? null,
+                ...$legacyEducationData,
                 'edu_program' => $portalData['edu_program'] ?? null,
                 'edu_program_name' => $portalData['edu_program_name'] ?? null,
                 'study_level_name' => $portalData['study_level_name'] ?? null,

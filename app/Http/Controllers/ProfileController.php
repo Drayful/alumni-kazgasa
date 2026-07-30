@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AlumniProfileUpdateRequest;
+use App\Models\LegacyEducationProgram;
+use App\Services\LegacyEducationProgramService;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -51,6 +53,10 @@ class ProfileController extends Controller
     public function updateAlumni(AlumniProfileUpdateRequest $request): RedirectResponse
     {
         $data = $request->validated();
+        $legacyEducationData = app(LegacyEducationProgramService::class)->resolve(
+            (int) $data['graduation_year'],
+            isset($data['legacy_education_program_id']) ? (int) $data['legacy_education_program_id'] : null,
+        );
 
         // Синхронизируем человекочитаемые названия с выбранными ID из iPortal.
         $names = $this->resolvePortalNames(
@@ -59,13 +65,32 @@ class ProfileController extends Controller
             $data['edu_program'] ?? null
         );
 
-        $request->user()->alumniProfile->update(array_merge($data, $names));
+        // If iPortal did not provide a linked value, preserve a manually entered name.
+        foreach ([
+            'study_group_name' => 'study_group',
+            'edu_op_name' => 'edu_op',
+            'edu_program_name' => 'edu_program',
+        ] as $nameField => $idField) {
+            if (empty($data[$idField]) && ! empty($data[$nameField])) {
+                $names[$nameField] = $data[$nameField];
+            } elseif (empty($data[$idField]) && ! empty($request->user()->alumniProfile->{$nameField})) {
+                // A manual value is not rendered while a select has choices; retain it on unrelated updates.
+                $names[$nameField] = $request->user()->alumniProfile->{$nameField};
+            }
+        }
+
+        $request->user()->alumniProfile->update(array_merge($data, $names, $legacyEducationData));
 
         return Redirect::route('profile.edit')->with('status', 'alumni-profile-updated');
     }
 
     private function loadPortalOptions(): array
     {
+        $legacyPrograms = LegacyEducationProgram::query()
+            ->orderBy('graduation_year')
+            ->orderBy('sort_order')
+            ->get(['id', 'graduation_year', 'name', 'group_of_programs']);
+
         try {
             $iportal = DB::connection('iportal');
 
@@ -82,6 +107,7 @@ class ProfileController extends Controller
                     ->select('id', 'name_ru')
                     ->orderBy('name_ru')
                     ->get(),
+                'legacy_programs' => $legacyPrograms,
             ];
         } catch (\Throwable $e) {
             report($e);
@@ -90,6 +116,7 @@ class ProfileController extends Controller
                 'groups' => collect(),
                 'ops' => collect(),
                 'gops' => collect(),
+                'legacy_programs' => $legacyPrograms,
             ];
         }
     }

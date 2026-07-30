@@ -42,7 +42,7 @@
             <div>
                 <x-input-label for="alumni_graduation_year" :value="__('Год выпуска')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <x-text-input id="alumni_graduation_year" name="graduation_year" type="number" class="mt-1 block w-full border border-[#D9D9D9] rounded-lg px-4 py-2.5 bg-white text-[#2B2B2B] focus:ring-2 focus:ring-[#8F161C] focus:border-[#8F161C] hover:border-[#C56A6E] transition"
-                    :value="old('graduation_year', $alumniProfile->graduation_year)" min="1990" :max="date('Y')" required />
+                    :value="old('graduation_year', $alumniProfile->graduation_year)" min="1957" :max="date('Y')" required />
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('graduation_year')" />
             </div>
         </div>
@@ -62,7 +62,41 @@
             </div>
         </div>
 
+        @php
+            $selectedGraduationYear = (int) old('graduation_year', $alumniProfile->graduation_year);
+            $legacyPrograms = $portalOptions['legacy_programs'] ?? collect();
+            $usesLegacyCatalog = $selectedGraduationYear >= 1957 && $selectedGraduationYear <= 1991
+                || $legacyPrograms->contains('graduation_year', $selectedGraduationYear);
+            $hasLegacyProgramsForYear = $legacyPrograms->contains('graduation_year', $selectedGraduationYear);
+            $showManualOp = $usesLegacyCatalog
+                ? ! $hasLegacyProgramsForYear
+                : ($portalOptions['ops'] ?? collect())->isEmpty();
+            $showManualGop = $usesLegacyCatalog
+                ? $selectedGraduationYear >= 1980 && ! $hasLegacyProgramsForYear
+                : ($portalOptions['gops'] ?? collect())->isEmpty();
+            $showManualGroup = ($portalOptions['groups'] ?? collect())->isEmpty();
+        @endphp
+
         <div class="space-y-4">
+            @if($usesLegacyCatalog)
+                <div>
+                    <x-input-label for="legacy_education_program_id" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                    <select id="legacy_education_program_id" name="legacy_education_program_id" class="js-legacy-program-select mt-1 block w-full" data-selected="{{ old('legacy_education_program_id', $alumniProfile->legacy_education_program_id) }}">
+                        <option value="">Выберите ОП</option>
+                        @foreach($legacyPrograms as $program)
+                            <option value="{{ $program->id }}" data-year="{{ $program->graduation_year }}" data-gop="{{ $program->group_of_programs }}" {{ (string) old('legacy_education_program_id', $alumniProfile->legacy_education_program_id) === (string) $program->id ? 'selected' : '' }}>
+                                {{ $program->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('legacy_education_program_id')" />
+                </div>
+                <div>
+                    <x-input-label for="legacy_group_of_programs_display" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                    <x-text-input id="legacy_group_of_programs_display" type="text" class="mt-1 block w-full bg-gray-100" :value="old('legacy_group_of_programs', $alumniProfile->legacy_group_of_programs)" readonly />
+                    <p class="text-xs text-gray-500 mt-1">ГОП определяется автоматически и не редактируется вручную.</p>
+                </div>
+            @else
             <div>
                 <x-input-label for="alumni_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_edu_program_name" name="edu_program" class="js-portal-select js-gop-select mt-1 block w-full">
@@ -87,6 +121,7 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('edu_op')" />
             </div>
+            @endif
             <div>
                 <x-input-label for="alumni_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
                 <select id="alumni_study_group_name" name="study_group" class="js-portal-select js-group-select mt-1 block w-full">
@@ -99,6 +134,32 @@
                 </select>
                 <x-input-error class="text-[#C56A6E] text-sm mt-1" :messages="$errors->get('study_group')" />
             </div>
+            @if($showManualOp || $showManualGop || $showManualGroup)
+            <details class="rounded-lg border border-[#D9D9D9] bg-[#F9F7F3] p-4" open>
+                <summary class="cursor-pointer font-medium text-[#2B2B2B]">Внести отсутствующие данные вручную</summary>
+                <p class="mt-2 text-xs text-gray-500">Поле показано, потому что для него нет доступных вариантов в списке.</p>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 mt-3">
+                    @if($showManualOp)
+                    <div>
+                        <x-input-label for="manual_edu_op_name" :value="__('ОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                        <x-text-input id="manual_edu_op_name" name="edu_op_name" type="text" class="block w-full" :value="old('edu_op_name', $alumniProfile->edu_op_name)" />
+                    </div>
+                    @endif
+                    @if($showManualGop)
+                    <div>
+                        <x-input-label for="manual_edu_program_name" :value="__('ГОП')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                        <x-text-input id="manual_edu_program_name" name="edu_program_name" type="text" class="block w-full" :value="old('edu_program_name', $alumniProfile->edu_program_name)" />
+                    </div>
+                    @endif
+                    @if($showManualGroup)
+                    <div>
+                        <x-input-label for="manual_study_group_name" :value="__('Группа')" class="text-sm font-medium text-[#2B2B2B] mb-1" />
+                        <x-text-input id="manual_study_group_name" name="study_group_name" type="text" class="block w-full" :value="old('study_group_name', $alumniProfile->study_group_name)" />
+                    </div>
+                    @endif
+                </div>
+            </details>
+            @endif
         </div>
 
         <div class="flex items-center gap-4 pt-2">
@@ -196,6 +257,8 @@
                 const $gop = $('.js-gop-select');
                 const $op = $('.js-op-select');
                 const $group = $('.js-group-select');
+                const $legacyProgram = $('.js-legacy-program-select');
+                const $graduationYear = $('#alumni_graduation_year');
 
                 $all.select2({
                     width: '100%',
@@ -252,9 +315,39 @@
                     rebuildGroupsByOp($op.val());
                 });
 
+                function syncLegacyProgram() {
+                    if (!$legacyProgram.length) return;
+
+                    const year = Number($graduationYear.val());
+                    const current = $legacyProgram.val();
+                    const $options = $legacyProgram.find('option').filter(function () {
+                        const value = $(this).attr('value');
+                        return !value || Number($(this).data('year')) === year;
+                    });
+
+                    $legacyProgram.find('option').each(function () {
+                        $(this).prop('hidden', !$(this).attr('value') ? false : Number($(this).data('year')) !== year);
+                    });
+
+                    if (!$options.filter('[value="' + current + '"]').length) {
+                        $legacyProgram.val('');
+                    }
+
+                    const $selected = $legacyProgram.find('option:selected');
+                    const group = year >= 1957 && year <= 1979
+                        ? 'Промышленное и гражданское строительство'
+                        : ($selected.data('gop') || '');
+                    $('#legacy_group_of_programs_display').val(group);
+                    $legacyProgram.trigger('change.select2');
+                }
+
+                $legacyProgram.on('change', syncLegacyProgram);
+                $graduationYear.on('change input', syncLegacyProgram);
+
                 // Первичная синхронизация для уже сохраненных значений.
                 rebuildOpsByGop($gop.val());
                 rebuildGroupsByOp($op.val());
+                syncLegacyProgram();
             });
         </script>
     @endonce

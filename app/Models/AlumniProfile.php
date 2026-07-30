@@ -33,6 +33,8 @@ class AlumniProfile extends Model
         'faculty_name',
         'edu_op',
         'edu_op_name',
+        'legacy_education_program_id',
+        'legacy_group_of_programs',
         'edu_program',
         'edu_program_name',
         'study_level_name',
@@ -53,12 +55,18 @@ class AlumniProfile extends Model
         'study_form' => 'integer',
         'institut_id' => 'integer',
         'edu_op' => 'integer',
+        'legacy_education_program_id' => 'integer',
         'edu_program' => 'integer',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function legacyEducationProgram(): BelongsTo
+    {
+        return $this->belongsTo(LegacyEducationProgram::class);
     }
 
     public function getFullNameAttribute(): string
