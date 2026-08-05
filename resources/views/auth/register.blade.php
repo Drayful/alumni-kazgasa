@@ -102,7 +102,6 @@
                                 <option value="ША" {{ old('school') == 'ША' ? 'selected' : '' }}>Школа Архитектуры (ША)</option>
                                 <option value="ШС" {{ old('school') == 'ШС' ? 'selected' : '' }}>Школа Строительства (ШС)</option>
                                 <option value="ШД" {{ old('school') == 'ШД' ? 'selected' : '' }}>Школа Дизайна (ШД)</option>
-                                <option value="КАУ" {{ old('school') == 'КАУ' ? 'selected' : '' }}>Казахско-Американский университет (КАУ)</option>
                             </select>
                             @error('school')<p class="text-[#C56A6E] text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
